@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#05070B" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="VIVAFIX" />
+<style>
+
+:root{
+  --bg:#05070B; --card:#10141D; --card2:#121A29; --cyan:#00E5FF;
+  --blue:#3B82F6; --purple:#8B5CF6; --text:#fff; --muted:#8B95A7;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif}
+body{min-height:100dvh;background:
+ radial-gradient(circle at 95% 8%,rgba(0,229,255,.11),transparent 28%),
+ radial-gradient(circle at 5% 35%,rgba(139,92,246,.1),transparent 30%),var(--bg)}
+button,input{font:inherit}
+button{color:inherit}
+.hidden{display:none!important}
+.app{max-width:540px;margin:auto;min-height:100dvh;padding:calc(env(safe-area-inset-top) + 18px) 18px calc(110px + env(safe-area-inset-bottom))}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin:8px 0 22px}
+.topbar h1{font-size:28px;margin:4px 0 0}.eyebrow{color:var(--muted);margin:0;font-size:14px}
+.avatar{width:46px;height:46px;border-radius:50%;border:1px solid rgba(0,229,255,.5);background:linear-gradient(135deg,#0d1622,#182338);box-shadow:0 0 25px rgba(0,229,255,.22)}
+.splash{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#020409;transition:opacity .5s ease}
+.splash.hide{opacity:0;pointer-events:none}.splash h1{letter-spacing:.45em;font-size:25px;margin:24px 0 8px}.splash p{color:#a6b0c0;margin:0 0 26px}
+.logo-wrap{width:190px;height:190px;display:grid;place-items:center;position:relative;animation:rise .9s ease both}
+.brand-mark{width:130px;filter:drop-shadow(0 0 20px rgba(0,229,255,.65));animation:pulse 1.8s ease-in-out infinite}
+.orbit{position:absolute;border:1px solid rgba(0,229,255,.48);border-radius:50%}
+.orbit-a{inset:8px;border-style:dashed;animation:spin 8s linear infinite}
+.orbit-b{inset:27px;border-color:rgba(139,92,246,.55);animation:spin 5s linear infinite reverse}
+.boot{width:220px;height:3px;background:#10202b;border-radius:5px;overflow:hidden}.boot span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--blue));box-shadow:0 0 12px var(--cyan);animation:load 2.3s ease forwards}
+.splash small{margin-top:10px;color:#758094}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes pulse{50%{transform:scale(1.06);opacity:.82}}@keyframes load{to{width:100%}}@keyframes rise{from{transform:scale(.5);opacity:0}} 
+.status-pill{border:1px solid rgba(0,229,255,.36);background:rgba(0,229,255,.06);border-radius:999px;padding:11px 14px;font:600 12px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;color:#8ef5ff;margin-bottom:20px}
+.status-pill i,.ai-header i{display:inline-block;width:8px;height:8px;background:#22e78a;border-radius:50%;box-shadow:0 0 12px #22e78a;margin-right:8px}
+.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.metric{min-height:164px;text-align:left;border:1px solid rgba(151,166,192,.14);border-radius:25px;background:linear-gradient(145deg,rgba(19,26,41,.96),rgba(9,13,21,.96));padding:18px;box-shadow:inset 0 1px rgba(255,255,255,.025)}
+.metric:active,.suggestion:active{transform:scale(.98)}
+.metric-icon{width:45px;height:45px;border-radius:14px;display:grid;place-items:center;background:#172133;font-size:22px;margin-bottom:25px}
+.metric strong{display:block;font-size:42px;font-weight:500}.metric span{color:#aab2c0}
+.cyan{color:var(--cyan)}.blue{color:var(--blue)}.purple{color:var(--purple)}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin:28px 2px 13px}.section-head h2{font-size:21px;margin:0}.section-head button{border:0;background:none;color:var(--cyan)}
+.suggestions{display:grid;gap:10px}.suggestion{border:1px solid rgba(151,166,192,.13);background:rgba(16,20,29,.94);border-radius:19px;padding:14px;display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;text-align:left}
+.suggest-icon{width:42px;height:42px;border-radius:50%;border:1px solid rgba(0,229,255,.4);display:grid;place-items:center;color:var(--cyan)}.suggestion b{display:block}.suggestion small{display:block;color:var(--muted);margin-top:5px}.suggestion em{font-size:26px;color:#748094;font-style:normal}
+.briefing{display:grid;grid-template-columns:58px 1fr;gap:14px;background:linear-gradient(135deg,rgba(0,229,255,.12),rgba(139,92,246,.08));border:1px solid rgba(0,229,255,.25);border-radius:24px;padding:18px;margin-top:20px}.briefing small{color:var(--cyan);letter-spacing:.12em}.briefing h3{margin:5px 0}.briefing p{color:#aab2c0;line-height:1.45;margin:0}
+.mini-core{width:54px;height:54px;border-radius:18px;background:linear-gradient(135deg,#14d8ff,#795cff);display:grid;place-items:center;font-size:27px;box-shadow:0 0 28px rgba(0,229,255,.25)}.mini-core.large{width:66px;height:66px;border-radius:22px}
+.search{height:55px;border-radius:18px;border:1px solid rgba(151,166,192,.15);background:#0c1017;display:flex;align-items:center;padding:0 16px;gap:10px}.search input{border:0;outline:0;background:transparent;color:white;width:100%;font-size:16px}.search span{color:#768196;font-size:25px}
+.chips{display:flex;gap:9px;overflow:auto;padding:14px 0}.chips button{border:1px solid rgba(151,166,192,.15);background:#0c1017;border-radius:999px;padding:10px 16px;white-space:nowrap;color:#9099a9}.chips .selected{background:var(--cyan);color:#001015;border-color:transparent}
+.mail-list{display:grid;gap:12px}.mail{border:1px solid rgba(151,166,192,.12);background:var(--card2);border-radius:22px;padding:15px;display:grid;grid-template-columns:52px 1fr auto;gap:13px;text-align:left}.mail.unread{box-shadow:inset 3px 0 var(--cyan)}.sender{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;color:#071018;font-weight:700}.cyan-bg{background:linear-gradient(135deg,#61f2ff,#15a6ff)}.blue-bg{background:linear-gradient(135deg,#80a6ff,#4775ff)}.purple-bg{background:linear-gradient(135deg,#b28aff,#744cff)}.mail b,.mail strong{display:block}.mail strong{font-weight:500;margin-top:5px}.mail p,.mail small{color:#7f899b}.mail p{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:6px 0}.mail>span{color:var(--cyan);font-size:22px}
+.ai-header{display:flex;gap:14px;align-items:center;margin-bottom:20px}.ai-header h2{margin:0}.ai-header p{color:var(--cyan);margin:5px 0 0;font-family:monospace}
+.chat{display:grid;gap:12px;padding-bottom:90px}.bubble{max-width:86%;padding:16px 18px;border-radius:22px;line-height:1.5}.bubble.assistant{background:var(--card);border:1px solid rgba(151,166,192,.13)}.bubble.user{justify-self:end;background:linear-gradient(135deg,var(--blue),#496ae8)}
+.composer{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom));transform:translateX(-50%);width:min(calc(100% - 36px),504px);display:flex;gap:8px;background:#0d121b;border:1px solid rgba(151,166,192,.18);padding:8px;border-radius:19px;z-index:9}.composer input{flex:1;background:transparent;border:0;outline:0;color:white;padding:0 8px}.composer button{width:42px;height:42px;border:0;border-radius:14px;background:var(--cyan);color:#001015;font-size:23px}
+.calendar-card{background:var(--card2);border:1px solid rgba(151,166,192,.13);border-radius:26px;padding:18px}.calendar-head{display:flex;justify-content:space-between;align-items:center}.calendar-head button{border:0;background:#0d121b;width:42px;height:42px;border-radius:50%;font-size:25px;color:#8390a5}.weekdays,.days{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;gap:8px}.weekdays{color:#6f798b;margin:20px 0 8px}.days button{aspect-ratio:1;border-radius:14px;border:0;background:transparent;color:#ccd3df}.days .today{background:rgba(0,229,255,.14);border:1px solid var(--cyan);color:var(--cyan);font-weight:700}
+.event-list{display:grid;gap:12px}.event-list article{display:grid;grid-template-columns:5px 1fr;background:var(--card2);border-radius:20px;padding:18px;gap:14px}.event-list i{border-radius:5px}.blue-line{background:var(--blue)}.purple-line{background:var(--purple)}.cyan-line{background:var(--cyan)}.event-list h3{margin:0 0 7px}.event-list p{margin:0;color:var(--muted)}
+.profile-card{background:var(--card2);border-radius:22px;padding:16px;display:flex;align-items:center;gap:13px}.avatar.big{width:58px;height:58px;display:grid;place-items:center}.profile-card h2,.profile-card p{margin:0}.profile-card p{color:var(--muted);margin-top:4px}.profile-card button{margin-left:auto;border:0;border-radius:12px;background:#182235;padding:9px 12px}
+.settings-list{margin-top:16px;background:var(--card2);border-radius:22px;overflow:hidden}.settings-list button{width:100%;display:grid;grid-template-columns:32px 1fr auto auto;align-items:center;text-align:left;background:transparent;border:0;border-bottom:1px solid rgba(151,166,192,.09);padding:17px}.settings-list small{color:var(--muted);margin-right:10px}.settings-list em{font-style:normal;color:#697589;font-size:22px}
+.bottom-nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(100%,540px);height:calc(77px + env(safe-area-inset-bottom));padding:9px 12px env(safe-area-inset-bottom);background:rgba(13,18,27,.94);backdrop-filter:blur(22px);border-top:1px solid rgba(151,166,192,.13);display:grid;grid-template-columns:repeat(5,1fr);z-index:10}
+.bottom-nav button{border:0;background:transparent;color:#737d90;display:flex;flex-direction:column;align-items:center;gap:4px}.bottom-nav span{font-size:25px}.bottom-nav .active{color:var(--cyan)}.bottom-nav .ai-nav span{width:52px;height:52px;margin-top:-26px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,#13d9ff,#755bff);color:white;box-shadow:0 0 28px rgba(0,229,255,.32)}.bottom-nav small{font-size:11px}
+@media(min-width:600px){.app{border-left:1px solid #18202c;border-right:1px solid #18202c}}
+
+</style>
+  <title>VIVAFIX</title>
+</head>
+<body>
+  <div id="splash" class="splash">
+    <div class="logo-wrap" aria-hidden="true">
+      <div class="orbit orbit-a"></div>
+      <div class="orbit orbit-b"></div>
+      <svg class="brand-mark" viewBox="0 0 120 120" role="img" aria-label="VIVAFIX Logo">
+        <defs>
+          <linearGradient id="g" x1="0" x2="1">
+            <stop offset="0%" stop-color="#00E5FF"/>
+            <stop offset="55%" stop-color="#3B82F6"/>
+            <stop offset="100%" stop-color="#8B5CF6"/>
+          </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="4" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <circle cx="60" cy="60" r="10" fill="url(#g)" filter="url(#glow)"/>
+        <path d="M60 15 L95 35 L95 75 L60 100 L25 75 L25 35 Z" fill="none" stroke="url(#g)" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M60 28 L83 41 L83 68 L60 84 L37 68 L37 41 Z" fill="none" stroke="url(#g)" stroke-width="3" opacity=".9"/>
+        <path d="M60 15 L60 28 M95 35 L83 41 M95 75 L83 68 M60 100 L60 84 M25 75 L37 68 M25 35 L37 41" stroke="#00E5FF" stroke-width="2" opacity=".7"/>
+      </svg>
+    </div>
+    <h1>V I V A F I X</h1>
+    <p>Dein intelligenter Alltagsassistent</p>
+    <div class="boot"><span></span></div>
+    <small>Systeme werden gestartet …</small>
+  </div>
+
+  <div id="app" class="app hidden">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow" id="dateLabel"></p>
+        <h1 id="pageTitle">Guten Morgen 👋</h1>
+      </div>
+      <button class="avatar" aria-label="Profil öffnen">VF</button>
+    </header>
+
+    <main id="view"></main>
+
+    <nav class="bottom-nav" aria-label="Hauptnavigation">
+      <button data-page="home" class="active"><span>⌂</span><small>Start</small></button>
+      <button data-page="emails"><span>✉</span><small>E-Mails</small></button>
+      <button data-page="ai" class="ai-nav"><span>✦</span><small>AI</small></button>
+      <button data-page="calendar"><span>▣</span><small>Kalender</small></button>
+      <button data-page="settings"><span>⚙</span><small>Mehr</small></button>
+    </nav>
+  </div>
+
+  <template id="home-template">
+    <section class="status-pill"><i></i> VIVAFIX ONLINE · ALLE SYSTEME AKTIV</section>
+
+    <section class="metric-grid">
+      <button class="metric" data-jump="emails">
+        <div class="metric-icon cyan">✉</div><strong>5</strong><span>Wichtige E-Mails</span>
+      </button>
+      <button class="metric" data-jump="calendar">
+        <div class="metric-icon blue">▣</div><strong>3</strong><span>Termine heute</span>
+      </button>
+      <button class="metric" data-jump="tasks">
+        <div class="metric-icon purple">✓</div><strong>4</strong><span>Aufgaben fällig</span>
+      </button>
+      <button class="metric">
+        <div class="metric-icon cyan">◇</div><strong>1</strong><span>Paket unterwegs</span>
+      </button>
+    </section>
+
+    <section class="section-head"><h2>Vorschläge für dich</h2><button>Alle</button></section>
+    <section class="suggestions">
+      <button class="suggestion"><span class="suggest-icon">✉</span><span><b>E-Mail von Lisa beantworten</b><small>Priorität: Hoch · vor 1 Std.</small></span><em>›</em></button>
+      <button class="suggestion"><span class="suggest-icon">▣</span><span><b>Team-Meeting vorbereiten</b><small>Heute · 10:00 Uhr</small></span><em>›</em></button>
+      <button class="suggestion"><span class="suggest-icon">€</span><span><b>Rechnung prüfen</b><small>Fällig in 2 Tagen</small></span><em>›</em></button>
+    </section>
+
+    <section class="briefing">
+      <div class="mini-core">✦</div>
+      <div><small>DAILY BRIEFING</small><h3>Dein Tag ist gut planbar.</h3><p>Beantworte zuerst zwei wichtige E-Mails. Danach hast du bis 13:00 Uhr Fokuszeit.</p></div>
+    </section>
+  </template>
+
+  <template id="emails-template">
+    <section class="search"><span>⌕</span><input placeholder="E-Mails durchsuchen…" /></section>
+    <section class="chips">
+      <button class="selected">Wichtig</button><button>Ungelesen</button><button>Alle</button><button>Archiv</button>
+    </section>
+    <section class="mail-list">
+      <button class="mail unread"><div class="sender cyan-bg">LM</div><div><b>Lisa Müller</b><strong>Projekt-Update</strong><p>Kannst du die Änderungen heute noch prüfen?</p><small>Arbeit · 09:15</small></div><span>★</span></button>
+      <button class="mail unread"><div class="sender blue-bg">AM</div><div><b>Amazon</b><strong>Bestellbestätigung</strong><p>Deine Bestellung wurde versendet.</p><small>Bestellung · 08:42</small></div><span>☆</span></button>
+      <button class="mail"><div class="sender purple-bg">TS</div><div><b>Tim Schneider</b><strong>Meeting verschoben</strong><p>Der Termin findet morgen um 15 Uhr statt.</p><small>Kalender · Gestern</small></div><span>☆</span></button>
+      <button class="mail"><div class="sender cyan-bg">NF</div><div><b>Netflix</b><strong>Neue Anmeldung</strong><p>Neue Anmeldung auf deinem Konto erkannt.</p><small>Sicherheit · Gestern</small></div><span>☆</span></button>
+    </section>
+  </template>
+
+  <template id="ai-template">
+    <section class="ai-header">
+      <div class="mini-core large">✦</div>
+      <div><h2>VIVA</h2><p><i></i> Online · bereit</p></div>
+    </section>
+    <section class="chat">
+      <div class="bubble assistant">Guten Morgen! Ich habe deine Übersicht vorbereitet. Du hast 5 wichtige E-Mails, 3 Termine und 4 offene Aufgaben.</div>
+      <div class="bubble user">Was sollte ich zuerst erledigen?</div>
+      <div class="bubble assistant">Antworte zuerst Lisa zum Projekt. Danach solltest du die Rechnung prüfen. Dein nächster Termin beginnt um 10:00 Uhr.</div>
+    </section>
+    <form class="composer" id="chatForm">
+      <input id="chatInput" placeholder="Frag VIVAFIX etwas…" autocomplete="off" />
+      <button type="submit">↑</button>
+    </form>
+  </template>
+
+  <template id="calendar-template">
+    <section class="calendar-card">
+      <div class="calendar-head"><button>‹</button><h2>Juli 2026</h2><button>›</button></div>
+      <div class="weekdays"><span>Mo</span><span>Di</span><span>Mi</span><span>Do</span><span>Fr</span><span>Sa</span><span>So</span></div>
+      <div class="days" id="days"></div>
+    </section>
+    <section class="section-head"><h2>Heute</h2><button>+ Termin</button></section>
+    <section class="event-list">
+      <article><i class="blue-line"></i><div><h3>Team-Meeting</h3><p>10:00–11:00 · Besprechungsraum 1</p></div></article>
+      <article><i class="purple-line"></i><div><h3>Mittagessen mit Lisa</h3><p>12:30–13:30 · Café am Markt</p></div></article>
+      <article><i class="cyan-line"></i><div><h3>Projektpräsentation</h3><p>15:00–16:30 · Online</p></div></article>
+    </section>
+  </template>
+
+  <template id="settings-template">
+    <section class="profile-card"><div class="avatar big">VF</div><div><h2>Alex</h2><p>alex@example.com</p></div><button>Bearbeiten</button></section>
+    <section class="settings-list">
+      <button><span>✦</span><b>KI-Einstellungen</b><em>›</em></button>
+      <button><span>⌁</span><b>Konten verbinden</b><em>›</em></button>
+      <button><span>🔔</span><b>Benachrichtigungen</b><em>›</em></button>
+      <button><span>🔒</span><b>Datenschutz & Sicherheit</b><em>›</em></button>
+      <button><span>◐</span><b>Design</b><small>Dunkel</small><em>›</em></button>
+      <button><span>文</span><b>Sprache</b><small>Deutsch</small><em>›</em></button>
+      <button><span>?</span><b>Hilfe & Support</b><em>›</em></button>
+      <button><span>ⓘ</span><b>Über VIVAFIX</b><em>›</em></button>
+    </section>
+  </template>
+
+  <script>
+
+const app = document.getElementById('app');
+const splash = document.getElementById('splash');
+const view = document.getElementById('view');
+const pageTitle = document.getElementById('pageTitle');
+const dateLabel = document.getElementById('dateLabel');
+const navButtons = [...document.querySelectorAll('.bottom-nav button')];
+
+const pages = {
+  home: { template: 'home-template', title: 'Guten Morgen 👋' },
+  emails: { template: 'emails-template', title: 'E-Mails' },
+  ai: { template: 'ai-template', title: 'VIVAFIX AI' },
+  calendar: { template: 'calendar-template', title: 'Kalender' },
+  settings: { template: 'settings-template', title: 'Einstellungen' },
+};
+
+dateLabel.textContent = new Intl.DateTimeFormat('de-DE', { weekday:'long', day:'2-digit', month:'long' }).format(new Date());
+
+function render(page='home') {
+  const config = pages[page] || pages.home;
+  const tpl = document.getElementById(config.template);
+  view.replaceChildren(tpl.content.cloneNode(true));
+  pageTitle.textContent = config.title;
+  navButtons.forEach(b => b.classList.toggle('active', b.dataset.page === page));
+  localStorage.setItem('vivafix-page', page);
+  window.scrollTo({ top:0, behavior:'smooth' });
+
+  view.querySelectorAll('[data-jump]').forEach(el => el.addEventListener('click', () => render(el.dataset.jump)));
+
+  if (page === 'calendar') buildCalendar();
+  if (page === 'ai') setupChat();
+}
+
+function buildCalendar(){
+  const days = document.getElementById('days');
+  if (!days) return;
+  const offset = 2;
+  for(let i=0;i<offset;i++) days.append(document.createElement('span'));
+  for(let d=1; d<=31; d++){
+    const btn = document.createElement('button');
+    btn.textContent = d;
+    if(d===21) btn.className='today';
+    btn.addEventListener('click',()=> {
+      days.querySelectorAll('button').forEach(x=>x.classList.remove('today'));
+      btn.classList.add('today');
+    });
+    days.append(btn);
+  }
+}
+
+function setupChat(){
+  const form = document.getElementById('chatForm');
+  const input = document.getElementById('chatInput');
+  const chat = view.querySelector('.chat');
+  form?.addEventListener('submit', e => {
+    e.preventDefault();
+    const text = input.value.trim();
+    if(!text) return;
+    const user = document.createElement('div');
+    user.className='bubble user';
+    user.textContent=text;
+    chat.append(user);
+    input.value='';
+    setTimeout(()=>{
+      const bot=document.createElement('div');
+      bot.className='bubble assistant';
+      bot.textContent='Das ist aktuell eine Demo-Antwort. Die echte KI verbinden wir später sicher über eine API.';
+      chat.append(bot);
+      bot.scrollIntoView({behavior:'smooth'});
+    },500);
+  });
+}
+
+navButtons.forEach(btn => btn.addEventListener('click', () => render(btn.dataset.page)));
+
+setTimeout(() => {
+  splash.classList.add('hide');
+  setTimeout(() => {
+    splash.remove();
+    app.classList.remove('hidden');
+    render(localStorage.getItem('vivafix-page') || 'home');
+  }, 500);
+}, 2800);
+
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+}
+
+</script>
+</body>
+</html>
