@@ -1,0 +1,1802 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07110f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="VIVAFIX">
+<title>VIVAFIX Signature V2</title>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+:root{
+  --bg:#07110f;--bg2:#0d1916;--ink:#f6f1e7;--muted:#a5b0aa;
+  --line:rgba(255,255,255,.12);--glass:rgba(7,22,19,.57);
+  --gold:#efcf8e;--coral:#d97868;--blue:#718be0;--green:#3b9a7b;
+  --shadow:0 24px 70px rgba(0,0,0,.34);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:transparent;color:var(--ink)}
+body{overflow-x:hidden;background:#06100e}
+
+.world-bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:#07110f}
+.world-bg svg{width:100%;height:100%;display:block;transform:scale(1.025);animation:worldCamera 30s ease-in-out infinite alternate;transform-origin:center;will-change:transform}
+.world-bg .mountain-far{animation:farDrift 26s ease-in-out infinite alternate}
+.world-bg .mountain-mid{animation:midDrift 19s ease-in-out infinite alternate}
+.world-bg .mountain-near{animation:nearDrift 15s ease-in-out infinite alternate}
+.world-bg .waterfall-stream{animation:waterfallPulse 2.1s ease-in-out infinite}
+.world-bg .waterfall-lines{animation:waterfallLines 1.2s linear infinite}
+.world-bg .mist-layer{animation:mistFloat 7s ease-in-out infinite alternate}
+.world-bg .lake-ripples{animation:lakeMove 9s linear infinite}
+.world-bg .cloud-layer{animation:cloudDrift 34s linear infinite}
+@keyframes worldCamera{to{transform:scale(1.045) translate3d(-.6%,.4%,0)}}
+@keyframes farDrift{to{transform:translate3d(8px,-3px,0)}}
+@keyframes midDrift{to{transform:translate3d(-10px,4px,0)}}
+@keyframes nearDrift{to{transform:translate3d(12px,2px,0)}}
+@keyframes waterfallPulse{50%{opacity:.88}}
+@keyframes waterfallLines{to{transform:translateY(56px)}}
+@keyframes mistFloat{to{transform:translateX(75px) scale(1.08);opacity:.75}}
+@keyframes lakeMove{to{transform:translate3d(45px,0,0)}}
+@keyframes cloudDrift{to{transform:translate3d(100px,0,0)}}
+body::after{content:"";position:fixed;inset:0;z-index:1;background:linear-gradient(180deg,rgba(2,12,11,.18),rgba(2,10,9,.35));pointer-events:none}
+@keyframes skyDrift{to{transform:translate3d(-2%,1%,0) scale(1.05)}}
+@keyframes mountainBack{to{transform:translate3d(2.2%,-1.2%,35px) scale(1.04)}}
+@keyframes mountainFront{to{transform:translate3d(-1.8%,1%,75px) scale(1.035)}}
+@keyframes waterfallFlow{50%{filter:brightness(1.18) blur(.6px);transform:rotate(2deg) scaleX(1.08)}}
+@keyframes waterLines{to{background-position:0 40px}}
+@keyframes mist{50%{transform:scale(1.25);opacity:.55}}
+@keyframes waterMove{to{background-position:140px 55px,0 0}}
+@keyframes fogMove{to{transform:translateX(9%) scale(1.1)}}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.shell{position:relative;z-index:2;max-width:660px;margin:auto;min-height:100dvh;padding:calc(env(safe-area-inset-top) + 16px) 16px calc(102px + env(safe-area-inset-bottom))}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;font:28px Georgia;color:var(--gold);background:linear-gradient(150deg,#27151a,#0b1714);border:1px solid var(--line);box-shadow:var(--shadow)}
+.brand h1{margin:0;font-size:21px;letter-spacing:.18em}
+.brand small{display:block;margin-top:4px;font-size:9px;letter-spacing:.2em;color:var(--gold)}
+.avatar{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.055);border:1px solid var(--line);color:var(--gold)}
+main{min-height:65dvh}
+.page-enter{animation:pageIn .46s cubic-bezier(.2,.8,.2,1)}
+@keyframes pageIn{from{opacity:0;transform:translateY(15px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+.eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.panel,.item,.tile{border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(10px);box-shadow:0 18px 46px rgba(0,0,0,.2)}
+.panel{border-radius:28px;padding:19px;margin-bottom:14px}
+.hero{position:relative;min-height:390px;overflow:hidden;border-radius:34px;padding:28px;background:linear-gradient(145deg,rgba(8,28,23,.93),rgba(15,19,25,.7));border:1px solid rgba(255,255,255,.13);box-shadow:var(--shadow)}
+.hero h2{font:500 46px/.97 Georgia;margin:16px 0 14px;max-width:76%}
+.hero p{max-width:72%;margin:0;color:var(--muted);line-height:1.55}
+.hero-orb{position:absolute;pointer-events:none;width:235px;height:235px;right:-28px;bottom:40px;border-radius:50%;background:
+radial-gradient(circle at 34% 25%,rgba(255,255,255,.98),rgba(255,255,255,.09) 15%,transparent 22%),
+radial-gradient(circle at 40% 40%,#f2d29e 0 9%,#cd796d 28%,#5c6fba 59%,#17332b 80%);
+box-shadow:inset -28px -32px 65px rgba(0,0,0,.42),0 38px 85px rgba(0,0,0,.46),0 0 60px rgba(235,176,132,.17);
+animation:orbFloat 6s ease-in-out infinite}
+@keyframes orbFloat{50%{transform:translateY(-12px) rotate(4deg)}}
+.stats{position:absolute;left:22px;right:22px;bottom:22px;display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.stat{padding:13px;border-radius:18px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09)}
+.stat strong{display:block;font-size:23px;color:var(--gold)}
+.stat span{font-size:11px;color:var(--muted)}
+.section-head{display:flex;justify-content:space-between;align-items:end;margin:23px 2px 12px}
+.section-head h3{margin:0;font:500 24px Georgia}
+.section-head button{border:0;background:none;color:var(--gold)}
+.bento{position:relative;z-index:6;display:grid;grid-template-columns:1.12fr .88fr;gap:12px}
+.tile{position:relative;z-index:5;min-height:150px;border-radius:26px;padding:20px;text-align:left;color:var(--ink);overflow:hidden;transition:transform .2s ease,border-color .2s}
+.tile:active{transform:scale(.985)}
+.tile h4{margin:0 0 8px;font:500 24px Georgia}
+.tile p{margin:0;max-width:76%;line-height:1.42;color:var(--muted)}
+.tile .glyph{position:absolute;right:14px;bottom:7px;font-size:64px;opacity:.13}
+.tile.weather{grid-column:1/-1;min-height:128px;background:linear-gradient(135deg,rgba(214,121,87,.3),rgba(76,83,146,.28),rgba(16,44,37,.72))}
+.tile.mail{background:linear-gradient(145deg,rgba(71,90,137,.31),rgba(18,26,36,.67))}
+.tile.ai{background:linear-gradient(145deg,rgba(115,66,101,.33),rgba(24,23,31,.72))}
+.tile.plan{background:linear-gradient(145deg,rgba(43,111,91,.34),rgba(15,28,24,.74))}
+.tile.tasks{background:linear-gradient(145deg,rgba(133,100,52,.3),rgba(25,25,21,.72))}
+.row{display:flex;gap:9px}.row>*{flex:1}
+.input{width:100%;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.055);color:var(--ink);border-radius:16px;padding:13px;margin:5px 0;outline:none}
+.input:focus{border-color:rgba(239,207,142,.65);box-shadow:0 0 0 4px rgba(239,207,142,.07)}
+.btn{border:0;border-radius:16px;padding:13px 16px;font-weight:760;color:#15211d;background:linear-gradient(135deg,#f3dba8,#d2aa67);box-shadow:0 13px 28px rgba(184,137,66,.18)}
+.btn.secondary{background:rgba(255,255,255,.065);color:var(--ink);border:1px solid var(--line);box-shadow:none}
+.btn.full{width:100%}
+.list{display:grid;gap:10px}
+.empty{text-align:center;padding:26px;color:var(--muted);border:1px dashed var(--line);border-radius:20px}
+.item{border-radius:21px;padding:15px}
+.item h3{margin:0 0 7px}.item p{margin:0;color:var(--muted);line-height:1.46}
+.item footer{display:flex;justify-content:space-between;align-items:center;margin-top:11px;color:var(--gold);font-size:12px}
+.item footer button{border:0;background:none;color:var(--muted);font-size:19px}
+.mail-toolbar{position:sticky;top:6px;z-index:8;padding:8px 0 10px;background:linear-gradient(to bottom,var(--bg) 55%,transparent)}
+.mail-card{display:grid;grid-template-columns:46px 1fr;gap:12px;padding:15px;border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.067),rgba(255,255,255,.035));border:1px solid rgba(255,255,255,.09);transition:transform .2s ease,border-color .2s ease}
+.mail-card:active{transform:scale(.99)}
+.mail-avatar{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;font-weight:800;color:#17211f;background:linear-gradient(135deg,#efd69d,#d58b75)}
+.mail-head{display:flex;gap:10px;justify-content:space-between;align-items:flex-start}
+.mail-from{font-weight:730;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:74%}
+.mail-date{font-size:11px;color:var(--muted);white-space:nowrap}
+.mail-subject{margin:5px 0 5px;font-size:16px;font-weight:720}
+.mail-snippet{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;color:var(--muted);line-height:1.43}
+.mail-count{font-size:12px;color:var(--muted);margin:8px 2px 4px}
+.weather-stage{position:relative;min-height:520px;overflow:hidden;border-radius:34px;padding:25px;background:
+linear-gradient(180deg,#b55f55 0%,#db8b68 25%,#efbd7c 50%,#7276a2 72%,#152f34 100%);
+border:1px solid rgba(255,255,255,.18);box-shadow:var(--shadow);isolation:isolate}
+.weather-stage::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(3,20,20,.18));z-index:-1}
+.sun{position:absolute;width:150px;height:150px;border-radius:50%;left:50%;top:105px;transform:translateX(-50%);background:radial-gradient(circle,#fff9d3 0 15%,#ffd675 45%,#f39b57 72%);box-shadow:0 0 26px rgba(255,226,142,.88),0 0 75px rgba(255,171,86,.72),0 0 145px rgba(232,103,75,.5);animation:sunBreathe 4.8s ease-in-out infinite}
+.sun-rays{position:absolute;width:280px;height:280px;left:50%;top:40px;transform:translateX(-50%);border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(255,230,154,.22) 0 5deg,transparent 5deg 16deg);animation:rays 24s linear infinite;mask-image:radial-gradient(circle,transparent 0 29%,#000 34% 65%,transparent 72%)}
+@keyframes sunBreathe{50%{transform:translateX(-50%) scale(1.06);filter:brightness(1.08)}}
+@keyframes rays{to{transform:translateX(-50%) rotate(360deg)}}
+.horizon{position:absolute;left:-10%;right:-10%;bottom:0;height:225px;background:linear-gradient(180deg,rgba(20,61,58,.2),#102b2b 52%,#071614 100%);clip-path:polygon(0 40%,15% 23%,28% 44%,43% 18%,56% 42%,72% 25%,86% 46%,100% 31%,100% 100%,0 100%)}
+.weather-copy{position:relative;z-index:3;text-align:center;margin-top:8px}
+.weather-temp{font-size:64px;font-weight:800;letter-spacing:-.05em;margin-top:250px}
+.weather-condition{font-size:21px;font-weight:700}
+.weather-place,.weather-meta{color:rgba(255,255,255,.8)}
+.weather-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:18px}
+.weather-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}
+.weather-metric{padding:12px;border-radius:17px;background:rgba(9,25,25,.28);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(8px)}
+.weather-metric strong{display:block;font-size:18px}.weather-metric span{font-size:10px;color:rgba(255,255,255,.76)}
+.chat{display:grid;gap:10px;margin-bottom:12px}.bubble{max-width:88%;padding:14px 16px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid var(--line);line-height:1.5}.bubble.me{justify-self:end;background:linear-gradient(135deg,#a66363,#5f6aa1)}
+.composer{display:flex;gap:8px}.composer input{flex:1}.chips{display:flex;gap:8px;overflow:auto;padding-bottom:8px}.chips button{white-space:nowrap;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--muted);border-radius:999px;padding:9px 12px}
+.nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(100%,660px);height:calc(82px + env(safe-area-inset-bottom));padding:8px 8px env(safe-area-inset-bottom);display:grid;grid-template-columns:repeat(6,1fr);background:rgba(6,13,12,.86);backdrop-filter:blur(28px);border-top:1px solid rgba(255,255,255,.09);z-index:40}
+.nav button{border:0;background:none;color:#7f8b85;display:flex;flex-direction:column;align-items:center;gap:4px}.nav b{font-size:20px}.nav small{font-size:9px}.nav .on{color:var(--gold)}
+.toast{position:fixed;left:50%;bottom:calc(100px + env(safe-area-inset-bottom));transform:translate(-50%,18px);opacity:0;z-index:70;background:#121d19;color:var(--ink);border:1px solid var(--line);padding:11px 15px;border-radius:14px;transition:.25s;pointer-events:none}.toast.show{opacity:1;transform:translate(-50%,0)}
+
+.weather-search{position:relative;z-index:4;margin-bottom:14px;padding:14px;border-radius:22px;background:rgba(8,24,24,.38);border:1px solid rgba(255,255,255,.17);backdrop-filter:blur(10px)}
+.weather-search-row{display:flex;gap:8px}
+.weather-search-row .input{margin:0;min-width:0}
+.weather-results{display:grid;gap:7px;margin-top:9px}
+.weather-result{width:100%;text-align:left;border:1px solid rgba(255,255,255,.13);background:rgba(6,21,21,.54);color:var(--ink);border-radius:14px;padding:10px 12px}
+.weather-result strong{display:block}.weather-result span{display:block;margin-top:2px;font-size:11px;color:rgba(255,255,255,.7)}
+.weather-source{position:relative;z-index:3;margin-top:10px;text-align:center;font-size:10px;color:rgba(255,255,255,.65)}
+
+
+.weather-fx{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:2}
+.weather-stage.rainy{background:linear-gradient(180deg,#2c3747 0%,#3d4a58 35%,#596575 67%,#132a2c 100%)}
+.weather-stage.rainy .sun{animation:sunSetAway 1.6s ease forwards}
+.weather-stage.rainy .sun-rays{animation:raysFade 1.4s ease forwards}
+.weather-stage.stormy{background:linear-gradient(180deg,#171d2a,#303b49 47%,#102526 100%)}
+.weather-stage.stormy .sun,.weather-stage.stormy .sun-rays{opacity:0;transform:translate(-50%,180px) scale(.6)}
+.weather-stage.snowy{background:linear-gradient(180deg,#71879a,#b4c7d2 53%,#526c75 76%,#183133)}
+.rain-drop{position:absolute;top:-80px;width:2px;height:70px;background:linear-gradient(transparent,rgba(220,244,255,.78));border-radius:999px;animation:rainFall linear infinite;transform:rotate(10deg)}
+.snow-flake{position:absolute;top:-30px;color:#fff;opacity:.88;animation:snowFall linear infinite;text-shadow:0 0 8px rgba(255,255,255,.5)}
+.weather-cloud{position:absolute;width:210px;height:62px;border-radius:999px;background:rgba(42,51,61,.86);filter:blur(2px);box-shadow:70px 18px 0 12px rgba(42,51,61,.82),-55px 20px 0 5px rgba(42,51,61,.74);animation:weatherCloud 13s linear infinite}
+.weather-cloud.c2{top:130px;left:-20px;transform:scale(.78);animation-duration:18s;opacity:.8}
+.weather-cloud.c1{top:82px;left:-260px}
+.lightning{position:absolute;inset:0;background:white;opacity:0;animation:lightningFlash 6s steps(1) infinite}
+@keyframes sunSetAway{to{opacity:0;transform:translate(-50%,230px) scale(.55)}}
+@keyframes raysFade{to{opacity:0;transform:translateX(-50%) scale(.6)}}
+@keyframes rainFall{to{transform:translate(90px,900px) rotate(10deg)}}
+@keyframes snowFall{to{transform:translate(65px,850px) rotate(360deg)}}
+@keyframes weatherCloud{to{transform:translateX(980px)}}
+@keyframes lightningFlash{0%,88%,92%,100%{opacity:0}89%,91%{opacity:.65}}
+.mail-toolbar{position:relative!important;top:auto!important;z-index:3!important;padding:0 0 10px!important;background:none!important}
+.mail-card{cursor:pointer}
+.mail-detail{position:fixed;inset:0;z-index:85;background:rgba(4,13,12,.93);backdrop-filter:blur(12px);overflow:auto;padding:calc(env(safe-area-inset-top) + 18px) 16px calc(30px + env(safe-area-inset-bottom));animation:detailIn .36s ease}
+.mail-detail-inner{max-width:660px;margin:auto}
+.mail-detail-head{display:flex;align-items:center;gap:11px;margin-bottom:14px}
+.mail-detail-head button{width:44px;height:44px;border-radius:15px;border:1px solid var(--line);background:rgba(255,255,255,.07);color:var(--ink);font-size:23px}
+.mail-detail-card{border-radius:27px;padding:20px;background:rgba(10,29,25,.74);border:1px solid var(--line)}
+.mail-detail-card h2{font:500 29px/1.15 Georgia;margin:11px 0}
+.mail-body{white-space:pre-wrap;overflow-wrap:anywhere;color:#d9dfdb;line-height:1.58;margin-top:18px}
+.attachment-chip{display:inline-block;margin:8px 6px 0 0;padding:8px 11px;border-radius:999px;background:rgba(239,207,142,.12);color:var(--gold);border:1px solid rgba(239,207,142,.18);font-size:12px}
+@keyframes detailIn{from{opacity:0;transform:translateY(18px)}}
+
+/* ===== RESTORED PREMIUM PLAN + TASKS ===== */
+.plan-shell,.tasks-shell{
+  position:relative;overflow:hidden;border-radius:32px;padding:23px;
+  border:1px solid rgba(255,255,255,.15);
+  background:linear-gradient(145deg,rgba(8,31,25,.68),rgba(11,20,20,.48));
+  backdrop-filter:blur(10px);
+  box-shadow:0 25px 65px rgba(0,0,0,.28);
+}
+.plan-shell::before,.tasks-shell::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.055),transparent 36%);
+}
+.plan-accent,.tasks-accent{
+  position:absolute;left:0;top:0;bottom:0;width:5px;
+  background:linear-gradient(180deg,var(--gold),var(--coral),var(--green));
+  box-shadow:0 0 24px rgba(239,207,142,.34);
+}
+.plan-top,.tasks-top{position:relative;z-index:1;margin-bottom:20px}
+.plan-top h2,.tasks-top h2{margin:13px 0 9px;font:500 35px/1.04 Georgia}
+.plan-top p,.tasks-top p{margin:0;color:var(--muted);line-height:1.5}
+.plan-grid,.tasks-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;position:relative;z-index:1}
+.field-block{min-width:0}
+.field-block.full{grid-column:1/-1}
+.field-block label{display:block;margin:0 4px 5px;color:var(--gold);font-size:10px;letter-spacing:.13em;text-transform:uppercase}
+.plan-shell .input,.tasks-shell .input{
+  margin:0;background:rgba(255,255,255,.065);border-color:rgba(255,255,255,.14);
+  min-height:54px;transition:transform .2s ease,border-color .2s ease,background .2s ease;
+}
+.plan-shell .input:focus,.tasks-shell .input:focus{transform:translateY(-1px);background:rgba(255,255,255,.085)}
+.save-row{display:flex;align-items:center;gap:12px;margin-top:15px;position:relative;z-index:1}
+.save-row .btn{flex:1;min-height:54px}
+.mini-badge{
+  width:54px;height:54px;border-radius:17px;display:grid;place-items:center;
+  background:rgba(255,255,255,.075);border:1px solid rgba(255,255,255,.13);
+  color:var(--gold);font-size:22px;box-shadow:inset 0 1px rgba(255,255,255,.08)
+}
+.task-progress{position:relative;z-index:1;display:flex;align-items:center;gap:14px;margin:17px 0 20px;padding:13px;border-radius:20px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09)}
+.task-progress strong{display:block}.task-progress span{display:block;margin-top:4px;color:var(--muted);font-size:12px}
+.progress-ring{
+  --p:0;width:65px;height:65px;border-radius:50%;display:grid;place-items:center;flex:0 0 auto;
+  background:conic-gradient(var(--gold) calc(var(--p)*1%),rgba(255,255,255,.09) 0);
+  position:relative
+}
+.progress-ring::before{content:"";position:absolute;inset:7px;border-radius:50%;background:#10221d}
+.progress-ring::after{content:attr(data-label);position:relative;font-size:12px;font-weight:800;color:var(--gold)}
+.timeline{position:relative;padding-left:18px}
+.timeline::before{content:"";position:absolute;left:5px;top:7px;bottom:7px;width:1px;background:linear-gradient(var(--gold),rgba(255,255,255,.08))}
+.timeline .item{position:relative;margin-left:10px}
+.timeline .item::before{content:"";position:absolute;left:-25px;top:22px;width:10px;height:10px;border-radius:50%;background:var(--gold);box-shadow:0 0 17px rgba(239,207,142,.65)}
+.task-item{display:grid;grid-template-columns:42px 1fr auto;gap:12px;align-items:center}
+.task-check{
+  width:42px;height:42px;border-radius:14px;border:1px solid rgba(255,255,255,.14);
+  color:#15211d;background:linear-gradient(135deg,#f3dba8,#d2aa67);font-weight:900
+}
+.task-main{min-width:0}.task-main h3{overflow:hidden;text-overflow:ellipsis}
+.delete-x{border:0;background:none;color:var(--muted);font-size:23px}
+.priority-pill{display:inline-block;padding:3px 8px;border-radius:999px;background:rgba(239,207,142,.13);color:var(--gold);font-size:11px}
+.priority-pill.high{background:rgba(217,120,104,.15);color:#efa18f}
+.priority-pill.low{background:rgba(59,154,123,.14);color:#76c8ab}
+.swoosh-layer{
+  position:fixed;inset:0;z-index:90;pointer-events:none;opacity:0;
+  background:linear-gradient(110deg,transparent 0 34%,rgba(255,255,255,.12) 43%,rgba(239,207,142,.27) 49%,rgba(255,255,255,.06) 55%,transparent 66%);
+  transform:translateX(-115%) skewX(-12deg)
+}
+.swoosh-layer.play{animation:swoosh .72s cubic-bezier(.2,.8,.2,1)}
+@keyframes swoosh{0%{opacity:0;transform:translateX(-115%) skewX(-12deg)}35%{opacity:1}100%{opacity:0;transform:translateX(115%) skewX(-12deg)}}
+
+
+.low-power .panel::after,.low-power .item::after,.low-power .tile::after,.low-power .plan-shell::after,.low-power .tasks-shell::after,.low-power .hero::after,.low-power .briefing::after{display:none!important}
+.low-power .world-bg .cloud-layer,
+.low-power .world-bg .mist-layer,
+.low-power .world-bg .lake-ripples{animation:none!important}
+.low-power .world-bg svg{animation-duration:60s!important}
+.low-power .world-bg .mountain-far,
+.low-power .world-bg .mountain-mid,
+.low-power .world-bg .mountain-near{animation:none!important}
+.low-power .panel,.low-power .item,.low-power .tile,
+.low-power .plan-shell,.low-power .tasks-shell{backdrop-filter:none!important;background:rgba(7,22,19,.78)!important}
+.low-power .rain-drop:nth-child(n+18),
+.low-power .snow-flake:nth-child(n+14){display:none}
+
+
+/* ===== FLOATING ISLAND HERO ===== */
+.hero-island{
+  position:absolute;right:-18px;top:56px;width:300px;height:260px;
+  pointer-events:auto;cursor:pointer;transform-style:preserve-3d;
+  animation:islandFloat 6.5s ease-in-out infinite;
+}
+.island-core{
+  position:absolute;left:50%;top:51%;width:210px;height:92px;transform:translate(-50%,-50%);
+  border-radius:50% 50% 46% 46%;
+  background:
+    radial-gradient(circle at 34% 28%,rgba(255,255,255,.24),transparent 17%),
+    linear-gradient(180deg,#4f8062 0 16%,#315842 17% 35%,#3b342b 36% 70%,#1a1714 100%);
+  box-shadow:0 24px 40px rgba(0,0,0,.42),inset 0 5px 18px rgba(255,255,255,.12);
+  clip-path:polygon(5% 20%,20% 6%,43% 13%,58% 2%,78% 15%,94% 28%,88% 50%,74% 62%,64% 100%,50% 76%,38% 96%,27% 67%,10% 53%);
+}
+.island-grass{
+  position:absolute;left:45px;right:40px;top:58px;height:82px;border-radius:50%;
+  background:radial-gradient(ellipse at center,#74a46f 0 34%,#3d6d4c 57%,transparent 61%);
+  transform:rotateX(68deg);filter:drop-shadow(0 8px 10px rgba(0,0,0,.25));
+}
+.island-mountain{
+  position:absolute;left:82px;top:45px;width:128px;height:104px;
+  background:linear-gradient(145deg,#6b746c,#283936 64%,#162522);
+  clip-path:polygon(0 100%,24% 54%,39% 72%,58% 20%,100% 100%);
+  filter:drop-shadow(0 9px 13px rgba(0,0,0,.32));
+}
+.island-mountain::after{
+  content:"";position:absolute;left:59px;top:18px;width:39px;height:31px;
+  background:linear-gradient(145deg,#edf2eb,#aebdb5);
+  clip-path:polygon(0 100%,48% 0,100% 100%,67% 72%,51% 89%,30% 66%);
+}
+.island-waterfall{
+  position:absolute;left:168px;top:98px;width:13px;height:72px;border-radius:999px;
+  background:linear-gradient(90deg,rgba(130,210,211,.15),rgba(239,255,250,.9),rgba(98,190,190,.2));
+  box-shadow:0 0 13px rgba(177,238,229,.45);animation:islandWater 1.2s linear infinite;
+}
+.island-waterfall::after{
+  content:"";position:absolute;left:-20px;right:-20px;bottom:-9px;height:17px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(204,250,241,.55),transparent 70%);filter:blur(4px)
+}
+.island-tree{position:absolute;width:7px;height:25px;background:#3d2d21;border-radius:5px}
+.island-tree::before{content:"";position:absolute;left:-11px;top:-18px;width:29px;height:29px;border-radius:50%;background:#315e42;box-shadow:7px 3px 0 #3d7250,-5px 6px 0 #274d38}
+.tree1{left:91px;top:106px}.tree2{left:126px;top:91px;transform:scale(.8)}.tree3{left:201px;top:112px;transform:scale(.72)}
+.island-house{
+  position:absolute;left:136px;top:89px;width:31px;height:24px;background:#d7b27d;border-radius:4px;
+  box-shadow:0 5px 10px rgba(0,0,0,.25)
+}
+.island-house::before{content:"";position:absolute;left:-4px;top:-12px;border-left:20px solid transparent;border-right:20px solid transparent;border-bottom:17px solid #7e4135}
+.island-house::after{content:"";position:absolute;left:12px;bottom:0;width:8px;height:13px;background:#5d352e}
+.island-cloud{
+  position:absolute;width:74px;height:22px;border-radius:999px;background:rgba(230,241,237,.4);
+  filter:blur(2px);animation:islandCloud 15s linear infinite
+}
+.island-cloud::before,.island-cloud::after{content:"";position:absolute;border-radius:50%;background:inherit}
+.island-cloud::before{width:32px;height:32px;left:14px;top:-15px}.island-cloud::after{width:25px;height:25px;right:9px;top:-9px}
+.cloud1{left:18px;top:46px}.cloud2{right:4px;top:94px;animation-duration:19s;opacity:.65}
+.island-birds{position:absolute;right:50px;top:39px;font-size:18px;letter-spacing:8px;color:rgba(255,255,255,.72);animation:birds 8s ease-in-out infinite}
+.island-ring{
+  position:absolute;left:50%;top:48%;width:255px;height:95px;border-radius:50%;
+  border:1px solid rgba(239,207,142,.28);transform:translate(-50%,-50%) rotateX(70deg);
+  box-shadow:0 0 24px rgba(239,207,142,.08)
+}
+.island-hint{
+  position:absolute;left:50%;bottom:-2px;transform:translateX(-50%);white-space:nowrap;
+  font-size:10px;letter-spacing:.12em;color:var(--gold);opacity:.78
+}
+@keyframes islandFloat{50%{transform:translateY(-12px) rotateZ(1.4deg)}}
+@keyframes islandWater{to{background-position:0 24px}}
+@keyframes islandCloud{to{transform:translateX(150px)}}
+@keyframes birds{50%{transform:translate(-20px,-7px)}}
+
+/* ===== AI BRIEFING ===== */
+.briefing{
+  margin-top:14px;border-radius:26px;padding:19px;
+  background:linear-gradient(145deg,rgba(50,82,76,.42),rgba(11,24,22,.62));
+  border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px);
+  position:relative;overflow:hidden
+}
+.briefing::after{
+  content:"";position:absolute;inset:-50%;background:linear-gradient(110deg,transparent 42%,rgba(255,255,255,.09) 50%,transparent 58%);
+  animation:glassSweep 8s linear infinite;pointer-events:none
+}
+.briefing h3{margin:8px 0 10px;font:500 25px Georgia}
+.briefing p{margin:0;color:var(--muted);line-height:1.52}
+.briefing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
+.briefing-chip{padding:10px;border-radius:15px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);text-align:center}
+.briefing-chip strong{display:block;color:var(--gold);font-size:18px}
+.briefing-chip span{font-size:9px;color:var(--muted)}
+
+/* ===== GLASS LIGHT ANIMATION ===== */
+.panel,.item,.tile,.plan-shell,.tasks-shell,.hero{
+  position:relative;overflow:hidden
+}
+.panel::after,.item::after,.tile::after,.plan-shell::after,.tasks-shell::after,.hero::after{
+  content:"";position:absolute;inset:-70%;pointer-events:none;
+  background:linear-gradient(110deg,transparent 44%,rgba(255,255,255,.055) 49%,rgba(239,207,142,.07) 52%,transparent 58%);
+  transform:translateX(-65%);animation:glassSweep 12s linear infinite
+}
+@keyframes glassSweep{to{transform:translateX(65%)}}
+
+/* ===== AMBIENT SOUND ===== */
+.sound-toggle{
+  position:fixed;right:15px;bottom:calc(94px + env(safe-area-inset-bottom));z-index:55;
+  width:45px;height:45px;border-radius:15px;border:1px solid var(--line);
+  background:rgba(7,22,19,.82);color:var(--gold);backdrop-filter:blur(8px);
+  box-shadow:0 12px 30px rgba(0,0,0,.24)
+}
+.sound-toggle.on{background:linear-gradient(135deg,#efd59e,#d4aa67);color:#15211d}
+
+/* Mail brands */
+.mail-avatar.brand-google{background:linear-gradient(135deg,#f0c96f,#dd806f)}
+.mail-avatar.brand-github{background:linear-gradient(135deg,#b8b8c8,#69697a);color:#121217}
+.mail-avatar.brand-amazon{background:linear-gradient(135deg,#f7c36b,#f0904a)}
+.mail-avatar.brand-apple{background:linear-gradient(135deg,#e9eef1,#969fa6)}
+.mail-avatar.brand-paypal{background:linear-gradient(135deg,#67a7e8,#245aa5);color:white}
+.mail-brand-mark{font-weight:900}
+
+/* ===== PERFORMANCE MODE ===== */
+@media(max-width:520px){
+  .world-bg svg{animation-duration:42s}
+  .world-bg .mountain-far{animation-duration:38s}
+  .world-bg .mountain-mid{animation-duration:34s}
+  .world-bg .mountain-near{animation-duration:30s}
+  .world-bg .mist-layer{animation-duration:12s}
+  .world-bg .cloud-layer{animation-duration:50s}
+  .panel,.item,.tile,.plan-shell,.tasks-shell{backdrop-filter:blur(7px)}
+  .hero-orb{animation-duration:9s}
+}
+@media(prefers-reduced-motion:reduce){
+  .world-bg svg,.world-bg *{animation:none!important}
+}
+
+@media(max-width:430px){.plan-grid,.tasks-grid{grid-template-columns:1fr}.field-block.full{grid-column:auto}.plan-top h2,.tasks-top h2{font-size:31px}}
+
+@media(max-width:430px){.hero h2{font-size:40px}.hero{min-height:410px}.mail-from{max-width:62%}.weather-stage{min-height:500px}.weather-temp{margin-top:245px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* ===== AI ISLAND PORTAL — isolated enhancement ===== */
+.ai-portal{
+  position:fixed;inset:0;z-index:140;display:grid;place-items:center;
+  overflow:hidden;pointer-events:none;opacity:0;
+  background:radial-gradient(circle at center,rgba(247,222,163,.25),rgba(54,111,96,.34) 28%,rgba(3,13,12,.94) 72%);
+}
+.ai-portal.show{animation:aiPortalScreen .86s cubic-bezier(.18,.78,.18,1)}
+.ai-portal-ring{
+  position:absolute;width:110px;height:110px;border-radius:50%;
+  border:2px solid rgba(247,222,163,.9);
+  box-shadow:0 0 22px rgba(247,222,163,.8),0 0 75px rgba(92,209,174,.52),inset 0 0 24px rgba(255,255,255,.3);
+}
+.ai-portal.show .ring-a{animation:aiPortalRingA .86s cubic-bezier(.16,.8,.2,1)}
+.ai-portal.show .ring-b{animation:aiPortalRingB .86s cubic-bezier(.16,.8,.2,1)}
+.ai-portal-core{
+  position:absolute;width:30px;height:30px;border-radius:50%;
+  background:#fff8d7;box-shadow:0 0 25px #fff0a4,0 0 90px rgba(84,213,177,.9);
+}
+.ai-portal.show .ai-portal-core{animation:aiPortalCore .86s ease-out}
+.ai-portal-flash{
+  position:absolute;width:8px;height:120%;opacity:0;
+  background:linear-gradient(transparent,#fff8d7,transparent);
+  transform:rotate(32deg);filter:blur(2px);
+}
+.ai-portal.show .ai-portal-flash{animation:aiPortalFlash .86s ease-out}
+.ai-particle{
+  position:absolute;left:50%;top:50%;width:5px;height:5px;border-radius:50%;
+  background:var(--gold);box-shadow:0 0 12px var(--gold);
+  transform-origin:0 0;animation:aiParticleBurst .82s ease-out forwards;
+}
+@keyframes aiPortalScreen{0%{opacity:0}16%{opacity:1}72%{opacity:1}100%{opacity:0}}
+@keyframes aiPortalRingA{0%{transform:scale(.12) rotate(0);opacity:0}28%{opacity:1}100%{transform:scale(8.5) rotate(145deg);opacity:0}}
+@keyframes aiPortalRingB{0%{transform:scale(.08) rotate(0);opacity:0}22%{opacity:.8}100%{transform:scale(6.2) rotate(-120deg);opacity:0}}
+@keyframes aiPortalCore{0%{transform:scale(.15);opacity:0}38%{transform:scale(2.2);opacity:1}100%{transform:scale(22);opacity:0}}
+@keyframes aiPortalFlash{0%,22%{opacity:0;transform:translateX(-220px) rotate(32deg)}48%{opacity:.85}100%{opacity:0;transform:translateX(220px) rotate(32deg)}}
+@keyframes aiParticleBurst{0%{transform:rotate(var(--a)) translateX(0) scale(1);opacity:1}100%{transform:rotate(var(--a)) translateX(var(--d)) scale(.15);opacity:0}}
+
+.weather-search{z-index:20!important;pointer-events:auto!important}
+.weather-search-row,#weatherQuery,#weatherSearchBtn,.weather-results,.weather-result{
+  position:relative;z-index:21;pointer-events:auto!important;touch-action:manipulation;
+}
+#weatherQuery{-webkit-user-select:text!important;user-select:text!important}
+.sun,.sun-rays,.horizon,.weather-fx{pointer-events:none!important}
+
+
+/* ===== AI CHAT MOBILE FIX V2 ===== */
+#chat{padding-bottom:18px;scroll-margin-bottom:190px}
+#chatBottom{height:1px;scroll-margin-bottom:190px}
+.composer{
+  position:sticky!important;
+  bottom:calc(84px + env(safe-area-inset-bottom))!important;
+  z-index:120!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 58px!important;
+  gap:10px!important;
+  padding:10px 4px 12px!important;
+  background:linear-gradient(to top,rgba(5,15,13,.99) 55%,rgba(5,15,13,.83) 78%,transparent)!important;
+}
+.composer .input{min-width:0!important;width:100%!important;margin:0!important;height:56px!important;padding:0 16px!important;z-index:122!important;pointer-events:auto!important}
+.composer .send-btn{width:58px!important;min-width:58px!important;height:56px!important;padding:0!important;display:grid!important;place-items:center!important;border-radius:18px!important;z-index:123!important;font-size:24px!important}
+.sound-toggle{right:14px!important;bottom:calc(166px + env(safe-area-inset-bottom))!important;z-index:80!important}
+.ai-mode{display:inline-flex;align-items:center;gap:7px;margin-top:10px;padding:7px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--muted);font-size:11px}
+.ai-mode i{width:7px;height:7px;border-radius:50%;background:#d7a965}
+.ai-mode.online i{background:#62c69d;box-shadow:0 0 12px rgba(98,198,157,.7)}
+.typing-bubble{display:inline-flex;align-items:center;gap:6px;min-width:74px}
+.typing-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);opacity:.28;animation:typingPulse 1.05s infinite ease-in-out}
+.typing-dot:nth-child(2){animation-delay:.14s}.typing-dot:nth-child(3){animation-delay:.28s}
+@keyframes typingPulse{0%,70%,100%{transform:translateY(0) scale(.85);opacity:.24}35%{transform:translateY(-5px) scale(1.05);opacity:1}}
+.ai-thinking-label{margin-left:4px;font-size:11px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.type-cursor{display:inline-block;width:2px;height:1em;margin-left:2px;vertical-align:-.1em;background:var(--gold);animation:cursorBlink .7s step-end infinite}
+@keyframes cursorBlink{50%{opacity:0}}
+.prompt-disabled{opacity:.55;pointer-events:none}
+
+
+/* ===== CHAT CONTROLS FIX V3 ===== */
+body[data-page="ai"] #soundToggle{
+  display:none!important;
+}
+body:not([data-page="ai"]) #soundToggle{
+  display:grid;
+}
+.chips{
+  position:relative!important;
+  z-index:135!important;
+  pointer-events:auto!important;
+}
+.chips button{
+  position:relative!important;
+  z-index:136!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+  -webkit-user-select:none;
+  user-select:none;
+}
+#chatForm{
+  position:sticky!important;
+  bottom:calc(84px + env(safe-area-inset-bottom))!important;
+  z-index:150!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 58px!important;
+  gap:10px!important;
+  padding:10px 0 12px!important;
+  background:linear-gradient(to top,rgba(5,15,13,.99) 58%,rgba(5,15,13,.86) 80%,transparent)!important;
+}
+#chatInput{
+  min-width:0!important;
+  width:100%!important;
+  height:58px!important;
+  margin:0!important;
+  padding:0 17px!important;
+  position:relative!important;
+  z-index:151!important;
+  pointer-events:auto!important;
+}
+#chatSend{
+  display:grid!important;
+  place-items:center!important;
+  width:58px!important;
+  min-width:58px!important;
+  height:58px!important;
+  margin:0!important;
+  padding:0!important;
+  position:relative!important;
+  z-index:152!important;
+  border-radius:18px!important;
+  font-size:25px!important;
+  opacity:1!important;
+  visibility:visible!important;
+  pointer-events:auto!important;
+}
+#chatBottom{
+  height:8px!important;
+  scroll-margin-bottom:185px!important;
+}
+.chat-jump-flash{
+  animation:chatJumpFlash .46s ease;
+}
+@keyframes chatJumpFlash{
+  0%{box-shadow:0 0 0 rgba(239,207,142,0)}
+  45%{box-shadow:0 0 34px rgba(239,207,142,.24)}
+  100%{box-shadow:0 0 0 rgba(239,207,142,0)}
+}
+
+</style>
+</head>
+<body>
+<div class="world-bg" aria-hidden="true">
+<svg viewBox="0 0 2048 1152" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#183044"/>
+    <stop offset=".42" stop-color="#1f4851"/>
+    <stop offset=".73" stop-color="#12332f"/>
+    <stop offset="1" stop-color="#071512"/>
+  </linearGradient>
+  <radialGradient id="sunGlow" cx=".75" cy=".12" r=".36">
+    <stop offset="0" stop-color="#f7d9a0" stop-opacity=".38"/>
+    <stop offset=".35" stop-color="#e99e72" stop-opacity=".16"/>
+    <stop offset="1" stop-color="#000" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="farM" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#59707d"/><stop offset="1" stop-color="#20383b"/></linearGradient>
+  <linearGradient id="midM" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#325348"/><stop offset="1" stop-color="#122b27"/></linearGradient>
+  <linearGradient id="nearM" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#1d463b"/><stop offset="1" stop-color="#061815"/></linearGradient>
+  <linearGradient id="waterfallGrad" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#7fc6c5" stop-opacity=".05"/><stop offset=".28" stop-color="#c9f0ea" stop-opacity=".62"/><stop offset=".5" stop-color="#f4fff9" stop-opacity=".9"/><stop offset=".72" stop-color="#9fd9d3" stop-opacity=".5"/><stop offset="1" stop-color="#6eb8b5" stop-opacity=".03"/></linearGradient>
+  <linearGradient id="lakeGrad" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#1b6965" stop-opacity=".72"/><stop offset="1" stop-color="#061b19" stop-opacity=".98"/></linearGradient>
+  <filter id="soft"><feGaussianBlur stdDeviation="4"/></filter>
+<filter id="waterBlur"><feGaussianBlur stdDeviation="0.8"/></filter>
+<pattern id="waterLines" width="150" height="38" patternUnits="userSpaceOnUse">
+    <path d="M0 20 Q38 4 75 20 T150 20" fill="none" stroke="#a4d7cf" stroke-opacity=".12" stroke-width="3"/>
+  </pattern>
+</defs>
+<rect width="2048" height="1152" fill="url(#skyGrad)"/>
+<rect width="2048" height="1152" fill="url(#sunGlow)"/>
+<g class="cloud-layer" opacity=".15" filter="url(#soft)">
+  <ellipse cx="160" cy="175" rx="230" ry="55" fill="#d4e4df"/>
+  <ellipse cx="760" cy="125" rx="290" ry="45" fill="#c9dcd9"/>
+  <ellipse cx="1480" cy="210" rx="260" ry="58" fill="#dbe7e2"/>
+</g>
+<g class="mountain-far" opacity=".72">
+  <path d="M-80 690 L150 430 310 570 520 260 720 560 970 320 1190 585 1430 300 1650 545 1870 360 2130 640 2130 860 -80 860Z" fill="url(#farM)"/>
+  <path d="M420 390 L520 260 610 390 555 360 520 315 480 365Z" fill="#d9e2dd" opacity=".5"/>
+  <path d="M1350 395 L1430 300 1520 425 1460 385 1428 340 1390 385Z" fill="#d9e2dd" opacity=".42"/>
+</g>
+<g class="mountain-mid">
+  <path d="M-100 810 L180 560 370 720 620 430 830 730 1100 470 1320 760 1570 500 1790 720 2050 520 2180 790 2180 1000 -100 1000Z" fill="url(#midM)"/>
+  <path d="M1045 530 L1100 470 1160 545 1115 520 1098 492 1075 520Z" fill="#dfe8e1" opacity=".25"/>
+</g>
+<g class="waterfall-stream" filter="url(#waterBlur)">
+  <path d="M1268 520 C1253 610 1276 700 1258 790 C1244 855 1267 910 1248 980" stroke="url(#waterfallGrad)" stroke-width="88" stroke-linecap="round" fill="none"/>
+  <g class="waterfall-lines" opacity=".62">
+    <path d="M1243 510 C1230 620 1250 710 1238 790 C1226 865 1240 920 1228 980" stroke="#f5fff9" stroke-width="8" fill="none"/>
+    <path d="M1267 505 C1258 630 1285 705 1267 805 C1255 870 1270 925 1258 985" stroke="#d7f5ef" stroke-width="6" fill="none"/>
+    <path d="M1290 520 C1276 610 1300 710 1285 800 C1275 870 1289 930 1278 985" stroke="#a9ded8" stroke-width="7" fill="none"/>
+  </g>
+</g>
+<g class="mountain-near">
+  <path d="M-120 910 L190 670 420 875 690 600 930 865 1180 660 1390 870 1660 620 1900 850 2160 700 2160 1152 -120 1152Z" fill="url(#nearM)"/>
+</g>
+<g class="mist-layer" filter="url(#soft)" opacity=".62">
+  <ellipse cx="1235" cy="985" rx="230" ry="55" fill="#d9f4ed"/>
+  <ellipse cx="780" cy="950" rx="420" ry="55" fill="#bad6cf" opacity=".35"/>
+</g>
+<rect y="890" width="2048" height="262" fill="url(#lakeGrad)"/>
+<g class="lake-ripples">
+  <rect y="900" x="-100" width="2300" height="240" fill="url(#waterLines)"/>
+</g>
+<path d="M0 1000 C260 970 470 1035 710 1000 S1180 975 1430 1010 1780 980 2048 1005" fill="none" stroke="#b9e6dc" stroke-opacity=".12" stroke-width="5"/>
+</svg>
+</div>
+<div class="shell">
+<header>
+  <div class="brand"><div class="logo">V</div><div><h1>VIVAFIX</h1><small>SIGNATURE EDITION</small></div></div>
+  <div class="avatar">K</div>
+</header>
+<main id="view"></main>
+</div>
+<nav class="nav">
+<button type="button" data-page="home" class="on"><b>⌂</b><small>Start</small></button>
+<button type="button" data-page="mail"><b>✉</b><small>Mail</small></button>
+<button type="button" data-page="ai"><b>✦</b><small>AI</small></button>
+<button type="button" data-page="calendar"><b>▣</b><small>Plan</small></button>
+<button type="button" data-page="tasks"><b>✓</b><small>Aufgaben</small></button>
+<button type="button" data-page="more"><b>☷</b><small>Mehr</small></button>
+</nav>
+<div id="aiPortal" class="ai-portal" aria-hidden="true">
+  <div class="ai-portal-ring ring-a"></div>
+  <div class="ai-portal-ring ring-b"></div>
+  <div class="ai-portal-core"></div>
+  <div class="ai-portal-flash"></div>
+</div>
+<button id="soundToggle" class="sound-toggle" aria-label="Ambient Sound">♫</button><div id="swooshLayer" class="swoosh-layer"></div><div id="toast" class="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const today=()=>new Date().toISOString().slice(0,10);
+let accessToken='', tokenClient=null, gmailMessages=[], gmailNextPageToken='', gmailLoading=false, weatherData=null, weatherLocation=null;
+const store={get:(k,d=[])=>{try{return JSON.parse(localStorage.getItem('vf_'+k))??d}catch{return d}},set:(k,v)=>localStorage.setItem('vf_'+k,JSON.stringify(v))};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function decodeEntities(s=''){const t=document.createElement('textarea');t.innerHTML=s;return t.value}
+
+let audioCtx=null;
+
+let ambientCtx=null,ambientNodes=[],ambientOn=false;
+function startAmbient(){
+ if(ambientOn)return;
+ ambientOn=true;
+ ambientCtx=ambientCtx||new (window.AudioContext||window.webkitAudioContext)();
+ if(ambientCtx.state==='suspended')ambientCtx.resume();
+ const master=ambientCtx.createGain();master.gain.value=.035;master.connect(ambientCtx.destination);
+ const noise=ambientCtx.createBufferSource(),buffer=ambientCtx.createBuffer(1,ambientCtx.sampleRate*2,ambientCtx.sampleRate),data=buffer.getChannelData(0);
+ for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*.45;
+ noise.buffer=buffer;noise.loop=true;
+ const filter=ambientCtx.createBiquadFilter();filter.type='lowpass';filter.frequency.value=700;
+ const gain=ambientCtx.createGain();gain.gain.value=.6;
+ noise.connect(filter);filter.connect(gain);gain.connect(master);noise.start();
+ const osc=ambientCtx.createOscillator(),oscGain=ambientCtx.createGain();
+ osc.type='sine';osc.frequency.value=92;oscGain.gain.value=.08;osc.connect(oscGain);oscGain.connect(master);osc.start();
+ ambientNodes=[noise,osc,master];$('#soundToggle')?.classList.add('on');localStorage.setItem('vf_ambient','1');
+}
+function stopAmbient(){
+ ambientOn=false;
+ ambientNodes.forEach(n=>{try{n.stop?.()}catch{}try{n.disconnect?.()}catch{}});
+ ambientNodes=[];$('#soundToggle')?.classList.remove('on');localStorage.setItem('vf_ambient','0');
+}
+function toggleAmbient(){clickSound();ambientOn?stopAmbient():startAmbient()}
+
+
+let audioReady=false;
+function warmAudio(){
+  if(audioReady)return;
+  try{
+    audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==='suspended')audioCtx.resume();
+    audioReady=true;
+  }catch{}
+}
+document.addEventListener('touchstart',warmAudio,{once:true,passive:true});
+document.addEventListener('pointerdown',warmAudio,{once:true,passive:true});
+
+function clickSound(){
+  try{
+    audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+    const o=audioCtx.createOscillator(),g=audioCtx.createGain(),f=audioCtx.createBiquadFilter();
+    o.type='sine';o.frequency.setValueAtTime(520,audioCtx.currentTime);o.frequency.exponentialRampToValueAtTime(290,audioCtx.currentTime+.035);
+    f.type='lowpass';f.frequency.value=1400;
+    g.gain.setValueAtTime(.0001,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.055,audioCtx.currentTime+.006);g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+.05);
+    o.connect(f);f.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+.055);
+  }catch{}
+}
+function toast(t){const x=$('#toast');x.textContent=t;x.classList.add('show');clearTimeout(x._t);x._t=setTimeout(()=>x.classList.remove('show'),1600)}
+function shortSender(v=''){return v.replace(/<[^>]+>/g,'').replace(/"/g,'').trim()||'Unbekannt'}
+function initial(v=''){return shortSender(v).charAt(0).toUpperCase()||'M'}
+
+function senderBrand(from=''){
+ const s=from.toLowerCase();
+ if(s.includes('google'))return{cls:'brand-google',mark:'G'};
+ if(s.includes('github'))return{cls:'brand-github',mark:'GH'};
+ if(s.includes('amazon'))return{cls:'brand-amazon',mark:'a'};
+ if(s.includes('apple'))return{cls:'brand-apple',mark:''};
+ if(s.includes('paypal'))return{cls:'brand-paypal',mark:'P'};
+ return{cls:'',mark:initial(from)};
+}
+
+function formatMailDate(v=''){const d=new Date(v);if(Number.isNaN(d.getTime()))return '';const now=new Date();return d.toDateString()===now.toDateString()?d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'}):d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'})}
+
+function greeting(){
+ const h=new Date().getHours();
+ return h<11?'Guten Morgen.':h<18?'Guten Tag.':'Guten Abend.';
+}
+function buildBriefing(open,tod){
+ const parts=[];
+ if(tod.length)parts.push(`Heute stehen ${tod.length} Termin${tod.length===1?'':'e'} an.`);
+ else parts.push('Heute sind noch keine Termine geplant.');
+ if(open.length)parts.push(`${open.length} Aufgabe${open.length===1?' wartet':'n warten'} auf dich.`);
+ else parts.push('Deine Aufgabenliste ist frei.');
+ if(gmailMessages.length)parts.push(`${gmailMessages.length} E-Mails sind aktuell geladen.`);
+ if(weatherData){const w=weatherData.current,[,label]=weatherText(w.weather_code);parts.push(`Draußen sind es ${Math.round(w.temperature_2m)} Grad bei ${label.toLowerCase()}.`)}
+ return parts.join(' ');
+}
+
+function weatherText(code){if(code===0)return['☀️','Klar'];if(code<=3)return['⛅','Leicht bewölkt'];if(code<=48)return['🌫️','Nebel'];if(code<=57)return['🌦️','Nieselregen'];if(code<=67)return['🌧️','Regen'];if(code<=77)return['🌨️','Schnee'];if(code<=82)return['🌦️','Schauer'];if(code<=86)return['🌨️','Schneeschauer'];if(code>=95)return['⛈️','Gewitter'];return['🌤️','Wetter']}
+try{weatherData=JSON.parse(localStorage.getItem('vf_weather'));weatherLocation=JSON.parse(localStorage.getItem('vf_weather_location'))}catch{}
+
+const templates={
+home:()=>{const tasks=store.get('tasks'),events=store.get('events'),open=tasks.filter(x=>!x.done),tod=events.filter(x=>x.date===today()),weatherLabel=weatherData?Math.round(weatherData.current.temperature_2m)+'° · '+weatherText(weatherData.current.weather_code)[1]:'Sunset-Wetter öffnen';const briefingText=buildBriefing(open,tod);return `
+<section class="hero">
+<div class="eyebrow">Dein Tag. Neu gedacht.</div><h2>Alles fließt zusammen.</h2>
+<p>Aufgaben, Termine, E-Mails, Wetter und intelligente Unterstützung in einem ruhigen digitalen Raum.</p>
+<div class="hero-island" id="heroIsland" aria-label="VIVAFIX AI öffnen">
+  <div class="island-ring"></div><div class="island-cloud cloud1"></div><div class="island-cloud cloud2"></div>
+  <div class="island-grass"></div><div class="island-core"></div><div class="island-mountain"></div>
+  <div class="island-waterfall"></div><div class="island-tree tree1"></div><div class="island-tree tree2"></div><div class="island-tree tree3"></div>
+  <div class="island-house"></div><div class="island-birds">⌁⌁</div><div class="island-hint">AI-INSEL ÖFFNEN</div>
+</div>
+<div class="stats"><div class="stat"><strong>${open.length}</strong><span>Aufgaben</span></div><div class="stat"><strong>${tod.length}</strong><span>Termine heute</span></div><div class="stat"><strong>${gmailMessages.length}</strong><span>E-Mails geladen</span></div></div>
+</section>
+<section class="briefing"><div class="eyebrow">AI Briefing</div><h3>${esc(greeting())}</h3><p>${esc(briefingText)}</p><div class="briefing-grid"><div class="briefing-chip"><strong>${open.length}</strong><span>OFFEN</span></div><div class="briefing-chip"><strong>${tod.length}</strong><span>TERMINE</span></div><div class="briefing-chip"><strong>${gmailMessages.length}</strong><span>MAILS</span></div><div class="briefing-chip"><strong>${weatherData?Math.round(weatherData.current.temperature_2m)+'°':'—'}</strong><span>WETTER</span></div></div></section>
+<div class="section-head"><h3>Dein Raum</h3></div>
+<section class="bento">
+<button type="button" id="weatherHomeButton" class="tile weather" data-jump="weather"><h4>Wetter</h4><p>${esc(weatherLabel)} · animierte Sunset-Ansicht</p><span class="glyph">☀</span></button>
+<button type="button" class="tile ai" data-jump="ai"><h4>VIVAFIX AI</h4><p>Frag, plane und organisiere deinen Tag.</p><span class="glyph">✦</span></button>
+<button type="button" class="tile mail" data-jump="mail"><h4>Mail</h4><p>Ruhig, sortiert und mit mehr Nachrichten.</p><span class="glyph">✉</span></button>
+<button type="button" class="tile plan" data-jump="calendar"><h4>Plan</h4><p>Termine als klare Timeline.</p><span class="glyph">□</span></button>
+<button type="button" class="tile tasks" data-jump="tasks"><h4>Aufgaben</h4><p>Fokus ohne Ablenkung.</p><span class="glyph">✓</span></button>
+</section>`},
+weather:()=>weatherTemplate(),
+mail:()=>`<section class="panel"><div class="eyebrow">Inbox</div><h2>Dein Posteingang</h2><p style="color:var(--muted)">Google Gmail bleibt verbunden. Du kannst jetzt schrittweise deutlich mehr als 15 Nachrichten laden.</p><div class="row"><button id="connectGmail" class="btn">Gmail verbinden</button><button id="refreshGmail" class="btn secondary">Neu laden</button></div></section><div class="mail-toolbar"><input id="mailSearch" class="input" placeholder="Absender, Betreff oder Text durchsuchen…"><div id="mailCount" class="mail-count"></div></div><section id="mailList" class="list"></section><div id="mailMoreWrap" style="margin-top:12px"></div>`,
+ai:()=>`<section class="panel"><div class="eyebrow">VIVAFIX Intelligence</div><h2>Was möchtest du heute ordnen?</h2><div id="aiMode" class="ai-mode"><i></i><span>Lokaler Modus</span></div></section><div class="chips"><button type="button" data-prompt="Was steht heute an?">Heute</button><button type="button" data-prompt="Zeig offene Aufgaben">Aufgaben</button><button type="button" data-prompt="Wie ist das Wetter?">Wetter</button><button type="button" data-prompt="Fasse meine Notizen zusammen">Notizen</button></div><section id="chat" class="chat"></section><form id="chatForm" class="composer"><input id="chatInput" class="input" autocomplete="off" enterkeyhint="send" placeholder="Frag VIVAFIX…"><button id="chatSend" type="submit" class="btn send-btn" aria-label="Senden">↑</button></form><div id="chatBottom"></div>`,
+calendar:()=>`<section class="plan-shell">
+<div class="plan-accent"></div>
+<div class="plan-top"><div class="eyebrow">Zeit gestalten</div><h2>Dein nächster Moment.</h2><p>Plane Termine als ruhige, klare Timeline – mit Tiefe und Bewegung.</p></div>
+<form id="eventForm">
+<div class="plan-grid">
+<div class="field-block full"><label>Titel</label><input id="eventTitle" class="input" placeholder="z. B. Projektbesprechung" required></div>
+<div class="field-block"><label>Datum</label><input id="eventDate" class="input" type="date" value="${today()}" required></div>
+<div class="field-block"><label>Uhrzeit</label><input id="eventTime" class="input" type="time" value="10:00" required></div>
+</div>
+<div class="save-row"><button class="btn">Termin speichern</button><div class="mini-badge">↗</div></div>
+</form></section>
+<div class="section-head"><h3>Deine Timeline</h3><button type="button">Heute</button></div>
+<section id="eventList" class="list timeline"></section>`,
+tasks:()=>{const a=store.get('tasks'),done=a.filter(x=>x.done).length,p=a.length?Math.round(done/a.length*100):0;return `<section class="tasks-shell">
+<div class="tasks-accent"></div>
+<div class="tasks-top"><div class="eyebrow">Fokus</div><h2>Was zählt jetzt?</h2><p>Aufgaben bekommen Gewicht, Rhythmus und einen klaren Abschluss.</p></div>
+<div class="task-progress"><div class="progress-ring" style="--p:${p}" data-label="${p}%"></div><div><strong>${done} von ${a.length} erledigt</strong><span>Dein Fortschritt heute</span></div></div>
+<form id="taskForm">
+<div class="tasks-grid">
+<div class="field-block full"><label>Aufgabe</label><input id="taskTitle" class="input" placeholder="z. B. Angebot prüfen" required></div>
+<div class="field-block"><label>Datum</label><input id="taskDate" class="input" type="date" value="${today()}"></div>
+<div class="field-block"><label>Priorität</label><select id="taskPriority" class="input"><option>hoch</option><option selected>mittel</option><option>niedrig</option></select></div>
+</div>
+<div class="save-row"><button class="btn">Aufgabe speichern</button><div class="mini-badge">✓</div></div>
+</form></section>
+<div class="section-head"><h3>Dein Fokus</h3><button type="button">Sortieren</button></div>
+<section id="taskList" class="list"></section>`},
+more:()=>`<section class="panel"><div class="eyebrow">Verbindung</div><h2>Gmail</h2><input id="clientId" class="input" placeholder="…apps.googleusercontent.com" value="${esc(localStorage.getItem('gmailClientId')||localStorage.getItem('vf_draft_clientId')||'')}"><button id="saveClient" class="btn">Client-ID speichern</button></section><section class="panel"><div class="eyebrow">Gedanken</div><h2>Notizen</h2><form id="noteForm"><input id="noteTitle" class="input" placeholder="Titel" required><textarea id="noteText" class="input" rows="4" placeholder="Notiz" required></textarea><button class="btn">Notiz speichern</button></form></section><section id="noteList" class="list"></section>`
+};
+
+
+function islandPortalSound(){
+  try{
+    audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==='suspended')audioCtx.resume();
+    const now=audioCtx.currentTime;
+    const master=audioCtx.createGain();
+    master.gain.setValueAtTime(.0001,now);
+    master.gain.exponentialRampToValueAtTime(.18,now+.025);
+    master.gain.exponentialRampToValueAtTime(.0001,now+.72);
+    master.connect(audioCtx.destination);
+    [110,220,440].forEach((frequency,index)=>{
+      const oscillator=audioCtx.createOscillator();
+      const gain=audioCtx.createGain();
+      oscillator.type=index===0?'sine':'triangle';
+      oscillator.frequency.setValueAtTime(frequency,now);
+      oscillator.frequency.exponentialRampToValueAtTime(frequency*(2.4+index*.35),now+.55);
+      gain.gain.setValueAtTime(.0001,now);
+      gain.gain.exponentialRampToValueAtTime(.16/(index+1),now+.035+index*.025);
+      gain.gain.exponentialRampToValueAtTime(.0001,now+.58);
+      oscillator.connect(gain);gain.connect(master);
+      oscillator.start(now+index*.025);oscillator.stop(now+.65);
+    });
+  }catch{}
+}
+function prepareIslandPortal(){
+  const portal=$('#aiPortal');if(!portal)return;
+  portal.querySelectorAll('.ai-particle').forEach(node=>node.remove());
+  for(let i=0;i<32;i++){
+    const particle=document.createElement('i');
+    particle.className='ai-particle';
+    particle.style.setProperty('--a',`${i*(360/32)}deg`);
+    particle.style.setProperty('--d',`${125+(i%8)*24}px`);
+    portal.appendChild(particle);
+  }
+  islandPortalSound();
+}
+
+let navigationLocked=false;
+function goToPage(page,source){
+  if(!page||navigationLocked)return;
+  navigationLocked=true;
+  clickSound();
+
+  const unlock=()=>{navigationLocked=false};
+
+  try{
+    if(page==='ai'&&source==='island'){
+      prepareIslandPortal();
+      const portal=$('#aiPortal');
+      if(portal){
+        portal.classList.remove('show');
+        void portal.offsetWidth;
+        portal.classList.add('show');
+      }
+      setTimeout(()=>{
+        try{render('ai')}
+        catch(error){
+          console.error('VIVAFIX navigation error:',error);
+          toast('Seite konnte nicht geöffnet werden');
+        }
+        finally{unlock()}
+      },360);
+      setTimeout(()=>portal?.classList.remove('show'),850);
+      return;
+    }
+
+    render(page);
+  }catch(error){
+    console.error('VIVAFIX navigation error:',error);
+    toast('Seite konnte nicht geöffnet werden');
+  }finally{
+    unlock();
+  }
+}
+document.addEventListener('click',e=>{
+ if(e.target.closest('input,textarea,select,label'))return;
+ const island=e.target.closest('#heroIsland');
+ if(island){e.preventDefault();goToPage('ai','island');return}
+ const target=e.target.closest('[data-jump],[data-page]');
+ if(!target)return;
+ e.preventDefault();
+ goToPage(target.dataset.jump||target.dataset.page,'control');
+});
+
+function playSwoosh(){const s=$('#swooshLayer');if(!s)return;s.classList.remove('play');void s.offsetWidth;s.classList.add('play')}
+function render(page){
+ if(page==='calendar'||page==='tasks')playSwoosh();
+ document.body.dataset.page=page;
+ const v=$('#view');v.innerHTML=(templates[page]||templates.home)();v.classList.remove('page-enter');requestAnimationFrame(()=>v.classList.add('page-enter'));
+ 
+function enableLowPowerMode(){
+  document.documentElement.classList.add('low-power');
+}
+(function detectPerformance(){
+  let frames=0,start=performance.now();
+  function tick(now){
+    frames++;
+    if(now-start<1200){requestAnimationFrame(tick);return}
+    const fps=frames/((now-start)/1000);
+    if(fps<45)enableLowPowerMode();
+  }
+  requestAnimationFrame(tick);
+})();
+
+if($('#soundToggle')){$('#soundToggle').onclick=toggleAmbient;if(localStorage.getItem('vf_ambient')==='1')setTimeout(startAmbient,250)}
+$$('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.page===page));
+
+
+ if(page==='weather')weatherPage();
+ if(page==='mail')mail();
+ if(page==='ai')chat();
+ if(page==='calendar')calendar();
+ if(page==='tasks')tasks();
+ if(page==='more')more();
+ scrollTo(0,0);
+}
+
+
+function weatherEffect(code){
+ let cls='',html='';
+ const storm=[95,96,99].includes(code);
+ const snow=[71,73,75,77,85,86].includes(code);
+ const rain=[51,53,55,56,57,61,63,65,66,67,80,81,82].includes(code);
+
+ if(storm){
+   cls='stormy';
+   html='<div class="weather-cloud c1"></div><div class="weather-cloud c2"></div><div class="lightning"></div>'+makeRain(30);
+ }else if(snow){
+   cls='snowy';
+   html='<div class="weather-cloud c1"></div>'+makeSnow(22);
+ }else if(rain){
+   cls='rainy';
+   html='<div class="weather-cloud c1"></div><div class="weather-cloud c2"></div>'+makeRain(26);
+ }
+
+ localStorage.setItem('vf_weather_effect',cls);
+ return{cls,html};
+}
+function makeRain(n){return Array.from({length:n},(_,i)=>`<i class="rain-drop" style="left:${(i*37)%105}%;animation-duration:${.62+(i%7)*.08}s;animation-delay:${-(i%13)*.11}s;opacity:${.35+(i%5)*.1}"></i>`).join('')}
+function makeSnow(n){return Array.from({length:n},(_,i)=>`<i class="snow-flake" style="left:${(i*41)%103}%;font-size:${9+(i%6)*3}px;animation-duration:${4.8+(i%8)*.55}s;animation-delay:${-(i%12)*.42}s">❄</i>`).join('')}
+
+
+function weatherIsNight(){
+  const offsetSeconds=Number(weatherData?.utc_offset_seconds)||0;
+  const localNow=new Date(Date.now()+offsetSeconds*1000);
+  const localDate=localNow.toISOString().slice(0,10);
+  const nowMinutes=localNow.getUTCHours()*60+localNow.getUTCMinutes();
+
+  const sunrise=weatherData?.daily?.sunrise?.[0];
+  const sunset=weatherData?.daily?.sunset?.[0];
+
+  const timeToMinutes=value=>{
+    const match=String(value||'').match(/T(\d{2}):(\d{2})/);
+    return match?Number(match[1])*60+Number(match[2]):null;
+  };
+
+  if(sunrise&&sunset&&String(sunrise).startsWith(localDate)){
+    const sunriseMinutes=timeToMinutes(sunrise);
+    const sunsetMinutes=timeToMinutes(sunset);
+    if(sunriseMinutes!==null&&sunsetMinutes!==null){
+      return nowMinutes<sunriseMinutes||nowMinutes>=sunsetMinutes;
+    }
+  }
+
+  return nowMinutes<360||nowMinutes>=1260;
+}
+
+function weatherSkyClass(){
+  const scene=weatherIsNight()?'night':'day';
+  localStorage.setItem('vf_weather_scene',scene);
+  return scene;
+}
+
+function weatherCelestialMarkup(){
+  if(weatherIsNight()){
+    return '<div class="stars" aria-hidden="true"></div><div class="moon" aria-hidden="true"></div>';
+  }
+  return '<div class="sun-rays"></div><div class="sun"></div>';
+}
+
+function weatherTemplate(){
+ const search=`<div class="weather-search"><div class="weather-search-row"><input id="weatherQuery" class="input" type="search" inputmode="search" enterkeyhint="search" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="Stadt, Land oder Postleitzahl weltweit…"><button id="weatherSearchBtn" class="btn">Suchen</button></div><div id="weatherResults" class="weather-results"></div></div>`;
+ const skyClass=weatherSkyClass();
+ const celestial=weatherCelestialMarkup();
+
+ if(!weatherData){
+   return `<section class="weather-stage ${skyClass}">${search}<div class="weather-fx"></div>${celestial}<div class="horizon"></div><div class="weather-copy"><div class="eyebrow">${skyClass==='night'?'Night Weather':'Sunset Weather'}</div><div class="weather-temp">—°</div><div class="weather-condition">Ort auswählen</div><div class="weather-place">Suche weltweit nach einer Stadt oder nutze deinen genauen bzw. ungefähren Standort.</div><div class="weather-actions"><button id="weatherBack" class="btn secondary">Zurück</button><button id="loadWeather" class="btn">Mein Standort</button></div><div class="weather-source">Wetter- und Ortsdaten: Open-Meteo</div></div></section>`;
+ }
+
+ const w=weatherData.current,[icon,label]=weatherText(w.weather_code),fx=weatherEffect(w.weather_code);
+ const place=weatherLocation?.name?[weatherLocation.name,weatherLocation.admin1,weatherLocation.country].filter(Boolean).join(', '):'Dein aktueller Standort';
+
+ return `<section class="weather-stage ${skyClass} ${fx.cls}">${search}<div class="weather-fx">${fx.html}</div>${celestial}<div class="horizon"></div><div class="weather-copy"><div class="eyebrow">${skyClass==='night'?'Night Weather':'Sunset Weather'}</div><div class="weather-temp">${Math.round(w.temperature_2m)}°</div><div class="weather-condition">${icon} ${label}</div><div class="weather-place">${esc(place)}</div><div class="weather-metrics"><div class="weather-metric"><strong>${Math.round(w.apparent_temperature)}°</strong><span>Gefühlt</span></div><div class="weather-metric"><strong>${Math.round(w.wind_speed_10m)}</strong><span>km/h Wind</span></div><div class="weather-metric"><strong>${new Date(w.time).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})}</strong><span>Stand</span></div></div><div class="weather-actions"><button id="weatherBack" class="btn secondary">Zurück</button><button id="loadWeather" class="btn">Mein Standort</button></div><div class="weather-source">Wetter- und Ortsdaten: Open-Meteo</div></div></section>`;
+}
+function weatherPage(){
+  const back=$('#weatherBack');
+  const locationButton=$('#loadWeather');
+  const searchButton=$('#weatherSearchBtn');
+  const query=$('#weatherQuery');
+
+  if(back)back.onclick=()=>render('home');
+  if(locationButton)locationButton.onclick=loadWeather;
+  if(searchButton)searchButton.onclick=searchWeatherLocation;
+  if(query){
+    let searchTimer;
+    query.addEventListener('keydown',e=>{
+      if(e.key==='Enter'){
+        e.preventDefault();
+        clearTimeout(searchTimer);
+        searchWeatherLocation();
+      }
+    });
+    query.addEventListener('input',()=>{
+      clearTimeout(searchTimer);
+      if(query.value.trim().length>=3){
+        searchTimer=setTimeout(searchWeatherLocation,550);
+      }
+    });
+    setTimeout(()=>query.focus(),80);
+  }
+}
+async function searchWeatherLocation(){
+ const input=$('#weatherQuery'),box=$('#weatherResults');
+ if(!input||!box)return;
+ const q=input.value.trim();
+ if(q.length<2){toast('Bitte mindestens 2 Zeichen eingeben');input.focus();return}
+ box.innerHTML='<div style="color:rgba(255,255,255,.75);font-size:12px">Städte und Länder werden weltweit gesucht…</div>';
+ try{
+   const url=`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=30&language=de&format=json`;
+   const r=await fetch(url);
+   if(!r.ok)throw new Error('Ortssuche fehlgeschlagen');
+   const d=await r.json(),results=(d.results||[]).filter(x=>Number.isFinite(x.latitude)&&Number.isFinite(x.longitude));
+   if(!results.length){
+     box.innerHTML='<div style="color:rgba(255,255,255,.75);font-size:12px">Kein Ort gefunden. Versuche Stadt + Land, zum Beispiel „Paris Frankreich“.</div>';
+     return;
+   }
+   box.innerHTML=results.map((x,i)=>{
+     const details=[x.admin1,x.admin2,x.country].filter(Boolean);
+     const population=x.population?` · ${Number(x.population).toLocaleString('de-DE')} Einwohner`:'';
+     return `<button type="button" class="weather-result" data-weather-result="${i}"><strong>${esc(x.name)}</strong><span>${esc(details.join(', '))}${population}</span></button>`;
+   }).join('');
+   $$('[data-weather-result]').forEach(button=>{
+     button.onclick=()=>{
+       const x=results[Number(button.dataset.weatherResult)];
+       loadWeatherCoords(x.latitude,x.longitude,{
+         name:x.name,admin1:x.admin1||x.admin2||'',country:x.country||'',
+         timezone:x.timezone||'',countryCode:x.country_code||''
+       });
+     };
+   });
+ }catch(error){
+   console.error('Worldwide weather search error:',error);
+   box.innerHTML='<div style="color:rgba(255,255,255,.75);font-size:12px">Die weltweite Ortssuche ist gerade nicht erreichbar.</div>';
+ }
+}
+async function loadWeatherCoords(latitude,longitude,location){
+ toast('Wetter wird geladen…');
+ try{
+   const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,is_day&daily=sunrise,sunset&forecast_days=1&timezone=auto`);
+   if(!r.ok)throw new Error();
+   weatherData=await r.json();
+   weatherLocation={...(location||{}),latitude,longitude};
+   localStorage.setItem('vf_weather',JSON.stringify(weatherData));
+   localStorage.setItem('vf_weather_location',JSON.stringify(weatherLocation));
+   localStorage.setItem('vf_weather_fetched_at',String(Date.now()));
+   localStorage.setItem('vf_weather_scene',weatherIsNight()?'night':'day');
+   render('weather');
+   toast('Wetter aktualisiert');
+ }catch{
+   toast('Wetter konnte nicht geladen werden');
+ }
+}
+async function loadApproximateWeather(){
+  toast('Ungefährer Standort wird ermittelt…');
+  try{
+    const response=await fetch('https://ipwho.is/');
+    if(!response.ok)throw new Error('IP-Ortung nicht erreichbar');
+    const data=await response.json();
+    if(data.success===false||!Number.isFinite(data.latitude)||!Number.isFinite(data.longitude)){
+      throw new Error('Kein ungefährer Standort gefunden');
+    }
+    await loadWeatherCoords(data.latitude,data.longitude,{
+      name:data.city||'Ungefährer Standort',
+      admin1:data.region||'',
+      country:data.country||'',
+      timezone:data.timezone?.id||''
+    });
+    toast('Ungefährer Standort verwendet');
+  }catch(error){
+    console.error('Approximate location error:',error);
+    toast('Bitte Ort oben manuell eingeben');
+    const query=$('#weatherQuery');
+    if(query)setTimeout(()=>query.focus(),120);
+  }
+}
+
+function loadWeather(){
+  if(!navigator.geolocation){
+    loadApproximateWeather();
+    return;
+  }
+
+  toast('Standort wird ermittelt…');
+  navigator.geolocation.getCurrentPosition(
+    position=>loadWeatherCoords(
+      position.coords.latitude,
+      position.coords.longitude,
+      {name:'Aktueller Standort',admin1:'',country:''}
+    ),
+    error=>{
+      console.warn('Precise geolocation unavailable:',error);
+      loadApproximateWeather();
+    },
+    {timeout:9000,maximumAge:600000,enableHighAccuracy:false}
+  );
+}
+
+function bindPersistentField(selector,key,defaultValue=''){
+  const field=$(selector);
+  if(!field)return null;
+
+  const saved=localStorage.getItem('vf_draft_'+key);
+  if(saved!==null){
+    field.value=saved;
+  }else if(!field.value&&defaultValue){
+    field.value=defaultValue;
+  }
+
+  const save=()=>localStorage.setItem('vf_draft_'+key,field.value);
+  field.addEventListener('input',save);
+  field.addEventListener('change',save);
+  return field;
+}
+
+function clearPersistentFields(keys){
+  keys.forEach(key=>localStorage.removeItem('vf_draft_'+key));
+}
+
+function enableEditableControls(root=document){
+  if(!root)return;
+  root.querySelectorAll('input,textarea,select').forEach(control=>{
+    control.disabled=false;
+    if(control.tagName!=='SELECT')control.readOnly=false;
+    control.style.pointerEvents='auto';
+    control.style.position='relative';
+    control.style.zIndex='60';
+  });
+}
+
+function tasks(){
+ let a=store.get('tasks');
+ const form=$('#taskForm');
+ const title=bindPersistentField('#taskTitle','taskTitle');
+ const date=bindPersistentField('#taskDate','taskDate',today());
+ const priority=bindPersistentField('#taskPriority','taskPriority','mittel');
+ enableEditableControls(form);
+
+ const draw=()=>{
+   const done=a.filter(x=>x.done).length,p=a.length?Math.round(done/a.length*100):0;
+   const ring=document.querySelector('.progress-ring');
+   if(ring){ring.style.setProperty('--p',p);ring.dataset.label=p+'%'}
+   const txt=document.querySelector('.task-progress strong');
+   if(txt)txt.textContent=`${done} von ${a.length} erledigt`;
+
+   $('#taskList').innerHTML=a.length
+     ?a.map(t=>`<article class="item task-item"><button type="button" class="task-check" data-toggle="${t.id}">${t.done?'✓':''}</button><div class="task-main"><h3>${esc(t.title)}</h3><p>${t.date||'Ohne Datum'} · <span class="priority-pill ${t.priority==='hoch'?'high':t.priority==='niedrig'?'low':''}">${esc(t.priority)}</span></p></div><button type="button" class="delete-x" data-del="${t.id}">×</button></article>`).join('')
+     :'<div class="empty">Noch keine Aufgaben.</div>';
+
+   $$('[data-toggle]').forEach(b=>b.onclick=()=>{
+     const t=a.find(x=>x.id===b.dataset.toggle);
+     if(!t)return;
+     t.done=!t.done;
+     store.set('tasks',a);
+     draw();
+   });
+
+   $$('[data-del]').forEach(b=>b.onclick=()=>{
+     a=a.filter(x=>x.id!==b.dataset.del);
+     store.set('tasks',a);
+     draw();
+   });
+ };
+
+ form.onsubmit=e=>{
+   e.preventDefault();
+   const value=title.value.trim();
+   if(!value){title.focus();return}
+   a.push({id:crypto.randomUUID(),title:value,date:date.value,priority:priority.value,done:false});
+   store.set('tasks',a);
+   clearPersistentFields(['taskTitle','taskDate','taskPriority']);
+   form.reset();
+   date.value=today();
+   priority.value='mittel';
+   draw();
+   toast('Aufgabe gespeichert');
+ };
+ draw();
+}
+function calendar(){
+ let a=store.get('events');
+ const form=$('#eventForm');
+ const title=bindPersistentField('#eventTitle','eventTitle');
+ const date=bindPersistentField('#eventDate','eventDate',today());
+ const time=bindPersistentField('#eventTime','eventTime','10:00');
+ enableEditableControls(form);
+
+ const draw=()=>{
+   $('#eventList').innerHTML=a.length
+     ?a.sort((x,y)=>(x.date+x.time).localeCompare(y.date+y.time)).map(ev=>`<article class="item"><h3>${esc(ev.title)}</h3><p>${ev.date} · ${ev.time} Uhr</p><footer><span>Termin</span><button type="button" data-del="${ev.id}">×</button></footer></article>`).join('')
+     :'<div class="empty">Noch keine Termine.</div>';
+
+   $$('[data-del]').forEach(b=>b.onclick=()=>{
+     a=a.filter(x=>x.id!==b.dataset.del);
+     store.set('events',a);
+     draw();
+   });
+ };
+
+ form.onsubmit=e=>{
+   e.preventDefault();
+   const value=title.value.trim();
+   if(!value){title.focus();return}
+   a.push({id:crypto.randomUUID(),title:value,date:date.value,time:time.value});
+   store.set('events',a);
+   clearPersistentFields(['eventTitle','eventDate','eventTime']);
+   form.reset();
+   date.value=today();
+   time.value='10:00';
+   draw();
+   toast('Termin gespeichert');
+ };
+ draw();
+}
+
+function scrollToLatestChat(behavior='smooth'){
+  requestAnimationFrame(()=>{
+    const target=document.getElementById('chatBottom')||document.querySelector('#chat .bubble:last-child');
+    if(target){
+      target.scrollIntoView({behavior,block:'end'});
+      setTimeout(()=>target.scrollIntoView({behavior:'auto',block:'end'}),120);
+    }
+  });
+}
+function typingBubbleMarkup(){
+  return `<div class="bubble ai" data-typing="1"><div class="typing-bubble"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span><span class="ai-thinking-label">VIVAFIX schreibt</span></div></div>`;
+}
+function typeTextIntoBubble(element,text,onDone){
+  if(!element){onDone?.();return}
+  element.innerHTML='';
+  const content=document.createElement('span');
+  const cursor=document.createElement('span');
+  cursor.className='type-cursor';
+  element.append(content,cursor);
+  const words=String(text).split(/(\s+)/);
+  let i=0;
+  const tick=()=>{
+    if(i>=words.length){
+      cursor.remove();
+      onDone?.();
+      scrollToLatestChat('smooth');
+      return;
+    }
+    const part=words[i++];
+    content.textContent+=part;
+    scrollToLatestChat('auto');
+    setTimeout(tick,/[.!?]$/.test(part.trim())?75:part.trim()?20:7);
+  };
+  tick();
+}
+function assistant(q){
+  const text=q.trim(),l=text.toLowerCase();
+  const tasks=store.get('tasks'),events=store.get('events'),notes=store.get('notes');
+  const open=tasks.filter(t=>!t.done);
+  const todayTasks=open.filter(t=>t.date===today());
+  const todayEvents=events.filter(e=>e.date===today());
+  const high=open.filter(t=>t.priority==='hoch');
+
+  const create=text.match(/(?:erstelle|mach|lege|füge)\s+(?:mir\s+)?(?:eine\s+)?aufgabe\s*:?\s*(.+)/i);
+  if(create){
+    const title=create[1].trim();
+    tasks.push({id:crypto.randomUUID(),title,date:today(),priority:'mittel',done:false});
+    store.set('tasks',tasks);
+    return `Erledigt. Ich habe „${title}“ als Aufgabe für heute gespeichert.`;
+  }
+  if(/^(hallo|hi|hey|moin|guten morgen|guten tag)/.test(l)){
+    const options=[
+      `Hallo Koray. Du hast aktuell ${open.length} offene Aufgaben. Womit möchtest du anfangen?`,
+      `Hey Koray. Ich bin bereit. Sollen wir zuerst deinen Tag, deine Aufgaben oder deine E-Mails anschauen?`,
+      `Hallo. Was möchtest du gemeinsam organisieren?`
+    ];
+    return options[Math.floor(Math.random()*options.length)];
+  }
+  if(/wetter/.test(l)){
+    if(!weatherData)return 'Ich habe noch keine Wetterdaten. Öffne bitte einmal den Wetterbereich und wähle deinen Ort.';
+    const w=weatherData.current,[,label]=weatherText(w.weather_code);
+    return `Aktuell sind es ${Math.round(w.temperature_2m)} Grad bei ${label.toLowerCase()}. Gefühlt sind es ${Math.round(w.apparent_temperature)} Grad.`;
+  }
+  if(/heute|tagesplan|steht.*an/.test(l)){
+    const a=todayTasks.length?`Du hast ${todayTasks.length} Aufgabe${todayTasks.length===1?'':'n'} für heute: ${todayTasks.map(t=>t.title).join(', ')}.`:'Für heute ist keine offene Aufgabe eingetragen.';
+    const b=todayEvents.length?` Außerdem stehen ${todayEvents.length} Termin${todayEvents.length===1?'':'e'} an: ${todayEvents.map(e=>`${e.time} Uhr ${e.title}`).join(', ')}.`:' Heute sind keine Termine gespeichert.';
+    return a+b;
+  }
+  if(/wichtig|priorität|dringend/.test(l)){
+    return high.length?`Diese Aufgaben sind wichtig: ${high.map(t=>t.title).join(', ')}.`:'Aktuell ist keine Aufgabe mit hoher Priorität markiert.';
+  }
+  if(/aufgaben|offen/.test(l)){
+    if(!open.length)return 'Sehr gut – momentan ist keine Aufgabe offen.';
+    return `Du hast ${open.length} offene Aufgabe${open.length===1?'':'n'}. ${open.slice(0,6).map((t,i)=>`${i+1}. ${t.title}`).join(' ')}`;
+  }
+  if(/notiz/.test(l)){
+    if(!notes.length)return 'Du hast noch keine Notizen gespeichert.';
+    return `Du hast ${notes.length} Notiz${notes.length===1?'':'en'}. Zuletzt gespeichert: ${notes.slice(-3).map(n=>n.title).join(', ')}.`;
+  }
+  if(/mail|e-mail|email|posteingang/.test(l)){
+    if(!gmailMessages.length)return 'Gmail ist verbunden, aber aktuell sind keine Nachrichten geladen. Öffne Mail und tippe auf „Neu laden“.';
+    return `Aktuell sind ${gmailMessages.length} E-Mails geladen. Die neuesten Betreffzeilen sind: ${gmailMessages.slice(0,4).map(m=>m.subject).join(' · ')}.`;
+  }
+  const options=[
+    'Im lokalen Modus kann ich Aufgaben, Termine, Notizen, Wetter und geladene E-Mails zuverlässig auswerten.',
+    'Für wirklich freie Gespräche fehlt noch der sichere KI-Server. Bis dahin helfe ich dir mit deinen App-Daten.',
+    'Das kann ich lokal noch nicht sinnvoll beantworten. Mit der echten KI-Verbindung wird VIVAFIX deutlich natürlicher reagieren.'
+  ];
+  return options[Math.floor(Math.random()*options.length)];
+}
+async function getAIResponse(message,context){
+  const endpoint=localStorage.getItem('vf_ai_endpoint')||'';
+  if(endpoint){
+    try{
+      const response=await fetch(endpoint,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({message,context})
+      });
+      if(!response.ok)throw new Error('KI-Server nicht erreichbar');
+      const data=await response.json();
+      if(data?.text)return data.text;
+    }catch(error){
+      console.warn('VIVAFIX AI fallback:',error);
+    }
+  }
+  return assistant(message);
+}
+
+function forceChatToBottom(behavior='smooth'){
+  const move=()=>{
+    const bottom=document.getElementById('chatBottom');
+    const last=document.querySelector('#chat .bubble:last-child');
+    const target=bottom||last;
+    if(target){
+      target.scrollIntoView({behavior,block:'end'});
+    }
+    window.scrollTo({
+      top:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight),
+      behavior
+    });
+  };
+  requestAnimationFrame(move);
+  setTimeout(move,70);
+  setTimeout(move,180);
+  setTimeout(move,360);
+}
+
+function chat(){
+  let history=store.get('chat',[{role:'ai',text:'Hallo. Ich bin VIVAFIX. Was möchtest du heute ordnen?'}]);
+  let sending=false;
+
+  const chatEl=$('#chat');
+  const form=$('#chatForm');
+  const input=$('#chatInput');
+  const sendButton=$('#chatSend');
+  const chips=document.querySelector('.chips');
+  const mode=$('#aiMode');
+
+  if(mode&&localStorage.getItem('vf_ai_endpoint')){
+    mode.classList.add('online');
+    const label=mode.querySelector('span');
+    if(label)label.textContent='Echte KI verbunden';
+  }
+
+  const draw=()=>{
+    chatEl.innerHTML=history.map(x=>`<div class="bubble ${x.role==='me'?'me':'ai'}">${esc(x.text)}</div>`).join('');
+    forceChatToBottom('auto');
+  };
+
+  const setBusy=value=>{
+    sending=value;
+    form.classList.toggle('sending',value);
+    sendButton.disabled=value;
+    input.disabled=value;
+    $$('.chips button').forEach(button=>{
+      button.classList.toggle('prompt-disabled',value);
+      button.disabled=value;
+    });
+  };
+
+  const send=async raw=>{
+    const message=String(raw||'').trim();
+    if(!message)return;
+    if(sending){
+      toast('VIVAFIX schreibt gerade …');
+      forceChatToBottom('smooth');
+      return;
+    }
+
+    setBusy(true);
+    history.push({role:'me',text:message});
+    draw();
+
+    chatEl.insertAdjacentHTML('beforeend',typingBubbleMarkup());
+    const typingStart=chatEl.querySelector('[data-typing="1"]');
+    typingStart?.classList.add('chat-jump-flash');
+    forceChatToBottom('smooth');
+
+    const context={
+      tasks:store.get('tasks'),
+      events:store.get('events'),
+      notes:store.get('notes'),
+      weather:weatherData,
+      location:weatherLocation,
+      emails:gmailMessages.slice(0,25).map(mail=>({
+        from:mail.from,
+        subject:mail.subject,
+        date:mail.date,
+        snippet:mail.snippet
+      })),
+      history:history.slice(-12)
+    };
+
+    let answer;
+    try{
+      answer=await getAIResponse(message,context);
+    }catch(error){
+      console.error(error);
+      answer='Die KI-Verbindung ist gerade nicht erreichbar. Ich nutze vorübergehend den lokalen Assistenten.';
+    }
+
+    const typing=chatEl.querySelector('[data-typing="1"]');
+    if(typing)typing.removeAttribute('data-typing');
+
+    typeTextIntoBubble(typing,answer,()=>{
+      history.push({role:'ai',text:answer});
+      store.set('chat',history);
+      setBusy(false);
+      input.focus();
+      forceChatToBottom('smooth');
+    });
+  };
+
+  draw();
+
+  form.onsubmit=event=>{
+    event.preventDefault();
+    const value=input.value;
+    input.value='';
+    send(value);
+  };
+
+  sendButton.onclick=event=>{
+    event.preventDefault();
+    event.stopPropagation();
+    const value=input.value;
+    input.value='';
+    send(value);
+  };
+
+  input.onkeydown=event=>{
+    if(event.key==='Enter'&&!event.shiftKey){
+      event.preventDefault();
+      const value=input.value;
+      input.value='';
+      send(value);
+    }
+  };
+
+  input.onfocus=()=>setTimeout(()=>forceChatToBottom('smooth'),260);
+
+  if(chips){
+    chips.onclick=event=>{
+      const button=event.target.closest('button[data-prompt]');
+      if(!button)return;
+      event.preventDefault();
+      event.stopPropagation();
+      const prompt=button.dataset.prompt||button.textContent.trim();
+      input.value='';
+      send(prompt);
+      forceChatToBottom('smooth');
+    };
+  }
+
+  setTimeout(()=>forceChatToBottom('auto'),180);
+}
+
+function initGoogle(){const id=localStorage.getItem('gmailClientId');if(!id||!window.google?.accounts?.oauth2)return false;tokenClient=google.accounts.oauth2.initTokenClient({client_id:id,scope:'https://www.googleapis.com/auth/gmail.readonly',callback:r=>{if(r.error)return alert('Google-Anmeldung fehlgeschlagen: '+r.error);accessToken=r.access_token;gmailMessages=[];gmailNextPageToken='';render('mail');loadGmail(false)}});return true}
+async function gmailFetch(path){const r=await fetch('https://gmail.googleapis.com/gmail/v1/users/me/'+path,{headers:{Authorization:'Bearer '+accessToken}}),d=await r.json();if(!r.ok)throw new Error(d.error?.message||'Gmail-Fehler');return d}
+async function loadGmail(append=false){
+ if(gmailLoading)return;
+ const list=$('#mailList');
+ if(!accessToken){list.innerHTML='<div class="empty">Verbinde zuerst dein Gmail-Konto.</div>';drawMailControls();return}
+ gmailLoading=true;
+ if(!append)list.innerHTML='<div class="panel">E-Mails werden geladen…</div>';
+ try{
+   const token=append&&gmailNextPageToken?'&pageToken='+encodeURIComponent(gmailNextPageToken):'';
+   const r=await gmailFetch('messages?maxResults=25&q=in%3Ainbox'+token);
+   const batch=await Promise.all((r.messages||[]).map(async x=>{
+     const m=await gmailFetch(`messages/${x.id}?format=metadata&metadataHeaders=From&metadataHeaders=Subject&metadataHeaders=Date`);
+     const hs=m.payload?.headers||[],h=n=>hs.find(z=>z.name.toLowerCase()===n.toLowerCase())?.value||'';
+     return{id:x.id,from:decodeEntities(h('From')),subject:decodeEntities(h('Subject')||'(Kein Betreff)'),date:h('Date'),snippet:decodeEntities(m.snippet||'')};
+   }));
+   gmailMessages=append?[...gmailMessages,...batch]:batch;
+   gmailNextPageToken=r.nextPageToken||'';
+   drawMail(gmailMessages);
+ }catch(e){list.innerHTML=`<div class="panel">${esc(e.message)}</div>`}
+ finally{gmailLoading=false;drawMailControls()}
+}
+function drawMail(a){
+ const list=$('#mailList');
+ list.innerHTML=a.length?a.map(m=>{const b=senderBrand(m.from);return `<article class="mail-card" data-mail-id="${m.id}" role="button"><div class="mail-avatar ${b.cls}"><span class="mail-brand-mark">${esc(b.mark)}</span></div><div><div class="mail-head"><div class="mail-from">${esc(shortSender(m.from))}</div><div class="mail-date">${esc(formatMailDate(m.date))}</div></div><div class="mail-subject">${esc(m.subject)}</div><div class="mail-snippet">${esc(m.snippet)}</div></div></article>`}).join(''):'<div class="empty">Keine E-Mails gefunden.</div>';
+ const count=$('#mailCount');if(count)count.textContent=`${a.length} E-Mails angezeigt`;
+ $$('[data-mail-id]').forEach(card=>card.onclick=()=>{clickSound();openMail(card.dataset.mailId)});
+}
+function decodeBase64Url(v=''){try{const s=v.replace(/-/g,'+').replace(/_/g,'/');return decodeURIComponent(escape(atob(s)))}catch{return''}}
+function collectParts(part,out={texts:[],htmls:[],attachments:[]}){
+ if(!part)return out;
+ if(part.filename)out.attachments.push(part.filename);
+ const data=part.body?.data;
+ if(data){
+   const decoded=decodeBase64Url(data);
+   if(part.mimeType==='text/plain')out.texts.push(decoded);
+   if(part.mimeType==='text/html')out.htmls.push(decoded);
+ }
+ (part.parts||[]).forEach(p=>collectParts(p,out));return out;
+}
+function htmlToText(html=''){const d=document.createElement('div');d.innerHTML=html;return d.innerText||d.textContent||''}
+async function openMail(id){
+ const overlay=document.createElement('section');overlay.className='mail-detail';overlay.innerHTML='<div class="mail-detail-inner"><div class="panel">E-Mail wird geladen…</div></div>';document.body.appendChild(overlay);
+ try{
+   const m=await gmailFetch(`messages/${id}?format=full`);
+   const hs=m.payload?.headers||[],h=n=>hs.find(z=>z.name.toLowerCase()===n.toLowerCase())?.value||'';
+   const parts=collectParts(m.payload),body=(parts.texts.join('\n').trim()||htmlToText(parts.htmls.join('\n')).trim()||decodeEntities(m.snippet||''));
+   overlay.innerHTML=`<div class="mail-detail-inner"><div class="mail-detail-head"><button id="closeMail">‹</button><div><div class="eyebrow">E-Mail</div><strong>${esc(shortSender(h('From')))}</strong></div></div><article class="mail-detail-card"><div style="color:var(--muted)">${esc(h('Date'))}</div><h2>${esc(decodeEntities(h('Subject')||'(Kein Betreff)'))}</h2><div style="color:var(--muted);overflow-wrap:anywhere">${esc(h('From'))}</div>${parts.attachments.length?`<div>${parts.attachments.map(x=>`<span class="attachment-chip">📎 ${esc(x)}</span>`).join('')}</div>`:''}<div class="mail-body">${esc(body)}</div></article></div>`;
+   $('#closeMail').onclick=()=>{clickSound();overlay.remove()};
+ }catch(e){overlay.innerHTML=`<div class="mail-detail-inner"><button id="closeMail" class="btn secondary">Zurück</button><div class="panel">${esc(e.message)}</div></div>`;$('#closeMail').onclick=()=>overlay.remove()}
+}
+function drawMailControls(){
+ const wrap=$('#mailMoreWrap');if(!wrap)return;
+ wrap.innerHTML=gmailNextPageToken?`<button id="loadMoreMail" class="btn secondary full">${gmailLoading?'Wird geladen…':'Weitere 25 E-Mails laden'}</button>`:'';
+ if($('#loadMoreMail'))$('#loadMoreMail').onclick=()=>loadGmail(true);
+}
+function mail(){
+ $('#connectGmail').onclick=()=>{if(!localStorage.getItem('gmailClientId')){toast('Client-ID zuerst unter Mehr speichern');render('more');return}if(!initGoogle())return alert('Google-Anmeldung lädt noch.');tokenClient.requestAccessToken({prompt:'consent'})};
+ $('#refreshGmail').onclick=()=>{gmailMessages=[];gmailNextPageToken='';loadGmail(false)};
+ $('#mailSearch').oninput=e=>{const q=e.target.value.toLowerCase();drawMail(gmailMessages.filter(m=>(m.from+' '+m.subject+' '+m.snippet).toLowerCase().includes(q)))};
+ if(gmailMessages.length)drawMail(gmailMessages);else loadGmail(false);
+ drawMailControls();
+}
+function more(){
+ const clientInput=bindPersistentField('#clientId','clientId');
+ const saveButton=$('#saveClient');
+ const noteForm=$('#noteForm');
+ const noteTitle=bindPersistentField('#noteTitle','noteTitle');
+ const noteText=bindPersistentField('#noteText','noteText');
+ enableEditableControls(document.querySelector('main'));
+
+ if(clientInput){
+   clientInput.value=localStorage.getItem('gmailClientId')||localStorage.getItem('vf_draft_clientId')||clientInput.value;
+ }
+
+ if(saveButton){
+   saveButton.type='button';
+   saveButton.onclick=()=>{
+     const id=(clientInput?.value||'').trim();
+     if(!id.endsWith('.apps.googleusercontent.com')){
+       alert('Ungültige Client-ID.');
+       clientInput?.focus();
+       return;
+     }
+     localStorage.setItem('gmailClientId',id);
+     localStorage.removeItem('vf_draft_clientId');
+     toast('Client-ID gespeichert');
+   };
+ }
+
+ let notes=store.get('notes');
+ const draw=()=>{
+   $('#noteList').innerHTML=notes.length
+     ?notes.slice().reverse().map(n=>`<article class="item"><h3>${esc(n.title)}</h3><p>${esc(n.text)}</p><footer><span>Notiz</span><button type="button" data-del="${n.id}">×</button></footer></article>`).join('')
+     :'<div class="empty">Noch keine Notizen.</div>';
+
+   $$('[data-del]').forEach(b=>b.onclick=()=>{
+     notes=notes.filter(n=>n.id!==b.dataset.del);
+     store.set('notes',notes);
+     draw();
+   });
+ };
+
+ noteForm.onsubmit=e=>{
+   e.preventDefault();
+   const titleValue=noteTitle.value.trim();
+   const textValue=noteText.value.trim();
+   if(!titleValue){noteTitle.focus();return}
+   if(!textValue){noteText.focus();return}
+   notes.push({id:crypto.randomUUID(),title:titleValue,text:textValue});
+   store.set('notes',notes);
+   clearPersistentFields(['noteTitle','noteText']);
+   noteForm.reset();
+   draw();
+   toast('Notiz gespeichert');
+ };
+ draw();
+}
+
+
+
+render('home');
+</script>
+
+<style>
+.world-bg,.world-bg *,.hero-orb,.hero-island .island-ring,.hero-island .island-cloud,
+.hero-island .island-grass,.hero-island .island-core,.hero-island .island-mountain,
+.hero-island .island-waterfall,.hero-island .island-tree,.hero-island .island-house,
+.hero-island .island-birds,.hero-island .island-hint,
+.panel::after,.item::after,.tile::after,.hero::after,.briefing::after{pointer-events:none!important}
+.shell,#view,.bento,.nav{position:relative;z-index:20}
+.nav{position:fixed!important;z-index:100!important;pointer-events:auto!important}
+.nav button,.tile[data-jump],#heroIsland{pointer-events:auto!important;touch-action:manipulation!important}
+#weatherHomeButton{position:relative!important;z-index:60!important}
+
+/* ===== MOBILE HERO ISLAND LAYOUT FIX ===== */
+@media(max-width:520px){
+  .hero{
+    min-height:620px!important;
+    padding:28px 24px 185px!important;
+  }
+  .hero h2{
+    position:relative;
+    z-index:6;
+    max-width:100%!important;
+    font-size:40px!important;
+    padding-right:0!important;
+  }
+  .hero p{
+    position:relative;
+    z-index:6;
+    max-width:100%!important;
+    padding-right:0!important;
+  }
+  .hero-island{
+    top:auto!important;
+    right:50%!important;
+    bottom:118px!important;
+    width:265px!important;
+    height:220px!important;
+    transform:translateX(50%)!important;
+    z-index:4!important;
+  }
+  .hero-island .island-hint{
+    bottom:-7px!important;
+  }
+  .stats{
+    z-index:8!important;
+    bottom:20px!important;
+  }
+}
+@media(max-width:380px){
+  .hero{min-height:650px!important}
+  .hero-island{
+    width:240px!important;
+    transform:translateX(50%) scale(.92)!important;
+  }
+}
+
+
+/* ===== WEATHER DAY/NIGHT FIX ===== */
+.weather-stage.night{
+  background:linear-gradient(180deg,#07121f 0%,#10243a 38%,#1c2946 68%,#0b1c22 100%)!important;
+}
+.weather-stage.night .horizon{
+  background:linear-gradient(180deg,rgba(12,31,44,.12),#0c2025 52%,#061315 100%)!important;
+}
+.moon{
+  position:absolute;
+  width:132px;
+  height:132px;
+  left:50%;
+  top:118px;
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 35% 30%,rgba(255,255,255,.35) 0 5%,transparent 6%),
+    radial-gradient(circle at 68% 63%,rgba(70,82,110,.18) 0 8%,transparent 9%),
+    radial-gradient(circle at 44% 60%,rgba(70,82,110,.14) 0 6%,transparent 7%),
+    linear-gradient(145deg,#fffce7,#dfe8ef 72%,#aebccc);
+  box-shadow:0 0 28px rgba(225,238,255,.75),0 0 90px rgba(120,157,211,.38);
+  z-index:1;
+  pointer-events:none;
+  animation:moonFloat 7s ease-in-out infinite;
+}
+.stars{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  opacity:.85;
+  background:
+    radial-gradient(circle at 10% 16%,#fff 0 1.2px,transparent 1.8px),
+    radial-gradient(circle at 22% 32%,#fff 0 1px,transparent 1.6px),
+    radial-gradient(circle at 34% 14%,#fff 0 1.4px,transparent 2px),
+    radial-gradient(circle at 47% 25%,#fff 0 1px,transparent 1.6px),
+    radial-gradient(circle at 62% 12%,#fff 0 1.2px,transparent 1.8px),
+    radial-gradient(circle at 78% 29%,#fff 0 1.4px,transparent 2px),
+    radial-gradient(circle at 88% 17%,#fff 0 1px,transparent 1.6px),
+    radial-gradient(circle at 16% 48%,#fff 0 1px,transparent 1.6px),
+    radial-gradient(circle at 72% 46%,#fff 0 1.2px,transparent 1.8px);
+  animation:starsTwinkle 4s ease-in-out infinite alternate;
+}
+@keyframes moonFloat{50%{transform:translateX(-50%) translateY(-7px)}}
+@keyframes starsTwinkle{to{opacity:.55}}
+.weather-stage.night.rainy,
+.weather-stage.night.stormy,
+.weather-stage.night.snowy{
+  filter:none;
+}
+
+/* ===== GMAIL CLIENT ID INPUT FIX ===== */
+#clientId,
+#saveClient{
+  position:relative;
+  z-index:25;
+  pointer-events:auto!important;
+  touch-action:manipulation;
+}
+#clientId{
+  -webkit-user-select:text!important;
+  user-select:text!important;
+}
+
+
+/* ===== FORM INTERACTION + PERSISTENCE FIX ===== */
+.panel form,.plan-shell form,.tasks-shell form,.field-block,.weather-search{
+  position:relative;
+  z-index:55;
+  pointer-events:auto!important;
+}
+input,textarea,select,
+#clientId,#saveClient,
+#taskTitle,#taskDate,#taskPriority,
+#eventTitle,#eventDate,#eventTime,
+#noteTitle,#noteText{
+  position:relative!important;
+  z-index:60!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+}
+input,textarea{
+  -webkit-user-select:text!important;
+  user-select:text!important;
+}
+.panel::before,.panel::after,
+.plan-shell::before,.plan-shell::after,
+.tasks-shell::before,.tasks-shell::after,
+.field-block::before,.field-block::after{
+  pointer-events:none!important;
+}
+
+
+/* ===== NATIVE iOS FORM FIELD FIX — PLAN + TASKS ONLY ===== */
+.plan-shell,
+.tasks-shell{
+  isolation:isolate;
+}
+
+.plan-shell form,
+.tasks-shell form,
+.plan-shell .field-block,
+.tasks-shell .field-block{
+  position:relative!important;
+  z-index:50!important;
+  pointer-events:auto!important;
+}
+
+.plan-shell::before,
+.plan-shell::after,
+.tasks-shell::before,
+.tasks-shell::after,
+.plan-shell .plan-accent,
+.tasks-shell .tasks-accent{
+  pointer-events:none!important;
+}
+
+#eventTitle,
+#eventDate,
+#eventTime,
+#taskTitle,
+#taskDate,
+#taskPriority{
+  position:relative!important;
+  z-index:60!important;
+  pointer-events:auto!important;
+  touch-action:auto!important;
+  -webkit-user-select:text!important;
+  user-select:text!important;
+  transform:none!important;
+}
+
+#eventTitle,
+#taskTitle{
+  -webkit-appearance:none;
+  appearance:none;
+}
+
+#eventDate,
+#eventTime,
+#taskDate,
+#taskPriority{
+  -webkit-appearance:auto;
+  appearance:auto;
+}
+
+.plan-shell .save-row,
+.tasks-shell .save-row{
+  position:relative!important;
+  z-index:50!important;
+}
+
+</style>
+
+</body>
+</html>
