@@ -1,0 +1,42 @@
+{
+  "id": "./",
+  "name": "VIVAFIX – Signature Edition",
+  "short_name": "VIVAFIX",
+  "description": "Kostenloser persönlicher Assistent für Aufgaben, Termine, Notizen, Wetter und E-Mails.",
+  "start_url": "./?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "portrait",
+  "background_color": "#06100e",
+  "theme_color": "#07110f",
+  "lang": "de-DE",
+  "dir": "ltr",
+  "categories": [
+    "productivity",
+    "utilities"
+  ],
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

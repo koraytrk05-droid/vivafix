@@ -4,9 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#07110f">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no">
+
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="VIVAFIX">
-<meta name="vivafix-version" content="LIVE-WEATHER-AUTO-REFRESH-V1">
+<meta name="vivafix-version" content="PWA-BACKUP-V1">
 <title>VIVAFIX Signature V2</title>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
@@ -814,6 +820,115 @@ body.keyboard-open #chatBottom{
   display:none!important;
 }
 
+
+/* ===== PWA + BACKUP UPGRADE ===== */
+.pwa-update-banner{
+  position:fixed;
+  left:18px;
+  right:18px;
+  bottom:calc(102px + env(safe-area-inset-bottom));
+  z-index:500;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:14px 15px;
+  border-radius:20px;
+  border:1px solid rgba(239,207,142,.50);
+  background:rgba(7,20,17,.94);
+  box-shadow:0 20px 55px rgba(0,0,0,.38),0 0 28px rgba(239,207,142,.10);
+  backdrop-filter:blur(20px);
+  animation:pwaBannerIn .36s cubic-bezier(.18,.82,.22,1);
+}
+.pwa-update-banner[hidden]{display:none!important}
+.pwa-update-banner strong{display:block;color:var(--ink);font-size:14px}
+.pwa-update-banner span{display:block;color:var(--muted);font-size:11px;margin-top:3px}
+.pwa-update-banner button{
+  border:0;
+  border-radius:14px;
+  padding:11px 13px;
+  background:var(--gold);
+  color:#14201b;
+  font-weight:800;
+}
+@keyframes pwaBannerIn{
+  from{opacity:0;transform:translateY(15px) scale(.97)}
+  to{opacity:1;transform:none}
+}
+.feature-status{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin:16px 0;
+  padding:14px 15px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.045);
+}
+.feature-status-dot{
+  width:11px;
+  height:11px;
+  border-radius:50%;
+  flex:0 0 auto;
+  background:#e8c88a;
+  box-shadow:0 0 18px rgba(232,200,138,.52);
+}
+.feature-status-dot.ready{
+  background:#79d5ae;
+  box-shadow:0 0 18px rgba(121,213,174,.65);
+}
+.feature-status-dot.offline{
+  background:#efaa87;
+  box-shadow:0 0 18px rgba(239,170,135,.54);
+}
+.feature-status strong{display:block}
+.feature-status span{display:block;color:var(--muted);font-size:12px;margin-top:3px}
+.feature-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:14px;
+}
+.feature-actions .btn{
+  width:100%;
+  min-width:0;
+  padding-left:12px;
+  padding-right:12px;
+}
+.feature-note{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.5;
+  margin-top:13px;
+}
+.backup-summary{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin:14px 0;
+}
+.backup-stat{
+  padding:12px 8px;
+  text-align:center;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.09);
+  background:rgba(255,255,255,.035);
+}
+.backup-stat strong{display:block;font-size:20px;color:var(--gold)}
+.backup-stat span{display:block;margin-top:3px;color:var(--muted);font-size:10px}
+.backup-result{
+  min-height:20px;
+  margin-top:12px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.45;
+}
+.backup-result.success{color:#79d5ae}
+.backup-result.error{color:#efaa87}
+@media(max-width:390px){
+  .feature-actions{grid-template-columns:1fr}
+}
+
 </style>
 </head>
 <body>
@@ -901,7 +1016,16 @@ body.keyboard-open #chatBottom{
   <div class="ai-portal-core"></div>
   <div class="ai-portal-flash"></div>
 </div>
-<button id="soundToggle" class="sound-toggle" aria-label="Ambient Sound">♫</button><div id="swooshLayer" class="swoosh-layer"></div><div id="toast" class="toast"></div>
+<button id="soundToggle" class="sound-toggle" aria-label="Ambient Sound">♫</button><div id="swooshLayer" class="swoosh-layer"></div>
+<div id="pwaUpdateBanner" class="pwa-update-banner" hidden>
+  <div>
+    <strong>Neue VIVAFIX-Version</strong>
+    <span>Das Update ist bereit.</span>
+  </div>
+  <button id="applyPWAUpdate" type="button">Aktualisieren</button>
+</div>
+
+<div id="toast" class="toast"></div>
 
 <script>
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
@@ -910,6 +1034,10 @@ let accessToken='', tokenClient=null, gmailMessages=[], gmailNextPageToken='', g
 const store={get:(k,d=[])=>{try{return JSON.parse(localStorage.getItem('vf_'+k))??d}catch{return d}},set:(k,v)=>localStorage.setItem('vf_'+k,JSON.stringify(v))};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function decodeEntities(s=''){const t=document.createElement('textarea');t.innerHTML=s;return t.value}
+
+let pwaRegistration=null;
+let pwaInstallPrompt=null;
+let pwaReloading=false;
 
 let audioCtx=null;
 
@@ -1122,7 +1250,42 @@ tasks:()=>{const a=store.get('tasks'),done=a.filter(x=>x.done).length,p=a.length
 </form></section>
 <div class="section-head"><h3>Dein Fokus</h3><button type="button">Sortieren</button></div>
 <section id="taskList" class="list"></section>`},
-more:()=>`<section class="panel offline-card"><div class="eyebrow">Intelligence</div><h2>Kostenloser Assistent</h2><p style="color:var(--muted)">VIVAFIX arbeitet lokal auf deinem Gerät. Es werden keine kostenpflichtigen KI-Dienste verwendet.</p><div class="offline-status"><span class="offline-dot"></span><div><strong>Offline-Modus aktiv</strong><span>Kostenlos · keine API · keine laufenden Gebühren</span></div></div><div class="offline-tags"><span>Aufgaben</span><span>Termine</span><span>Notizen</span><span>Wetter</span><span>E-Mails</span></div></section><section class="panel"><div class="eyebrow">Verbindung</div><h2>Gmail</h2><input id="clientId" class="input" placeholder="…apps.googleusercontent.com" value="${esc(localStorage.getItem('gmailClientId')||localStorage.getItem('vf_draft_clientId')||'')}"><button id="saveClient" class="btn">Client-ID speichern</button></section><section class="panel"><div class="eyebrow">Gedanken</div><h2>Notizen</h2><form id="noteForm"><input id="noteTitle" class="input" placeholder="Titel" required><textarea id="noteText" class="input" rows="4" placeholder="Notiz" required></textarea><button class="btn">Notiz speichern</button></form></section><section id="noteList" class="list"></section>`
+more:()=>`<section class="panel offline-card"><div class="eyebrow">Intelligence</div><h2>Kostenloser Assistent</h2><p style="color:var(--muted)">VIVAFIX arbeitet lokal auf deinem Gerät. Es werden keine kostenpflichtigen KI-Dienste verwendet.</p><div class="offline-status"><span class="offline-dot"></span><div><strong>Offline-Modus aktiv</strong><span>Kostenlos · keine API · keine laufenden Gebühren</span></div></div><div class="offline-tags"><span>Aufgaben</span><span>Termine</span><span>Notizen</span><span>Wetter</span><span>E-Mails</span></div></section>
+<section class="panel">
+  <div class="eyebrow">App-Modus</div>
+  <h2>Offline & Installation</h2>
+  <p style="color:var(--muted)">VIVAFIX wird lokal zwischengespeichert und kann nach dem ersten Laden auch ohne Internet geöffnet werden.</p>
+  <div class="feature-status">
+    <span id="pwaStatusDot" class="feature-status-dot"></span>
+    <div>
+      <strong id="pwaStatusTitle">Offline-Modus wird vorbereitet</strong>
+      <span id="pwaStatusText">Service Worker wird geprüft.</span>
+    </div>
+  </div>
+  <div class="feature-actions">
+    <button id="installPWA" type="button" class="btn">App installieren</button>
+    <button id="checkPWAUpdate" type="button" class="btn secondary">Update prüfen</button>
+  </div>
+  <div class="feature-note">Offline verfügbar: Start, Aufgaben, Termine, Notizen und AI-Chat. Gmail und Live-Wetter benötigen weiterhin Internet.</div>
+</section>
+<section class="panel">
+  <div class="eyebrow">Datensicherung</div>
+  <h2>Backup</h2>
+  <p style="color:var(--muted)">Sichere deine lokalen VIVAFIX-Daten als Datei und stelle sie später auf demselben oder einem anderen Gerät wieder her.</p>
+  <div class="backup-summary">
+    <div class="backup-stat"><strong id="backupTaskCount">0</strong><span>Aufgaben</span></div>
+    <div class="backup-stat"><strong id="backupEventCount">0</strong><span>Termine</span></div>
+    <div class="backup-stat"><strong id="backupNoteCount">0</strong><span>Notizen</span></div>
+  </div>
+  <div class="feature-actions">
+    <button id="exportBackup" type="button" class="btn">Backup erstellen</button>
+    <button id="importBackup" type="button" class="btn secondary">Wiederherstellen</button>
+  </div>
+  <input id="backupFileInput" type="file" accept=".json,application/json" hidden>
+  <div id="backupResult" class="backup-result"></div>
+  <div class="feature-note">Enthalten: Aufgaben, Termine, Notizen, Chat, Einstellungen und lokale Wetterdaten. Google-Anmeldung und E-Mail-Inhalte werden nicht exportiert.</div>
+</section>
+<section class="panel"><div class="eyebrow">Verbindung</div><h2>Gmail</h2><input id="clientId" class="input" placeholder="…apps.googleusercontent.com" value="${esc(localStorage.getItem('gmailClientId')||localStorage.getItem('vf_draft_clientId')||'')}"><button id="saveClient" class="btn">Client-ID speichern</button></section><section class="panel"><div class="eyebrow">Gedanken</div><h2>Notizen</h2><form id="noteForm"><input id="noteTitle" class="input" placeholder="Titel" required><textarea id="noteText" class="input" rows="4" placeholder="Notiz" required></textarea><button class="btn">Notiz speichern</button></form></section><section id="noteList" class="list"></section>`
 };
 
 
@@ -2342,6 +2505,348 @@ function mail(){
  if(gmailMessages.length)drawMail(gmailMessages);else loadGmail(false);
  drawMailControls();
 }
+
+function isVivaFixBackupKey(key){
+  if(key==='gmailClientId')return true;
+  if(!key.startsWith('vf_'))return false;
+  return !/(?:token|secret|api[_-]?key|access[_-]?token)/i.test(key);
+}
+
+function collectVivaFixStorage(){
+  const storage={};
+
+  for(let index=0;index<localStorage.length;index++){
+    const key=localStorage.key(index);
+    if(!key||!isVivaFixBackupKey(key))continue;
+    storage[key]=localStorage.getItem(key);
+  }
+
+  return storage;
+}
+
+function createBackupPayload(){
+  return {
+    app:'VIVAFIX',
+    formatVersion:1,
+    createdAt:new Date().toISOString(),
+    appVersion:document.querySelector('meta[name="vivafix-version"]')?.content||'unknown',
+    storage:collectVivaFixStorage()
+  };
+}
+
+function backupFilename(){
+  const stamp=new Date().toISOString().replace(/[:.]/g,'-');
+  return `VIVAFIX-Backup-${stamp}.json`;
+}
+
+function updateBackupUI(){
+  const tasks=store.get('tasks',[]);
+  const events=store.get('events',[]);
+  const notes=store.get('notes',[]);
+
+  const taskCount=$('#backupTaskCount');
+  const eventCount=$('#backupEventCount');
+  const noteCount=$('#backupNoteCount');
+  const result=$('#backupResult');
+
+  if(taskCount)taskCount.textContent=String(tasks.length);
+  if(eventCount)eventCount.textContent=String(events.length);
+  if(noteCount)noteCount.textContent=String(notes.length);
+
+  const lastBackup=localStorage.getItem('vf_last_backup_at');
+  if(result&&lastBackup){
+    const date=new Date(lastBackup);
+    result.textContent=`Letztes Backup: ${date.toLocaleString('de-DE')}`;
+  }
+}
+
+async function exportVivaFixBackup(){
+  const result=$('#backupResult');
+
+  try{
+    const payload=createBackupPayload();
+    const text=JSON.stringify(payload,null,2);
+    const name=backupFilename();
+    const blob=new Blob([text],{type:'application/json'});
+    let shared=false;
+
+    if(typeof File==='function'&&navigator.share){
+      const file=new File([blob],name,{type:'application/json'});
+
+      if(!navigator.canShare||navigator.canShare({files:[file]})){
+        try{
+          await navigator.share({
+            title:'VIVAFIX Backup',
+            text:'Meine VIVAFIX-Datensicherung',
+            files:[file]
+          });
+          shared=true;
+        }catch(error){
+          if(error?.name==='AbortError')return;
+        }
+      }
+    }
+
+    if(!shared){
+      const url=URL.createObjectURL(blob);
+      const link=document.createElement('a');
+      link.href=url;
+      link.download=name;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),1500);
+    }
+
+    const savedAt=new Date().toISOString();
+    localStorage.setItem('vf_last_backup_at',savedAt);
+
+    if(result){
+      result.className='backup-result success';
+      result.textContent='✓ Backup wurde erstellt. Bewahre die JSON-Datei sicher auf.';
+    }
+
+    toast('Backup erstellt');
+  }catch(error){
+    console.error('Backup export failed:',error);
+
+    if(result){
+      result.className='backup-result error';
+      result.textContent='Backup konnte nicht erstellt werden.';
+    }
+
+    toast('Backup fehlgeschlagen');
+  }
+}
+
+async function restoreVivaFixBackup(file){
+  const result=$('#backupResult');
+
+  try{
+    const text=await file.text();
+    const payload=JSON.parse(text);
+
+    if(payload?.app!=='VIVAFIX'||typeof payload?.storage!=='object'||!payload.storage){
+      throw new Error('Keine gültige VIVAFIX-Backup-Datei.');
+    }
+
+    const entries=Object.entries(payload.storage)
+      .filter(([key,value])=>isVivaFixBackupKey(key)&&typeof value==='string');
+
+    if(!entries.length){
+      throw new Error('Das Backup enthält keine wiederherstellbaren Daten.');
+    }
+
+    const confirmed=window.confirm(
+      `Backup vom ${new Date(payload.createdAt||Date.now()).toLocaleString('de-DE')} wiederherstellen?\n\nDeine aktuellen lokalen VIVAFIX-Daten werden ersetzt.`
+    );
+
+    if(!confirmed)return;
+
+    const current=collectVivaFixStorage();
+
+    try{
+      Object.keys(current).forEach(key=>localStorage.removeItem(key));
+      entries.forEach(([key,value])=>localStorage.setItem(key,value));
+      localStorage.setItem('vf_last_restore_at',new Date().toISOString());
+    }catch(error){
+      Object.keys(collectVivaFixStorage()).forEach(key=>localStorage.removeItem(key));
+      Object.entries(current).forEach(([key,value])=>localStorage.setItem(key,value));
+      throw error;
+    }
+
+    if(result){
+      result.className='backup-result success';
+      result.textContent='✓ Backup wiederhergestellt. VIVAFIX wird neu geladen.';
+    }
+
+    toast('Backup wiederhergestellt');
+
+    setTimeout(()=>{
+      location.reload();
+    },700);
+  }catch(error){
+    console.error('Backup restore failed:',error);
+
+    if(result){
+      result.className='backup-result error';
+      result.textContent=error?.message||'Backup konnte nicht wiederhergestellt werden.';
+    }
+
+    toast('Wiederherstellung fehlgeschlagen');
+  }
+}
+
+function isPWAStandalone(){
+  return window.matchMedia('(display-mode: standalone)').matches||
+    window.navigator.standalone===true;
+}
+
+function updatePWAStatus(state,title,text){
+  const dot=$('#pwaStatusDot');
+  const titleNode=$('#pwaStatusTitle');
+  const textNode=$('#pwaStatusText');
+  const installButton=$('#installPWA');
+
+  if(dot){
+    dot.classList.remove('ready','offline');
+    if(state)dot.classList.add(state);
+  }
+
+  if(titleNode)titleNode.textContent=title;
+  if(textNode)textNode.textContent=text;
+
+  if(installButton){
+    installButton.textContent=isPWAStandalone()?'Bereits installiert':'App installieren';
+  }
+}
+
+function showPWAUpdateBanner(){
+  const banner=$('#pwaUpdateBanner');
+  if(banner)banner.hidden=false;
+}
+
+async function checkForPWAUpdate(){
+  if(!pwaRegistration){
+    toast('Offline-Modus wird noch vorbereitet');
+    return;
+  }
+
+  try{
+    await pwaRegistration.update();
+
+    if(pwaRegistration.waiting){
+      showPWAUpdateBanner();
+      toast('Neue Version verfügbar');
+    }else{
+      toast('VIVAFIX ist aktuell');
+    }
+  }catch(error){
+    console.warn('PWA update check failed:',error);
+    toast('Update-Prüfung nicht möglich');
+  }
+}
+
+async function installVivaFixPWA(){
+  if(isPWAStandalone()){
+    toast('VIVAFIX ist bereits installiert');
+    return;
+  }
+
+  if(pwaInstallPrompt){
+    pwaInstallPrompt.prompt();
+    await pwaInstallPrompt.userChoice;
+    pwaInstallPrompt=null;
+    return;
+  }
+
+  alert('Auf dem iPhone:\n\n1. Unten auf „Teilen“ tippen\n2. „Zum Home-Bildschirm“ wählen\n3. Mit „Hinzufügen“ bestätigen');
+}
+
+function bindPWAAndBackupControls(){
+  const exportButton=$('#exportBackup');
+  const importButton=$('#importBackup');
+  const fileInput=$('#backupFileInput');
+  const installButton=$('#installPWA');
+  const updateButton=$('#checkPWAUpdate');
+
+  if(exportButton)exportButton.onclick=exportVivaFixBackup;
+
+  if(importButton&&fileInput){
+    importButton.onclick=()=>{
+      fileInput.value='';
+      fileInput.click();
+    };
+
+    fileInput.onchange=()=>{
+      const file=fileInput.files?.[0];
+      if(file)restoreVivaFixBackup(file);
+    };
+  }
+
+  if(installButton)installButton.onclick=installVivaFixPWA;
+  if(updateButton)updateButton.onclick=checkForPWAUpdate;
+
+  updateBackupUI();
+
+  if(!('serviceWorker' in navigator)){
+    updatePWAStatus('offline','Offline-Modus nicht unterstützt','Dieser Browser unterstützt keine Service Worker.');
+  }else if(pwaRegistration?.active){
+    updatePWAStatus(
+      navigator.onLine?'ready':'offline',
+      navigator.onLine?'Offline bereit':'VIVAFIX läuft offline',
+      navigator.onLine?'App-Kern wurde auf diesem Gerät gespeichert.':'Keine Internetverbindung – lokale Funktionen bleiben verfügbar.'
+    );
+  }else{
+    updatePWAStatus('', 'Offline-Modus wird vorbereitet','Die lokalen App-Dateien werden gespeichert.');
+  }
+}
+
+function setupPWA(){
+  window.addEventListener('beforeinstallprompt',event=>{
+    event.preventDefault();
+    pwaInstallPrompt=event;
+    bindPWAAndBackupControls();
+  });
+
+  window.addEventListener('appinstalled',()=>{
+    pwaInstallPrompt=null;
+    toast('VIVAFIX wurde installiert');
+    bindPWAAndBackupControls();
+  });
+
+  window.addEventListener('online',()=>bindPWAAndBackupControls());
+  window.addEventListener('offline',()=>bindPWAAndBackupControls());
+
+  const updateButton=$('#applyPWAUpdate');
+
+  if(updateButton){
+    updateButton.onclick=()=>{
+      if(pwaRegistration?.waiting){
+        pwaRegistration.waiting.postMessage({type:'SKIP_WAITING'});
+      }
+    };
+  }
+
+  if(!('serviceWorker' in navigator))return;
+
+  window.addEventListener('load',async()=>{
+    try{
+      pwaRegistration=await navigator.serviceWorker.register('./sw.js',{
+        scope:'./',
+        updateViaCache:'none'
+      });
+
+      if(pwaRegistration.waiting){
+        showPWAUpdateBanner();
+      }
+
+      pwaRegistration.addEventListener('updatefound',()=>{
+        const worker=pwaRegistration.installing;
+        if(!worker)return;
+
+        worker.addEventListener('statechange',()=>{
+          if(worker.state==='installed'&&navigator.serviceWorker.controller){
+            showPWAUpdateBanner();
+          }
+        });
+      });
+
+      navigator.serviceWorker.addEventListener('controllerchange',()=>{
+        if(pwaReloading)return;
+        pwaReloading=true;
+        location.reload();
+      });
+
+      await navigator.serviceWorker.ready;
+      bindPWAAndBackupControls();
+    }catch(error){
+      console.warn('Service worker registration failed:',error);
+      updatePWAStatus('offline','Offline-Modus nicht verfügbar','Service Worker konnte nicht registriert werden.');
+    }
+  });
+}
+
 function more(){
  const clientInput=bindPersistentField('#clientId','clientId');
  const saveButton=$('#saveClient');
@@ -2349,6 +2854,7 @@ function more(){
  const noteTitle=bindPersistentField('#noteTitle','noteTitle');
  const noteText=bindPersistentField('#noteText','noteText');
  enableEditableControls(document.querySelector('main'));
+ bindPWAAndBackupControls();
 
  if(clientInput){
    clientInput.value=localStorage.getItem('gmailClientId')||localStorage.getItem('vf_draft_clientId')||clientInput.value;
@@ -2400,6 +2906,7 @@ function more(){
 
 
 
+setupPWA();
 setupIOSKeyboardViewport();
 render('home');
 
