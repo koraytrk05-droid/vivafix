@@ -12,8 +12,8 @@
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="VIVAFIX">
-<meta name="vivafix-version" content="PWA-BACKUP-V1">
-<title>VIVAFIX Signature V2</title>
+<meta name="vivafix-version" content="COMMAND-THEMES-PLANNER-V1">
+<title>VIVAFIX Command Edition</title>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 :root{
@@ -929,6 +929,99 @@ body.keyboard-open #chatBottom{
   .feature-actions{grid-template-columns:1fr}
 }
 
+
+/* ===== COMMAND CENTER + LIVE THEMES + SMART DAY ===== */
+:root{
+  --live-accent:#efcf8e;
+  --live-glow:rgba(239,207,142,.18);
+  --live-tint:rgba(17,75,63,.08);
+}
+html,body,.world-bg,.live-atmosphere,.panel,.tile,.hero,.briefing,.plan-shell,.tasks-shell{
+  transition:background .9s ease,border-color .9s ease,box-shadow .9s ease,filter .9s ease,color .5s ease;
+}
+button.avatar{
+  padding:0;font:inherit;cursor:pointer;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease;
+}
+button.avatar:active{transform:scale(.91) rotate(-4deg);border-color:rgba(239,207,142,.62);box-shadow:0 0 26px var(--live-glow)}
+.live-atmosphere{position:fixed;inset:0;z-index:1;overflow:hidden;pointer-events:none;opacity:.72;mix-blend-mode:screen}
+html[data-theme-intensity="subtle"] .live-atmosphere{opacity:.35}
+html[data-theme-intensity="standard"] .live-atmosphere{opacity:.62}
+html[data-theme-intensity="cinematic"] .live-atmosphere{opacity:.88}
+.live-theme-glow,.live-theme-aurora,.live-theme-stars,.live-theme-particles{position:absolute;inset:-12%;transition:opacity .9s ease,transform 1.2s ease,background .9s ease}
+.live-theme-glow{background:radial-gradient(circle at 76% 18%,var(--live-glow),transparent 30%),radial-gradient(circle at 10% 68%,var(--live-tint),transparent 35%);animation:liveGlowDrift 13s ease-in-out infinite alternate}
+.live-theme-aurora{opacity:0;background:conic-gradient(from 110deg at 50% 50%,transparent,rgba(72,185,150,.18),transparent 28%,rgba(113,135,226,.15),transparent 55%);filter:blur(44px);animation:auroraDrift 16s ease-in-out infinite alternate}
+.live-theme-stars{opacity:0;background-image:radial-gradient(circle at 12% 17%,rgba(255,255,255,.95) 0 1px,transparent 1.8px),radial-gradient(circle at 68% 12%,rgba(255,255,255,.8) 0 1px,transparent 1.8px),radial-gradient(circle at 89% 34%,rgba(255,255,255,.75) 0 1px,transparent 1.8px),radial-gradient(circle at 42% 31%,rgba(255,255,255,.9) 0 1px,transparent 1.8px),radial-gradient(circle at 25% 54%,rgba(255,255,255,.65) 0 1px,transparent 1.8px),radial-gradient(circle at 75% 61%,rgba(255,255,255,.82) 0 1px,transparent 1.8px);background-size:210px 190px,260px 230px,180px 210px,290px 250px,220px 280px,310px 240px;animation:starsTwinkle 5.5s ease-in-out infinite alternate}
+.live-theme-particles{inset:0;overflow:hidden}.live-particle{position:absolute;top:-12vh;pointer-events:none}
+.live-particle.rain{width:2px;height:65px;border-radius:99px;background:linear-gradient(transparent,rgba(213,240,255,.7));transform:rotate(11deg);animation:globalRain linear infinite}
+.live-particle.snow{color:#fff;opacity:.85;text-shadow:0 0 10px rgba(255,255,255,.6);animation:globalSnow linear infinite}
+.live-particle.spark{width:5px;height:5px;border-radius:50%;background:#f6dca3;box-shadow:0 0 12px rgba(246,220,163,.7);animation:globalSpark ease-in-out infinite}
+@keyframes liveGlowDrift{to{transform:translate3d(-3%,2%,0) scale(1.06)}}
+@keyframes auroraDrift{to{transform:translate3d(5%,-3%,0) rotate(7deg) scale(1.12)}}
+@keyframes starsTwinkle{from{filter:brightness(.75)}to{filter:brightness(1.35)}}
+@keyframes globalRain{to{transform:translate(110px,125vh) rotate(11deg)}}
+@keyframes globalSnow{to{transform:translate(70px,122vh) rotate(420deg)}}
+@keyframes globalSpark{0%,100%{opacity:.12;transform:translateY(0) scale(.7)}50%{opacity:.9;transform:translateY(-28px) scale(1.2)}}
+body[data-live-theme="dawn"]{--gold:#f2c894;--live-accent:#f2c894;--live-glow:rgba(255,178,133,.22);--live-tint:rgba(173,102,152,.14)}
+body[data-live-theme="dawn"] .world-bg{filter:hue-rotate(-10deg) saturate(1.1) brightness(.92)}
+body[data-live-theme="dawn"]::after{background:linear-gradient(180deg,rgba(107,56,89,.13),rgba(5,18,16,.30))}
+body[data-live-theme="day"]{--gold:#f0d69c;--live-accent:#f0d69c;--live-glow:rgba(197,233,221,.16);--live-tint:rgba(56,153,127,.10)}
+body[data-live-theme="day"] .world-bg{filter:saturate(1.08) brightness(1.05)}
+body[data-live-theme="day"]::after{background:linear-gradient(180deg,rgba(5,32,27,.08),rgba(2,10,9,.24))}
+body[data-live-theme="sunset"]{--gold:#f2c27f;--live-accent:#f2c27f;--live-glow:rgba(255,128,97,.24);--live-tint:rgba(120,80,174,.16)}
+body[data-live-theme="sunset"] .world-bg{filter:hue-rotate(-15deg) saturate(1.25) brightness(.88)}
+body[data-live-theme="sunset"]::after{background:linear-gradient(180deg,rgba(126,51,64,.16),rgba(4,13,12,.35))}
+body[data-live-theme="night"]{--gold:#e8cf9d;--live-accent:#e8cf9d;--live-glow:rgba(100,124,222,.20);--live-tint:rgba(45,148,129,.12)}
+body[data-live-theme="night"] .world-bg{filter:brightness(.53) saturate(.88) hue-rotate(8deg)}
+body[data-live-theme="night"] .live-theme-stars{opacity:.88}body[data-live-theme="night"] .live-theme-aurora{opacity:.62}
+body[data-live-theme="night"]::after{background:linear-gradient(180deg,rgba(1,6,14,.34),rgba(1,8,8,.52))}
+body[data-live-theme="rain"]{--gold:#d9d3ae;--live-accent:#d9d3ae;--live-glow:rgba(126,165,196,.18);--live-tint:rgba(67,102,126,.14)}
+body[data-live-theme="rain"] .world-bg{filter:brightness(.66) saturate(.66) hue-rotate(8deg)}
+body[data-live-theme="rain"]::after{background:linear-gradient(180deg,rgba(32,47,62,.30),rgba(3,12,13,.48))}
+body[data-live-theme="storm"]{--gold:#e4c38a;--live-accent:#e4c38a;--live-glow:rgba(147,157,210,.20);--live-tint:rgba(22,31,47,.26)}
+body[data-live-theme="storm"] .world-bg{filter:brightness(.47) saturate(.55) contrast(1.08)}
+body[data-live-theme="storm"] .live-theme-aurora{opacity:.32}
+body[data-live-theme="storm"]::after{background:linear-gradient(180deg,rgba(10,14,26,.40),rgba(2,8,9,.62))}
+body[data-live-theme="snow"]{--gold:#e9ddbb;--live-accent:#e9ddbb;--live-glow:rgba(220,244,255,.24);--live-tint:rgba(157,194,211,.16)}
+body[data-live-theme="snow"] .world-bg{filter:brightness(.92) saturate(.48) contrast(.92)}
+body[data-live-theme="snow"]::after{background:linear-gradient(180deg,rgba(185,215,226,.12),rgba(5,20,21,.38))}
+body[data-live-theme="fog"]{--gold:#ded6bb;--live-accent:#ded6bb;--live-glow:rgba(215,227,222,.16);--live-tint:rgba(149,169,161,.15)}
+body[data-live-theme="fog"] .world-bg{filter:brightness(.74) saturate(.42) blur(.5px)}
+body[data-live-theme="fog"]::after{background:linear-gradient(180deg,rgba(176,192,187,.17),rgba(4,17,16,.45))}
+.theme-status{display:flex;align-items:center;gap:12px;margin:16px 0;padding:14px 15px;border:1px solid rgba(255,255,255,.10);border-radius:18px;background:rgba(255,255,255,.04)}
+.theme-orb{width:34px;height:34px;border-radius:50%;flex:0 0 auto;background:radial-gradient(circle at 35% 30%,#fff7d8,var(--live-accent) 34%,#415f76 76%);box-shadow:0 0 24px var(--live-glow);animation:themeOrbFloat 4s ease-in-out infinite}
+@keyframes themeOrbFloat{50%{transform:translateY(-3px) rotate(8deg)}}
+.theme-status strong{display:block}.theme-status span{display:block;color:var(--muted);font-size:12px;margin-top:3px}
+.theme-mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.theme-mode-btn{border:1px solid var(--line);border-radius:14px;padding:10px 7px;background:rgba(255,255,255,.04);color:var(--muted);font-size:11px}
+.theme-mode-btn.on{color:#15211d;background:linear-gradient(135deg,#f3dba8,#d2aa67);border-color:transparent;font-weight:800}
+.theme-intensity-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:center;margin-top:8px}.theme-intensity-row label{font-size:11px;color:var(--muted)}
+.tile.command{grid-column:1/-1;min-height:142px;background:radial-gradient(circle at 79% 25%,rgba(239,207,142,.20),transparent 28%),linear-gradient(135deg,rgba(34,87,75,.62),rgba(42,35,65,.60))}
+.tile.command::after{content:"";position:absolute;right:26px;top:27px;width:76px;height:76px;border-radius:50%;border:1px solid rgba(239,207,142,.42);box-shadow:0 0 0 12px rgba(239,207,142,.04),0 0 35px var(--live-glow);animation:commandTilePulse 3.4s ease-in-out infinite}
+@keyframes commandTilePulse{50%{transform:scale(1.08);opacity:.72}}
+.command-shell{position:relative;overflow:hidden;min-height:620px;padding:24px;border-radius:34px;border:1px solid rgba(255,255,255,.16);background:radial-gradient(circle at 50% 37%,rgba(239,207,142,.10),transparent 30%),linear-gradient(145deg,rgba(8,31,25,.88),rgba(13,17,30,.76));box-shadow:0 28px 80px rgba(0,0,0,.35);perspective:1000px}
+.command-shell::before{content:"";position:absolute;inset:-25%;pointer-events:none;background:conic-gradient(from 45deg,transparent,rgba(239,207,142,.08),transparent 28%,rgba(113,139,224,.08),transparent 58%);animation:commandBackdrop 18s linear infinite}
+@keyframes commandBackdrop{to{transform:rotate(360deg)}}
+.command-head{position:relative;z-index:2}.command-head h2{font:500 39px/1.02 Georgia;margin:13px 0 9px}.command-head p{margin:0;color:var(--muted);line-height:1.52;max-width:90%}
+.command-deck{position:relative;z-index:2;height:340px;margin:22px 0 14px;transform-style:preserve-3d;transition:transform .22s ease}
+.command-core{position:absolute;left:50%;top:50%;width:110px;height:110px;transform:translate(-50%,-50%);border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 28%,#fff8db 0 5%,#e8c77f 8%,#203d34 41%,#071411 72%);border:1px solid rgba(239,207,142,.60);color:var(--gold);font:44px Georgia;box-shadow:0 0 0 15px rgba(239,207,142,.035),0 0 0 31px rgba(239,207,142,.022),0 0 55px var(--live-glow);animation:commandCore 4.3s ease-in-out infinite}
+.command-core::before,.command-core::after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(239,207,142,.18);inset:-28px;animation:commandRing 8s linear infinite}.command-core::after{inset:-55px;animation-duration:13s;animation-direction:reverse}
+@keyframes commandCore{50%{transform:translate(-50%,-50%) scale(1.055);filter:brightness(1.12)}}@keyframes commandRing{to{transform:rotate(360deg)}}
+.command-action{position:absolute;width:112px;min-height:76px;padding:11px;border-radius:20px;border:1px solid rgba(255,255,255,.13);background:rgba(8,27,23,.70);color:var(--ink);backdrop-filter:blur(14px);box-shadow:0 15px 34px rgba(0,0,0,.24);transition:transform .22s ease,border-color .22s ease,background .22s ease}
+.command-action:active{transform:scale(.91)!important;border-color:rgba(239,207,142,.62);background:rgba(35,52,44,.88)}.command-action b{display:block;color:var(--gold);font-size:22px;margin-bottom:5px}.command-action span{display:block;font-size:11px;color:var(--muted)}
+.command-action.a1{left:0;top:24px;transform:rotateY(8deg) translateZ(28px)}.command-action.a2{right:0;top:24px;transform:rotateY(-8deg) translateZ(28px)}.command-action.a3{left:0;top:132px;transform:translateZ(18px)}.command-action.a4{right:0;top:132px;transform:translateZ(18px)}.command-action.a5{left:26px;bottom:6px;transform:rotateY(7deg) translateZ(24px)}.command-action.a6{right:26px;bottom:6px;transform:rotateY(-7deg) translateZ(24px)}
+.command-capture{position:relative;z-index:3;padding:16px;border-radius:23px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04)}.command-capture h3{margin:0 0 9px;font:500 23px Georgia}.command-capture-row{display:grid;grid-template-columns:1fr 112px;gap:8px}.command-capture-row .input{margin:0}
+.command-insight{margin-top:14px;padding:16px;border-radius:24px;border:1px solid rgba(239,207,142,.18);background:linear-gradient(145deg,rgba(239,207,142,.08),rgba(255,255,255,.025))}.command-insight strong{display:block;color:var(--gold);font-size:11px;letter-spacing:.14em;text-transform:uppercase}.command-insight p{margin:8px 0 0;color:var(--ink);line-height:1.5}
+.smart-day{position:relative;overflow:hidden;margin-bottom:16px;padding:22px;border-radius:32px;border:1px solid rgba(239,207,142,.24);background:radial-gradient(circle at 90% 0,rgba(239,207,142,.13),transparent 31%),linear-gradient(145deg,rgba(12,37,31,.82),rgba(14,22,31,.68));box-shadow:0 24px 65px rgba(0,0,0,.28)}
+.smart-day::after{content:"";position:absolute;width:160px;height:160px;right:-65px;top:-65px;border-radius:50%;border:1px solid rgba(239,207,142,.17);box-shadow:0 0 0 25px rgba(239,207,142,.025);animation:smartOrbit 10s linear infinite}@keyframes smartOrbit{to{transform:rotate(360deg)}}
+.smart-day-head{position:relative;z-index:2}.smart-day-head h2{margin:12px 0 8px;font:500 35px/1.05 Georgia}.smart-day-head p{margin:0;color:var(--muted);line-height:1.5}
+.smart-config{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.smart-config .full{grid-column:1/-1}.smart-config label{display:block;margin:0 4px 5px;color:var(--gold);font-size:10px;letter-spacing:.12em;text-transform:uppercase}.smart-config .input{margin:0}
+.smart-actions{position:relative;z-index:2;display:grid;grid-template-columns:1fr auto;gap:9px;margin-top:12px}.smart-actions .btn:first-child{min-height:52px}.smart-actions .btn.planning{animation:plannerGenerate .8s ease-in-out infinite alternate}@keyframes plannerGenerate{to{filter:brightness(1.18);transform:translateY(-2px);box-shadow:0 18px 38px rgba(239,207,142,.20)}}
+.planner-summary{position:relative;z-index:2;margin-top:14px;padding:14px;border-radius:19px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.035);color:var(--muted);line-height:1.45;font-size:12px}.planner-summary strong{display:block;color:var(--ink);font-size:15px;margin-bottom:4px}.planner-summary.stale{border-color:rgba(217,120,104,.35);color:#d9aaa2}
+.planner-timeline{position:relative;z-index:2;display:grid;gap:9px;margin-top:13px}.plan-block{position:relative;display:grid;grid-template-columns:64px 1fr auto;gap:11px;align-items:center;padding:13px;border-radius:19px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);overflow:hidden}.plan-block::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold)}.plan-block.event::before{background:#718be0}.plan-block.buffer::before{background:#3b9a7b}.plan-block.done{opacity:.53}
+.plan-block-time{font-weight:800;color:var(--gold);font-size:12px}.plan-block-main h4{margin:0 0 4px;font-size:14px}.plan-block-main p{margin:0;color:var(--muted);font-size:11px}.plan-block button{width:35px;height:35px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--gold)}
+.plan-empty{margin-top:13px;padding:22px;border:1px dashed var(--line);border-radius:20px;text-align:center;color:var(--muted)}.plan-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:11px;color:var(--muted);font-size:10px}.plan-legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;background:var(--gold)}.plan-legend .event i{background:#718be0}.plan-legend .buffer i{background:#3b9a7b}
+@media(max-width:420px){.command-action{width:104px}.command-action.a5{left:8px}.command-action.a6{right:8px}.command-capture-row{grid-template-columns:1fr}.smart-actions{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -995,10 +1088,17 @@ body.keyboard-open #chatBottom{
 <path d="M0 1000 C260 970 470 1035 710 1000 S1180 975 1430 1010 1780 980 2048 1005" fill="none" stroke="#b9e6dc" stroke-opacity=".12" stroke-width="5"/>
 </svg>
 </div>
+
+<div id="liveAtmosphere" class="live-atmosphere" aria-hidden="true">
+  <div class="live-theme-glow"></div>
+  <div class="live-theme-aurora"></div>
+  <div class="live-theme-stars"></div>
+  <div id="liveThemeParticles" class="live-theme-particles"></div>
+</div>
 <div class="shell">
 <header>
   <div class="brand"><div class="logo">V</div><div><h1>VIVAFIX</h1><small>SIGNATURE EDITION</small></div></div>
-  <div class="avatar">K</div>
+  <button id="openCommandCenter" type="button" class="avatar" aria-label="Command Center öffnen">K</button>
 </header>
 <main id="view"></main>
 </div>
@@ -1030,7 +1130,7 @@ body.keyboard-open #chatBottom{
 <script>
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const today=()=>new Date().toISOString().slice(0,10);
-let accessToken='', tokenClient=null, gmailMessages=[], gmailNextPageToken='', gmailLoading=false, weatherData=null, weatherLocation=null, gpsRequestPromise=null, lastAutoGPSAttempt=0, weatherClockTimer=null;
+let accessToken='', tokenClient=null, gmailMessages=[], gmailNextPageToken='', gmailLoading=false, weatherData=null, weatherLocation=null, gpsRequestPromise=null, lastAutoGPSAttempt=0, weatherClockTimer=null, liveThemeTimer=null, commandTiltFrame=null;
 const store={get:(k,d=[])=>{try{return JSON.parse(localStorage.getItem('vf_'+k))??d}catch{return d}},set:(k,v)=>localStorage.setItem('vf_'+k,JSON.stringify(v))};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function decodeEntities(s=''){const t=document.createElement('textarea');t.innerHTML=s;return t.value}
@@ -1198,6 +1298,28 @@ if(localStorage.getItem('vf_location_state_version')!==VF_LOCATION_STATE_VERSION
   localStorage.setItem('vf_location_state_version',VF_LOCATION_STATE_VERSION);
 }
 
+
+function liveThemeLocalHour(){const offsetSeconds=Number(weatherData?.utc_offset_seconds);if(Number.isFinite(offsetSeconds))return new Date(Date.now()+offsetSeconds*1000).getUTCHours();return new Date().getHours()}
+function detectAutomaticLiveTheme(){const code=Number(weatherData?.current?.weather_code);if([95,96,99].includes(code))return 'storm';if([71,73,75,77,85,86].includes(code))return 'snow';if([51,53,55,56,57,61,63,65,66,67,80,81,82].includes(code))return 'rain';if([45,48].includes(code))return 'fog';const hour=liveThemeLocalHour();if(hour>=5&&hour<8)return 'dawn';if(hour>=8&&hour<17)return 'day';if(hour>=17&&hour<21)return 'sunset';return 'night'}
+function liveThemeLabel(theme){return({dawn:'Morgendämmerung',day:'Klarer Tag',sunset:'Goldener Sunset',night:'Ruhige Nacht',rain:'Regenmodus',storm:'Gewittermodus',snow:'Schneemodus',fog:'Nebelmodus'})[theme]||'Live-Atmosphäre'}
+function createLiveThemeParticles(theme){const layer=$('#liveThemeParticles');if(!layer)return;layer.innerHTML='';let type='',count=0;if(theme==='rain'||theme==='storm'){type='rain';count=theme==='storm'?34:24}else if(theme==='snow'){type='snow';count=24}else if(['dawn','sunset'].includes(theme)){type='spark';count=15}if(!type)return;layer.innerHTML=Array.from({length:count},(_,index)=>{const left=(index*37)%103,delay=-(index%13)*.31,duration=type==='rain'?(.75+(index%7)*.09):type==='snow'?(5.4+(index%8)*.58):(3.2+(index%6)*.7);if(type==='snow')return `<i class="live-particle snow" style="left:${left}%;font-size:${10+(index%6)*3}px;animation-duration:${duration}s;animation-delay:${delay}s">❄</i>`;return `<i class="live-particle ${type}" style="left:${left}%;animation-duration:${duration}s;animation-delay:${delay}s"></i>`}).join('')}
+function applyLiveTheme(force=false){const mode=localStorage.getItem('vf_live_theme_mode')||'auto',intensity=localStorage.getItem('vf_live_theme_intensity')||'standard',detected=mode==='auto'?detectAutomaticLiveTheme():mode,previous=document.body.dataset.liveTheme;document.body.dataset.liveTheme=detected;document.documentElement.dataset.themeIntensity=intensity;const colors={dawn:'#26191f',day:'#0a1b17',sunset:'#281817',night:'#050a12',rain:'#151d25',storm:'#090c14',snow:'#203238',fog:'#1e2a28'};const themeMeta=document.querySelector('meta[name="theme-color"]');if(themeMeta)themeMeta.content=colors[detected]||'#07110f';if(force||previous!==detected)createLiveThemeParticles(detected);localStorage.setItem('vf_live_theme_current',detected);updateLiveThemeUI()}
+function updateLiveThemeUI(){const mode=localStorage.getItem('vf_live_theme_mode')||'auto',current=document.body.dataset.liveTheme||detectAutomaticLiveTheme(),title=$('#liveThemeTitle'),text=$('#liveThemeText'),select=$('#themeIntensity');if(title)title.textContent=mode==='auto'?'Automatische Atmosphäre':liveThemeLabel(current);if(text){const weatherPart=weatherData?` · ${weatherText(weatherData.current.weather_code)[1]}`:'';text.textContent=`${liveThemeLabel(current)}${weatherPart}`}$$('.theme-mode-btn').forEach(button=>button.classList.toggle('on',button.dataset.themeMode===mode));if(select)select.value=localStorage.getItem('vf_live_theme_intensity')||'standard'}
+function bindLiveThemeControls(){$$('.theme-mode-btn').forEach(button=>{button.onclick=()=>{clickSound();localStorage.setItem('vf_live_theme_mode',button.dataset.themeMode||'auto');applyLiveTheme(true);toast(`Theme: ${liveThemeLabel(document.body.dataset.liveTheme)}`)}});const intensity=$('#themeIntensity');if(intensity){intensity.onchange=()=>{localStorage.setItem('vf_live_theme_intensity',intensity.value);applyLiveTheme(true)}}updateLiveThemeUI()}
+function setupLiveThemes(){applyLiveTheme(true);clearInterval(liveThemeTimer);liveThemeTimer=setInterval(()=>{if((localStorage.getItem('vf_live_theme_mode')||'auto')==='auto')applyLiveTheme()},60000)}
+function commandInsightText(){const tasks=store.get('tasks'),events=store.get('events'),open=tasks.filter(task=>!task.done),priority={hoch:0,mittel:1,niedrig:2},top=open.slice().sort((a,b)=>{const byPriority=(priority[a.priority]??1)-(priority[b.priority]??1);if(byPriority)return byPriority;return String(a.date||'9999-99-99').localeCompare(String(b.date||'9999-99-99'))})[0],nowKey=today()+new Date().toTimeString().slice(0,5),nextEvent=events.slice().sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time)).find(event=>(event.date+event.time)>=nowKey);if(top)return `Dein sinnvollster nächster Schritt ist „${top.title}“${top.priority==='hoch'?' – hohe Priorität.':'.'}`;if(nextEvent)return `Dein nächster fester Termin ist „${nextEvent.title}“ am ${nextEvent.date} um ${nextEvent.time} Uhr.`;if(weatherData){const [,label]=weatherText(weatherData.current.weather_code);return `Dein Plan ist frei. Draußen sind es ${Math.round(weatherData.current.temperature_2m)} Grad bei ${label.toLowerCase()}.`}return 'Dein Raum ist frei. Erfasse eine Aufgabe oder lass VIVAFIX deinen Tagesplan aufbauen.'}
+function commandTemplate(){const tasks=store.get('tasks').filter(task=>!task.done),events=store.get('events').filter(event=>event.date===today());return `<section id="commandShell" class="command-shell"><div class="command-head"><div class="eyebrow">VIVAFIX Command Center</div><h2>Alles mit einem Impuls.</h2><p>Deine wichtigsten Aktionen schweben in einem einzigen Kontrollraum zusammen.</p></div><div id="commandDeck" class="command-deck"><div class="command-core">V</div><button type="button" class="command-action a1" data-command-target="tasks"><b>✓</b><span>Aufgabe</span></button><button type="button" class="command-action a2" data-command-target="calendar"><b>↗</b><span>Termin</span></button><button type="button" class="command-action a3" data-command-target="planner"><b>◫</b><span>Tagesplan</span></button><button type="button" class="command-action a4" data-command-target="notes"><b>✎</b><span>Notiz</span></button><button type="button" class="command-action a5" data-command-target="weather"><b>☀</b><span>Wetter</span></button><button type="button" class="command-action a6" data-command-target="backup"><b>⇩</b><span>Backup</span></button></div><form id="commandCapture" class="command-capture"><h3>Sofort erfassen</h3><div class="command-capture-row"><input id="commandCaptureText" class="input" placeholder="Was möchtest du festhalten?" required><select id="commandCaptureType" class="input"><option value="task">Aufgabe</option><option value="note">Notiz</option><option value="event">Termin</option></select></div><button class="btn full" style="margin-top:9px">Speichern</button></form><div class="command-insight"><strong>Nächster sinnvoller Schritt</strong><p>${esc(commandInsightText())}</p></div><div class="backup-summary"><div class="backup-stat"><strong>${tasks.length}</strong><span>OFFEN</span></div><div class="backup-stat"><strong>${events.length}</strong><span>HEUTE</span></div><div class="backup-stat"><strong>${weatherData?Math.round(weatherData.current.temperature_2m)+'°':'—'}</strong><span>WETTER</span></div></div></section>`}
+function commandNavigate(target){if(target==='tasks'){render('tasks');setTimeout(()=>{$('#taskTitle')?.scrollIntoView({behavior:'smooth',block:'center'});$('#taskTitle')?.focus()},350);return}if(target==='calendar'){render('calendar');setTimeout(()=>{$('#eventTitle')?.scrollIntoView({behavior:'smooth',block:'center'});$('#eventTitle')?.focus()},350);return}if(target==='planner'){render('calendar');setTimeout(()=>$('#smartDayPlanner')?.scrollIntoView({behavior:'smooth',block:'start'}),300);return}if(target==='notes'){render('more');setTimeout(()=>{$('#noteTitle')?.scrollIntoView({behavior:'smooth',block:'center'});$('#noteTitle')?.focus()},350);return}if(target==='backup'){render('more');setTimeout(()=>$('#exportBackup')?.scrollIntoView({behavior:'smooth',block:'center'}),350);return}if(target==='weather')render('weather')}
+function commandCenter(){const shell=$('#commandShell'),deck=$('#commandDeck'),form=$('#commandCapture'),input=$('#commandCaptureText'),type=$('#commandCaptureType');if(shell&&deck){shell.onpointermove=event=>{if(event.pointerType==='touch')return;cancelAnimationFrame(commandTiltFrame);commandTiltFrame=requestAnimationFrame(()=>{const rect=shell.getBoundingClientRect(),x=(event.clientX-rect.left)/rect.width-.5,y=(event.clientY-rect.top)/rect.height-.5;deck.style.transform=`rotateX(${(-y*5).toFixed(2)}deg) rotateY(${(x*7).toFixed(2)}deg)`})};shell.onpointerleave=()=>{deck.style.transform=''}}$$('[data-command-target]').forEach(button=>{button.onclick=()=>{clickSound();commandNavigate(button.dataset.commandTarget)}});if(form){enableEditableControls(form);form.onsubmit=event=>{event.preventDefault();const value=input.value.trim();if(!value){input.focus();return}if(type.value==='task'){const tasks=store.get('tasks');tasks.push({id:crypto.randomUUID(),title:value,date:today(),priority:'mittel',done:false});store.set('tasks',tasks);toast('Aufgabe erfasst')}else if(type.value==='note'){const notes=store.get('notes');notes.push({id:crypto.randomUUID(),title:value.length>36?value.slice(0,36)+'…':value,text:value});store.set('notes',notes);toast('Notiz erfasst')}else{localStorage.setItem('vf_draft_eventTitle',value);toast('Termin vorbereitet');render('calendar');setTimeout(()=>{const eventTitle=$('#eventTitle');if(eventTitle){eventTitle.value=value;eventTitle.dispatchEvent(new Event('input',{bubbles:true}));eventTitle.focus()}},350);return}input.value='';render('command')}}}
+function plannerMinutes(value){const match=String(value||'').match(/^(\d{1,2}):(\d{2})$/);if(!match)return 0;return Number(match[1])*60+Number(match[2])}
+function plannerTime(minutes){const safe=Math.max(0,Math.min(1439,Math.round(minutes)));return `${String(Math.floor(safe/60)).padStart(2,'0')}:${String(safe%60).padStart(2,'0')}`}
+function plannerFingerprint(date){const tasks=store.get('tasks').filter(task=>!task.done&&(!task.date||task.date<=date)).map(task=>[task.id,task.title,task.date,task.priority,task.done]),events=store.get('events').filter(event=>event.date===date).map(event=>[event.id,event.title,event.date,event.time]);return JSON.stringify({tasks,events})}
+function buildSmartDayPlan(date,startValue,endValue,duration){const start=plannerMinutes(startValue),end=plannerMinutes(endValue);if(end<=start+30)throw new Error('Das Tagesende muss deutlich nach dem Start liegen.');const priority={hoch:0,mittel:1,niedrig:2};const tasks=store.get('tasks').filter(task=>!task.done&&(!task.date||task.date<=date)).sort((a,b)=>{const dueA=a.date||'9999-99-99',dueB=b.date||'9999-99-99',overdueA=dueA<date?0:dueA===date?1:2,overdueB=dueB<date?0:dueB===date?1:2;if(overdueA!==overdueB)return overdueA-overdueB;const prio=(priority[a.priority]??1)-(priority[b.priority]??1);if(prio)return prio;return dueA.localeCompare(dueB)});const events=store.get('events').filter(event=>event.date===date).map(event=>{const eventStart=plannerMinutes(event.time);return{id:event.id,type:'event',title:event.title,start:eventStart,end:Math.min(1440,eventStart+60),fixed:true}}).filter(block=>block.end>start&&block.start<end).sort((a,b)=>a.start-b.start);const occupied=events.map(block=>({start:Math.max(start,block.start),end:Math.min(end,block.end)})),taskBlocks=[];const findSlot=length=>{const intervals=[...occupied].sort((a,b)=>a.start-b.start);let cursor=start;for(const interval of intervals){if(cursor+length<=interval.start)return cursor;if(cursor<interval.end)cursor=interval.end+10}return cursor+length<=end?cursor:null};for(const task of tasks){const blockLength=task.priority==='hoch'?Math.min(75,duration+15):duration,slot=findSlot(blockLength);if(slot===null)break;const block={id:crypto.randomUUID(),taskId:task.id,type:'task',title:task.title,start:slot,end:slot+blockLength,priority:task.priority,done:false};taskBlocks.push(block);occupied.push({start:block.start,end:block.end})}const mainBlocks=[...events,...taskBlocks].sort((a,b)=>a.start-b.start),blocks=[];let cursor=start;for(const block of mainBlocks){if(block.start-cursor>=30)blocks.push({id:crypto.randomUUID(),type:'buffer',title:'Freier Puffer',start:cursor,end:block.start});blocks.push(block);cursor=Math.max(cursor,block.end)}if(end-cursor>=30)blocks.push({id:crypto.randomUUID(),type:'buffer',title:'Freier Puffer',start:cursor,end});return{date,createdAt:new Date().toISOString(),start:startValue,end:endValue,duration,fingerprint:plannerFingerprint(date),blocks}}
+function plannerStorage(){return store.get('dayPlans',{})}function savePlannerStorage(plans){store.set('dayPlans',plans)}
+function plannerBlockMarkup(block){const duration=Math.max(0,block.end-block.start),typeLabel=block.type==='event'?'Fester Termin':block.type==='buffer'?'Freier Raum':`${block.priority||'mittel'} · ${duration} Min.`,action=block.type==='task'?`<button type="button" data-plan-task="${block.taskId}" aria-label="Aufgabe erledigen">${block.done?'↺':'✓'}</button>`:'';return `<article class="plan-block ${block.type} ${block.done?'done':''}"><div class="plan-block-time">${plannerTime(block.start)}<br>${plannerTime(block.end)}</div><div class="plan-block-main"><h4>${esc(block.title)}</h4><p>${esc(typeLabel)}</p></div>${action}</article>`}
+function renderSmartDayPlan(){const dateInput=$('#plannerDate'),summary=$('#plannerSummary'),timeline=$('#plannerTimeline');if(!dateInput||!summary||!timeline)return;const plans=plannerStorage(),plan=plans[dateInput.value];if(!plan){summary.className='planner-summary';summary.innerHTML='<strong>Noch kein Tagesplan</strong>VIVAFIX berücksichtigt Termine, Prioritäten und Fälligkeiten.';timeline.innerHTML='<div class="plan-empty">Tippe auf „Tagesplan automatisch erstellen“.</div>';return}const tasks=plan.blocks.filter(block=>block.type==='task'),events=plan.blocks.filter(block=>block.type==='event'),buffers=plan.blocks.filter(block=>block.type==='buffer'),bufferMinutes=buffers.reduce((sum,block)=>sum+(block.end-block.start),0),stale=plan.fingerprint!==plannerFingerprint(plan.date);summary.className='planner-summary'+(stale?' stale':'');summary.innerHTML=`<strong>${tasks.length} Aufgaben · ${events.length} Termine · ${Math.round(bufferMinutes/5)*5} Min. Puffer</strong>${stale?'Aufgaben oder Termine wurden verändert. Erstelle den Plan neu.':'Dein Tagesfluss ist lokal gespeichert und offline verfügbar.'}`;timeline.innerHTML=plan.blocks.length?plan.blocks.map(plannerBlockMarkup).join(''):'<div class="plan-empty">Für diesen Zeitraum gibt es noch keine planbaren Inhalte.</div>';$$('[data-plan-task]').forEach(button=>{button.onclick=()=>{const tasksData=store.get('tasks'),task=tasksData.find(item=>item.id===button.dataset.planTask);if(!task)return;task.done=!task.done;store.set('tasks',tasksData);const currentPlans=plannerStorage(),currentPlan=currentPlans[dateInput.value],block=currentPlan?.blocks.find(item=>item.taskId===task.id);if(block)block.done=task.done;if(currentPlan)currentPlan.fingerprint=plannerFingerprint(currentPlan.date);savePlannerStorage(currentPlans);renderSmartDayPlan();toast(task.done?'Aufgabe erledigt':'Aufgabe wieder geöffnet')}})}
+function setupSmartPlanner(){const date=$('#plannerDate'),start=$('#plannerStart'),end=$('#plannerEnd'),duration=$('#plannerDuration'),generate=$('#generateDayPlan'),clear=$('#clearDayPlan');if(!date||!generate)return;date.value=localStorage.getItem('vf_planner_date')||today();start.value=localStorage.getItem('vf_planner_start')||'08:30';end.value=localStorage.getItem('vf_planner_end')||'18:00';duration.value=localStorage.getItem('vf_planner_duration')||'45';[date,start,end,duration].forEach(control=>{control.onchange=()=>{localStorage.setItem('vf_planner_date',date.value);localStorage.setItem('vf_planner_start',start.value);localStorage.setItem('vf_planner_end',end.value);localStorage.setItem('vf_planner_duration',duration.value);renderSmartDayPlan()}});generate.onclick=()=>{generate.classList.add('planning');generate.disabled=true;generate.textContent='VIVAFIX plant…';setTimeout(()=>{try{const plan=buildSmartDayPlan(date.value,start.value,end.value,Number(duration.value)),plans=plannerStorage();plans[date.value]=plan;savePlannerStorage(plans);renderSmartDayPlan();playSwoosh();toast('Tagesplan erstellt')}catch(error){alert(error.message)}finally{generate.classList.remove('planning');generate.disabled=false;generate.textContent='Tagesplan automatisch erstellen'}},520)};if(clear){clear.onclick=()=>{const plans=plannerStorage();if(!plans[date.value]){toast('Kein Tagesplan vorhanden');return}if(!window.confirm('Diesen Tagesplan löschen?'))return;delete plans[date.value];savePlannerStorage(plans);renderSmartDayPlan();toast('Tagesplan gelöscht')}}renderSmartDayPlan()}
+
 const templates={
 home:()=>{const tasks=store.get('tasks'),events=store.get('events'),open=tasks.filter(x=>!x.done),tod=events.filter(x=>x.date===today()),weatherLabel=weatherData?Math.round(weatherData.current.temperature_2m)+'° · '+weatherText(weatherData.current.weather_code)[1]:'Sunset-Wetter öffnen';const briefingText=buildBriefing(open,tod);return `
 <section class="hero">
@@ -1217,25 +1339,33 @@ home:()=>{const tasks=store.get('tasks'),events=store.get('events'),open=tasks.f
 <button type="button" id="weatherHomeButton" class="tile weather" data-jump="weather"><h4>Wetter</h4><p>${esc(weatherLabel)} · animierte Sunset-Ansicht</p><span class="glyph">☀</span></button>
 <button type="button" class="tile ai" data-jump="ai"><h4>VIVAFIX AI</h4><p>Frag, plane und organisiere deinen Tag.</p><span class="glyph">✦</span></button>
 <button type="button" class="tile mail" data-jump="mail"><h4>Mail</h4><p>Ruhig, sortiert und mit mehr Nachrichten.</p><span class="glyph">✉</span></button>
-<button type="button" class="tile plan" data-jump="calendar"><h4>Plan</h4><p>Termine als klare Timeline.</p><span class="glyph">□</span></button>
+<button type="button" class="tile plan" data-jump="calendar"><h4>Plan</h4><p>Intelligenter Tagesfluss und feste Termine.</p><span class="glyph">□</span></button>
 <button type="button" class="tile tasks" data-jump="tasks"><h4>Aufgaben</h4><p>Fokus ohne Ablenkung.</p><span class="glyph">✓</span></button>
+<button type="button" class="tile command" data-jump="command"><h4>Command Center</h4><p>Aufgabe, Termin, Tagesplan, Notiz, Wetter oder Backup mit einem Impuls.</p><span class="glyph">◉</span></button>
 </section>`},
+command:()=>commandTemplate(),
 weather:()=>weatherTemplate(),
 mail:()=>`<section class="panel"><div class="eyebrow">Inbox</div><h2>Dein Posteingang</h2><p style="color:var(--muted)">Google Gmail bleibt verbunden. Du kannst jetzt schrittweise deutlich mehr als 15 Nachrichten laden.</p><div class="row"><button id="connectGmail" class="btn">Gmail verbinden</button><button id="refreshGmail" class="btn secondary">Neu laden</button></div></section><div class="mail-toolbar"><input id="mailSearch" class="input" placeholder="Absender, Betreff oder Text durchsuchen…"><div id="mailCount" class="mail-count"></div></div><section id="mailList" class="list"></section><div id="mailMoreWrap" style="margin-top:12px"></div>`,
 ai:()=>`<section class="panel"><div class="ai-panel-head"><div class="ai-panel-copy"><div class="eyebrow">VIVAFIX Intelligence</div><h2>Was möchtest du heute ordnen?</h2><div id="aiMode" class="ai-mode"><i></i><span>Kostenloser Offline-Modus</span></div></div><button id="clearChat" type="button" class="chat-clear-btn" aria-label="Chat löschen" title="Chat löschen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M7 7l1 13h8l1-13"/><path d="M10 11v5"/><path d="M14 11v5"/></svg></button></div></section><div class="chips"><button type="button" data-prompt="Was steht heute an?">Heute</button><button type="button" data-prompt="Zeig offene Aufgaben">Aufgaben</button><button type="button" data-prompt="Wie ist das Wetter?">Wetter</button><button type="button" data-prompt="Fasse meine Notizen zusammen">Notizen</button></div><section id="chat" class="chat"></section><form id="chatForm" class="composer"><input id="chatInput" class="input" autocomplete="off" enterkeyhint="send" placeholder="Frag VIVAFIX…"><button id="chatSend" type="submit" class="btn send-btn" aria-label="Senden">↑</button></form><div id="chatBottom"></div>`,
-calendar:()=>`<section class="plan-shell">
-<div class="plan-accent"></div>
-<div class="plan-top"><div class="eyebrow">Zeit gestalten</div><h2>Dein nächster Moment.</h2><p>Plane Termine als ruhige, klare Timeline – mit Tiefe und Bewegung.</p></div>
-<form id="eventForm">
-<div class="plan-grid">
-<div class="field-block full"><label>Titel</label><input id="eventTitle" class="input" placeholder="z. B. Projektbesprechung" required></div>
-<div class="field-block"><label>Datum</label><input id="eventDate" class="input" type="date" value="${today()}" required></div>
-<div class="field-block"><label>Uhrzeit</label><input id="eventTime" class="input" type="time" value="10:00" required></div>
+calendar:()=>`<section id="smartDayPlanner" class="smart-day">
+<div class="smart-day-head"><div class="eyebrow">Intelligenter Tagesplaner</div><h2>Dein Tag findet seinen Rhythmus.</h2><p>VIVAFIX ordnet offene Aufgaben nach Priorität und fügt feste Termine automatisch in freie Zeitfenster ein.</p></div>
+<div class="smart-config">
+  <div class="full"><label>Plan für</label><input id="plannerDate" class="input" type="date" value="${today()}"></div>
+  <div><label>Start</label><input id="plannerStart" class="input" type="time" value="08:30"></div>
+  <div><label>Ende</label><input id="plannerEnd" class="input" type="time" value="18:00"></div>
+  <div class="full"><label>Fokusblock</label><select id="plannerDuration" class="input"><option value="25">25 Minuten</option><option value="45" selected>45 Minuten</option><option value="60">60 Minuten</option></select></div>
 </div>
-<div class="save-row"><button class="btn">Termin speichern</button><div class="mini-badge">↗</div></div>
-</form></section>
-<div class="section-head"><h3>Deine Timeline</h3><button type="button">Heute</button></div>
-<section id="eventList" class="list timeline"></section>`,
+<div class="smart-actions"><button id="generateDayPlan" type="button" class="btn">Tagesplan automatisch erstellen</button><button id="clearDayPlan" type="button" class="btn secondary">Leeren</button></div>
+<div id="plannerSummary" class="planner-summary"><strong>Noch kein Tagesplan</strong>VIVAFIX berücksichtigt Termine, Prioritäten und Fälligkeiten.</div>
+<div id="plannerTimeline" class="planner-timeline"></div>
+<div class="plan-legend"><span><i></i>Aufgabe</span><span class="event"><i></i>Termin</span><span class="buffer"><i></i>Puffer</span></div>
+</section>
+<section class="plan-shell">
+<div class="plan-accent"></div>
+<div class="plan-top"><div class="eyebrow">Feste Termine</div><h2>Dein nächster Moment.</h2><p>Ergänze Termine. Der Tagesplaner berücksichtigt sie beim nächsten Durchlauf automatisch.</p></div>
+<form id="eventForm"><div class="plan-grid"><div class="field-block full"><label>Titel</label><input id="eventTitle" class="input" placeholder="z. B. Projektbesprechung" required></div><div class="field-block"><label>Datum</label><input id="eventDate" class="input" type="date" value="${today()}" required></div><div class="field-block"><label>Uhrzeit</label><input id="eventTime" class="input" type="time" value="10:00" required></div></div><div class="save-row"><button class="btn">Termin speichern</button><div class="mini-badge">↗</div></div></form>
+</section>
+<div class="section-head"><h3>Deine Timeline</h3><button type="button">Heute</button></div><section id="eventList" class="list timeline"></section>`,
 tasks:()=>{const a=store.get('tasks'),done=a.filter(x=>x.done).length,p=a.length?Math.round(done/a.length*100):0;return `<section class="tasks-shell">
 <div class="tasks-accent"></div>
 <div class="tasks-top"><div class="eyebrow">Fokus</div><h2>Was zählt jetzt?</h2><p>Aufgaben bekommen Gewicht, Rhythmus und einen klaren Abschluss.</p></div>
@@ -1251,6 +1381,13 @@ tasks:()=>{const a=store.get('tasks'),done=a.filter(x=>x.done).length,p=a.length
 <div class="section-head"><h3>Dein Fokus</h3><button type="button">Sortieren</button></div>
 <section id="taskList" class="list"></section>`},
 more:()=>`<section class="panel offline-card"><div class="eyebrow">Intelligence</div><h2>Kostenloser Assistent</h2><p style="color:var(--muted)">VIVAFIX arbeitet lokal auf deinem Gerät. Es werden keine kostenpflichtigen KI-Dienste verwendet.</p><div class="offline-status"><span class="offline-dot"></span><div><strong>Offline-Modus aktiv</strong><span>Kostenlos · keine API · keine laufenden Gebühren</span></div></div><div class="offline-tags"><span>Aufgaben</span><span>Termine</span><span>Notizen</span><span>Wetter</span><span>E-Mails</span></div></section>
+
+<section class="panel">
+  <div class="eyebrow">Atmosphäre</div><h2>Live-Themen</h2><p style="color:var(--muted)">Farben, Licht und Partikel reagieren automatisch auf Uhrzeit und Wetter.</p>
+  <div class="theme-status"><span class="theme-orb"></span><div><strong id="liveThemeTitle">Automatische Atmosphäre</strong><span id="liveThemeText">Theme wird ermittelt.</span></div></div>
+  <div class="theme-mode-grid"><button type="button" class="theme-mode-btn" data-theme-mode="auto">Auto</button><button type="button" class="theme-mode-btn" data-theme-mode="day">Tag</button><button type="button" class="theme-mode-btn" data-theme-mode="sunset">Sunset</button><button type="button" class="theme-mode-btn" data-theme-mode="night">Nacht</button><button type="button" class="theme-mode-btn" data-theme-mode="rain">Regen</button><button type="button" class="theme-mode-btn" data-theme-mode="snow">Schnee</button></div>
+  <div class="theme-intensity-row"><label for="themeIntensity">Effektstärke</label><select id="themeIntensity" class="input"><option value="subtle">Subtil</option><option value="standard" selected>Standard</option><option value="cinematic">Cinematic</option></select></div>
+</section>
 <section class="panel">
   <div class="eyebrow">App-Modus</div>
   <h2>Offline & Installation</h2>
@@ -1375,7 +1512,7 @@ document.addEventListener('click',e=>{
 
 function playSwoosh(){const s=$('#swooshLayer');if(!s)return;s.classList.remove('play');void s.offsetWidth;s.classList.add('play')}
 function render(page){
- if(page==='calendar'||page==='tasks')playSwoosh();
+ if(page==='calendar'||page==='tasks'||page==='command')playSwoosh();
  document.body.dataset.page=page;
 
  const soundControl=$('#soundToggle');
@@ -1417,9 +1554,11 @@ $$('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.page===page));
  }
  if(page==='mail')mail();
  if(page==='ai')chat();
+ if(page==='command')commandCenter();
  if(page==='calendar')calendar();
  if(page==='tasks')tasks();
  if(page==='more')more();
+ applyLiveTheme();
  scrollTo(0,0);
 }
 
@@ -1772,6 +1911,7 @@ async function loadWeatherCoords(latitude,longitude,location,options={}){
     localStorage.setItem('vf_weather_location',JSON.stringify(weatherLocation));
     localStorage.setItem('vf_weather_fetched_at',String(Date.now()));
     localStorage.setItem('vf_weather_scene',weatherIsNight()?'night':'day');
+    applyLiveTheme(true);
 
     const currentPage=document.body.dataset.page;
 
@@ -2019,6 +2159,7 @@ function calendar(){
      a=a.filter(x=>x.id!==b.dataset.del);
      store.set('events',a);
      draw();
+     renderSmartDayPlan();
    });
  };
 
@@ -2028,6 +2169,7 @@ function calendar(){
    if(!value){title.focus();return}
    a.push({id:crypto.randomUUID(),title:value,date:date.value,time:time.value});
    store.set('events',a);
+   renderSmartDayPlan();
    clearPersistentFields(['eventTitle','eventDate','eventTime']);
    form.reset();
    date.value=today();
@@ -2036,6 +2178,7 @@ function calendar(){
    toast('Termin gespeichert');
  };
  draw();
+ setupSmartPlanner();
 }
 
 function scrollToLatestChat(behavior='smooth'){
@@ -2855,6 +2998,7 @@ function more(){
  const noteText=bindPersistentField('#noteText','noteText');
  enableEditableControls(document.querySelector('main'));
  bindPWAAndBackupControls();
+ bindLiveThemeControls();
 
  if(clientInput){
    clientInput.value=localStorage.getItem('gmailClientId')||localStorage.getItem('vf_draft_clientId')||clientInput.value;
@@ -2907,7 +3051,10 @@ function more(){
 
 
 setupPWA();
+setupLiveThemes();
 setupIOSKeyboardViewport();
+const commandAvatar=$('#openCommandCenter');
+if(commandAvatar)commandAvatar.onclick=()=>goToPage('command','avatar');
 render('home');
 
 setTimeout(()=>{
@@ -2925,6 +3072,7 @@ window.addEventListener('pageshow',()=>{
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState==='visible'){
     updateWeatherLiveClock();
+    applyLiveTheme();
     setTimeout(()=>ensureAutomaticGPS('resume'),350);
   }
 });
