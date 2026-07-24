@@ -12,8 +12,8 @@
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="VIVAFIX">
-<meta name="vivafix-version" content="WORLD-RANK-WOW-V2">
-<title>VIVAFIX World Edition</title>
+<meta name="vivafix-version" content="PHASE-2-DAILY-PULSE-V1">
+<title>VIVAFIX Daily Pulse Edition</title>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 :root{
@@ -1412,7 +1412,7 @@ function setupLiveThemes(){applyLiveTheme(true);clearInterval(liveThemeTimer);li
 function commandInsightText(){const tasks=store.get('tasks'),events=store.get('events'),open=tasks.filter(task=>!task.done),priority={hoch:0,mittel:1,niedrig:2},top=open.slice().sort((a,b)=>{const byPriority=(priority[a.priority]??1)-(priority[b.priority]??1);if(byPriority)return byPriority;return String(a.date||'9999-99-99').localeCompare(String(b.date||'9999-99-99'))})[0],nowKey=today()+new Date().toTimeString().slice(0,5),nextEvent=events.slice().sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time)).find(event=>(event.date+event.time)>=nowKey);if(top)return `Dein sinnvollster nächster Schritt ist „${top.title}“${top.priority==='hoch'?' – hohe Priorität.':'.'}`;if(nextEvent)return `Dein nächster fester Termin ist „${nextEvent.title}“ am ${nextEvent.date} um ${nextEvent.time} Uhr.`;if(weatherData){const [,label]=weatherText(weatherData.current.weather_code);return `Dein Plan ist frei. Draußen sind es ${Math.round(weatherData.current.temperature_2m)} Grad bei ${label.toLowerCase()}.`}return 'Dein Raum ist frei. Erfasse eine Aufgabe oder lass VIVAFIX deinen Tagesplan aufbauen.'}
 function commandTemplate(){const tasks=store.get('tasks').filter(task=>!task.done),events=store.get('events').filter(event=>event.date===today());return `<section id="commandShell" class="command-shell"><div class="command-head"><div class="eyebrow">VIVAFIX Command Center</div><h2>Alles mit einem Impuls.</h2><p>Deine wichtigsten Aktionen schweben in einem einzigen Kontrollraum zusammen.</p></div><div id="commandDeck" class="command-deck"><div class="command-core">V</div><button type="button" class="command-action a1" data-command-target="tasks"><b>✓</b><span>Aufgabe</span></button><button type="button" class="command-action a2" data-command-target="calendar"><b>↗</b><span>Termin</span></button><button type="button" class="command-action a3" data-command-target="planner"><b>◫</b><span>Tagesplan</span></button><button type="button" class="command-action a4" data-command-target="notes"><b>✎</b><span>Notiz</span></button><button type="button" class="command-action a5" data-command-target="weather"><b>☀</b><span>Wetter</span></button><button type="button" class="command-action a6" data-command-target="backup"><b>⇩</b><span>Backup</span></button></div><form id="commandCapture" class="command-capture"><h3>Sofort erfassen</h3><div class="command-capture-row"><input id="commandCaptureText" class="input" placeholder="Was möchtest du festhalten?" required><select id="commandCaptureType" class="input"><option value="task">Aufgabe</option><option value="note">Notiz</option><option value="event">Termin</option></select></div><button class="btn full" style="margin-top:9px">Speichern</button></form><div class="command-insight"><strong>Nächster sinnvoller Schritt</strong><p>${esc(commandInsightText())}</p></div><div class="backup-summary"><div class="backup-stat"><strong>${tasks.length}</strong><span>OFFEN</span></div><div class="backup-stat"><strong>${events.length}</strong><span>HEUTE</span></div><div class="backup-stat"><strong>${weatherData?Math.round(weatherData.current.temperature_2m)+'°':'—'}</strong><span>WETTER</span></div></div></section>`}
 function commandNavigate(target){if(target==='tasks'){render('tasks');setTimeout(()=>{$('#taskTitle')?.scrollIntoView({behavior:'smooth',block:'center'});$('#taskTitle')?.focus()},350);return}if(target==='calendar'){render('calendar');setTimeout(()=>{$('#eventTitle')?.scrollIntoView({behavior:'smooth',block:'center'});$('#eventTitle')?.focus()},350);return}if(target==='planner'){render('calendar');setTimeout(()=>$('#smartDayPlanner')?.scrollIntoView({behavior:'smooth',block:'start'}),300);return}if(target==='notes'){render('more');setTimeout(()=>{$('#noteTitle')?.scrollIntoView({behavior:'smooth',block:'center'});$('#noteTitle')?.focus()},350);return}if(target==='backup'){render('more');setTimeout(()=>$('#exportBackup')?.scrollIntoView({behavior:'smooth',block:'center'}),350);return}if(target==='weather')render('weather')}
-function commandCenter(){const shell=$('#commandShell'),deck=$('#commandDeck'),form=$('#commandCapture'),input=$('#commandCaptureText'),type=$('#commandCaptureType');if(shell&&deck){shell.onpointermove=event=>{if(event.pointerType==='touch')return;cancelAnimationFrame(commandTiltFrame);commandTiltFrame=requestAnimationFrame(()=>{const rect=shell.getBoundingClientRect(),x=(event.clientX-rect.left)/rect.width-.5,y=(event.clientY-rect.top)/rect.height-.5;deck.style.transform=`rotateX(${(-y*5).toFixed(2)}deg) rotateY(${(x*7).toFixed(2)}deg)`})};shell.onpointerleave=()=>{deck.style.transform=''}}$$('[data-command-target]').forEach(button=>{button.onclick=()=>{clickSound();commandNavigate(button.dataset.commandTarget)}});if(form){enableEditableControls(form);form.onsubmit=event=>{event.preventDefault();const value=input.value.trim();if(!value){input.focus();return}if(type.value==='task'){const tasks=store.get('tasks');tasks.push({id:crypto.randomUUID(),title:value,date:today(),priority:'mittel',done:false});store.set('tasks',tasks);toast('Aufgabe erfasst')}else if(type.value==='note'){const notes=store.get('notes'),newNote={id:crypto.randomUUID(),title:value.length>36?value.slice(0,36)+'…':value,text:value};notes.push(newNote);store.set('notes',notes);awardWorldXP('note',newNote.id,8,`Notiz bewahrt: ${newNote.title}`);toast('Notiz erfasst')}else{localStorage.setItem('vf_draft_eventTitle',value);toast('Termin vorbereitet');render('calendar');setTimeout(()=>{const eventTitle=$('#eventTitle');if(eventTitle){eventTitle.value=value;eventTitle.dispatchEvent(new Event('input',{bubbles:true}));eventTitle.focus()}},350);return}input.value='';render('command')}}}
+function commandCenter(){const shell=$('#commandShell'),deck=$('#commandDeck'),form=$('#commandCapture'),input=$('#commandCaptureText'),type=$('#commandCaptureType');if(shell&&deck){shell.onpointermove=event=>{if(event.pointerType==='touch')return;cancelAnimationFrame(commandTiltFrame);commandTiltFrame=requestAnimationFrame(()=>{const rect=shell.getBoundingClientRect(),x=(event.clientX-rect.left)/rect.width-.5,y=(event.clientY-rect.top)/rect.height-.5;deck.style.transform=`rotateX(${(-y*5).toFixed(2)}deg) rotateY(${(x*7).toFixed(2)}deg)`})};shell.onpointerleave=()=>{deck.style.transform=''}}$$('[data-command-target]').forEach(button=>{button.onclick=()=>{clickSound();commandNavigate(button.dataset.commandTarget)}});if(form){enableEditableControls(form);form.onsubmit=event=>{event.preventDefault();const value=input.value.trim();if(!value){input.focus();return}if(type.value==='task'){const tasks=store.get('tasks'),newTask={id:crypto.randomUUID(),title:value,date:today(),priority:'mittel',done:false};tasks.push(newTask);store.set('tasks',tasks);dailyPulseOnAction('task-create',newTask.id);toast('Aufgabe erfasst')}else if(type.value==='note'){const notes=store.get('notes'),newNote={id:crypto.randomUUID(),title:value.length>36?value.slice(0,36)+'…':value,text:value};notes.push(newNote);store.set('notes',notes);awardWorldXP('note',newNote.id,8,`Notiz bewahrt: ${newNote.title}`);toast('Notiz erfasst')}else{localStorage.setItem('vf_draft_eventTitle',value);toast('Termin vorbereitet');render('calendar');setTimeout(()=>{const eventTitle=$('#eventTitle');if(eventTitle){eventTitle.value=value;eventTitle.dispatchEvent(new Event('input',{bubbles:true}));eventTitle.focus()}},350);return}input.value='';render('command')}}}
 function plannerMinutes(value){const match=String(value||'').match(/^(\d{1,2}):(\d{2})$/);if(!match)return 0;return Number(match[1])*60+Number(match[2])}
 function plannerTime(minutes){const safe=Math.max(0,Math.min(1439,Math.round(minutes)));return `${String(Math.floor(safe/60)).padStart(2,'0')}:${String(safe%60).padStart(2,'0')}`}
 function plannerFingerprint(date){const tasks=store.get('tasks').filter(task=>!task.done&&(!task.date||task.date<=date)).map(task=>[task.id,task.title,task.date,task.priority,task.done]),events=store.get('events').filter(event=>event.date===date).map(event=>[event.id,event.title,event.date,event.time]);return JSON.stringify({tasks,events})}
@@ -1460,14 +1460,323 @@ function worldStats(){const tasks=store.get('tasks'),events=store.get('events'),
 function checkWorldMilestones(state){const stats=worldStats(),level=worldLevelInfo(state.xp).level,checks={'first-task':stats.tasksDone>=1,'five-tasks':stats.tasksDone>=5,'ten-tasks':stats.tasksDone>=10,'first-event':stats.events>=1,'first-note':stats.notes>=1,'first-plan':stats.plans>=1,'level-three':level>=3,'xp-five-hundred':state.xp>=500};WORLD_MILESTONES.forEach(item=>{if(checks[item.id]&&!state.milestones[item.id])state.milestones[item.id]=new Date().toISOString()});return state}
 function syncExistingWorldProgress(){let state=getWorldState();if(state.rewarded.__migration_v1)return state;const tasks=store.get('tasks'),events=store.get('events'),notes=store.get('notes'),plans=store.get('dayPlans',{});tasks.filter(task=>task.done).forEach(task=>{const key=`task:${task.id}`;if(!state.rewarded[key]){const amount=worldTaskXP(task);state.rewarded[key]=true;state.xp+=amount}});events.forEach(event=>{const key=`event:${event.id}`;if(!state.rewarded[key]){state.rewarded[key]=true;state.xp+=12}});notes.forEach(note=>{const key=`note:${note.id}`;if(!state.rewarded[key]){state.rewarded[key]=true;state.xp+=8}});Object.keys(plans||{}).forEach(date=>{const key=`plan:${date}`;if(!state.rewarded[key]){state.rewarded[key]=true;state.xp+=15}});state.rewarded.__migration_v1=true;state=checkWorldMilestones(state);saveWorldState(state);return state}
 function showWorldReward(title,text){document.querySelector('.world-reward-toast')?.remove();const notice=document.createElement('div');notice.className='world-reward-toast';notice.innerHTML=`<strong>${esc(title)}</strong><span>${esc(text)}</span>`;document.body.appendChild(notice);if(typeof aiSwooshSound==='function')aiSwooshSound();setTimeout(()=>{notice.classList.add('out');setTimeout(()=>notice.remove(),380)},2600)}
-function awardWorldXP(kind,uniqueKey,amount,label){let state=getWorldState();const rewardKey=`${kind}:${uniqueKey}`;if(state.rewarded[rewardKey])return false;const previousXP=state.xp,previousLevel=worldLevelInfo(previousXP).level,previousRank=worldRankInfo(previousXP).name,previousUnlocks=WORLD_COLLECTIBLES.filter(item=>previousXP>=item.xp).map(item=>item.id);state.rewarded[rewardKey]=true;state.xp+=Math.max(0,Number(amount)||0);state.activities.unshift({id:crypto.randomUUID(),kind,label:String(label||'Fortschritt'),amount:Number(amount)||0,at:new Date().toISOString()});state=checkWorldMilestones(state);saveWorldState(state);const currentLevel=worldLevelInfo(state.xp).level,currentRank=worldRankInfo(state.xp),newUnlock=WORLD_COLLECTIBLES.find(item=>state.xp>=item.xp&&!previousUnlocks.includes(item.id));if(newUnlock)showWorldReward('Neues Weltobjekt freigeschaltet',newUnlock.name);else if(currentRank.name!==previousRank)showWorldReward(`Rang ${currentRank.name} erreicht`,`Dein Aufstieg in VIVAFIX World wurde sichtbar.`);else if(currentLevel>previousLevel)showWorldReward(`Level ${currentLevel} erreicht`,worldTitle(currentLevel));else showWorldReward(`+${amount} Welt-XP`,label);if(document.body.dataset.page==='world')render('world');return true}
+function awardWorldXP(kind,uniqueKey,amount,label){let state=getWorldState();const rewardKey=`${kind}:${uniqueKey}`;if(state.rewarded[rewardKey])return false;const previousXP=state.xp,previousLevel=worldLevelInfo(previousXP).level,previousRank=worldRankInfo(previousXP).name,previousUnlocks=WORLD_COLLECTIBLES.filter(item=>previousXP>=item.xp).map(item=>item.id);state.rewarded[rewardKey]=true;state.xp+=Math.max(0,Number(amount)||0);state.activities.unshift({id:crypto.randomUUID(),kind,label:String(label||'Fortschritt'),amount:Number(amount)||0,at:new Date().toISOString()});state=checkWorldMilestones(state);saveWorldState(state);const currentLevel=worldLevelInfo(state.xp).level,currentRank=worldRankInfo(state.xp),newUnlock=WORLD_COLLECTIBLES.find(item=>state.xp>=item.xp&&!previousUnlocks.includes(item.id));if(newUnlock)showWorldReward('Neues Weltobjekt freigeschaltet',newUnlock.name);else if(currentRank.name!==previousRank)showWorldReward(`Rang ${currentRank.name} erreicht`,`Dein Aufstieg in VIVAFIX World wurde sichtbar.`);else if(currentLevel>previousLevel)showWorldReward(`Level ${currentLevel} erreicht`,worldTitle(currentLevel));else showWorldReward(`+${amount} Welt-XP`,label);if(!['mission','daily-bonus'].includes(kind))dailyPulseOnAction(kind,uniqueKey);if(document.body.dataset.page==='world')render('world');return true}
 function worldObjectMarkup(state){return WORLD_COLLECTIBLES.filter(item=>state.xp>=item.xp).map((item,index)=>`<div class="world-object ${item.id}" style="--delay:${(index*.09).toFixed(2)}s" title="${esc(item.name)}"></div>`).join('')}
 function worldCollectionMarkup(state){return WORLD_COLLECTIBLES.map(item=>{const unlocked=state.xp>=item.xp;return`<article class="world-collectible ${unlocked?'unlocked':'locked'}"><div class="collectible-mark">${esc(item.mark)}</div><h4>${esc(item.name)}</h4><p>${esc(item.description)}</p><small>${unlocked?'Freigeschaltet':`${item.xp} XP benötigt`}</small></article>`}).join('')}
 function worldMilestoneMarkup(state){return WORLD_MILESTONES.map(item=>{const date=state.milestones[item.id];return`<article class="world-milestone ${date?'done':''}"><i>${esc(item.mark)}</i><div><h4>${esc(item.name)}</h4><p>${esc(item.description)}</p></div><time>${date?new Date(date).toLocaleDateString('de-DE'):'Offen'}</time></article>`}).join('')}
 function worldActivityMarkup(state){if(!state.activities.length)return'<div class="empty">Deine nächsten echten Fortschritte erscheinen hier.</div>';const marks={task:'✓',event:'T',note:'N',plan:'P',backup:'B'};return state.activities.slice(0,14).map(activity=>`<article class="world-activity-item"><b>${marks[activity.kind]||'+'}</b><div><strong>${esc(activity.label)}</strong><span>${new Date(activity.at).toLocaleString('de-DE')}</span></div><em>+${activity.amount} XP</em></article>`).join('')}
-function worldTemplate(){const state=checkWorldMilestones(syncExistingWorldProgress());saveWorldState(state);const levelInfo=worldLevelInfo(state.xp),rankInfo=worldRankInfo(state.xp),stage=worldStage(levelInfo.level),stats=worldStats(),unlockedCount=WORLD_COLLECTIBLES.filter(item=>state.xp>=item.xp).length,milestoneCount=Object.keys(state.milestones).length,xpToNext=Math.max(0,levelInfo.required-levelInfo.current);return`<section class="world-shell world-rank-${rankInfo.id}"><div class="world-head"><div class="world-head-row"><div><div class="eyebrow">VIVAFIX World</div><h2>Deine Insel lebt.</h2><p>${esc(worldTitle(levelInfo.level))}. Rang <strong>${esc(rankInfo.name)}</strong> – jede echte Aktion lädt deinen Kristallkern und hebt deine Welt an.</p></div><div class="world-level-badge"><div><strong>${levelInfo.level}</strong><span>LEVEL</span></div></div></div><div class="world-rank-strip"><div class="world-rank-main"><div class="world-rank-badge ${rankInfo.id}">${esc(rankInfo.name)}</div><div class="world-rank-copy"><strong>Rangstufe ${esc(rankInfo.name)}</strong><span>${rankInfo.next?`${rankInfo.toNext} XP bis ${rankInfo.next.name}`:'Maximalrang erreicht – dein Reich leuchtet bereits auf höchster Stufe.'}</span></div></div><div class="world-rank-track"><div class="world-rank-fill" style="width:${rankInfo.progress}%"></div></div></div></div><div class="world-progress-grid"><div class="world-progress-card"><div class="world-progress-copy"><strong>${state.xp} Welt-XP</strong><span>${levelInfo.current} / ${levelInfo.required} bis Level ${levelInfo.level+1}</span></div><div class="world-progress-track"><div class="world-progress-fill" style="width:${levelInfo.progress}%"></div></div></div><div class="world-xp-card"><h4>Live-Fortschritt</h4><div class="world-mini-kpis"><article><strong>${stats.tasksDone}</strong><span>ERLEDIGTE AUFGABEN</span></article><article><strong>${stats.events}</strong><span>TERMINE</span></article><article><strong>${xpToNext}</strong><span>XP BIS NEXT LEVEL</span></article><article><strong>${milestoneCount}</strong><span>MEILENSTEINE</span></article></div></div></div><div class="world-scene"><div class="world-rays"></div><div class="world-aura"></div><div class="world-orbit"></div><div class="world-shard s1"></div><div class="world-shard s2"></div><div class="world-shard s3"></div><div class="world-shard s4"></div><div class="world-island world-stage-${stage}"><div class="world-land"></div><div class="world-mountain"></div><div class="world-waterfall"></div><div class="world-tree t1"></div><div class="world-tree t2"></div><div class="world-tree t3"></div><div class="world-tree t4"></div><div class="world-crystal-core"><div class="world-crystal"></div><div class="world-crystal-glow"></div></div>${worldObjectMarkup(state)}</div><div class="world-fog"></div><div class="world-scene-caption"><span>Entwicklungsstufe ${stage} · Rang ${esc(rankInfo.name)}</span><strong>${unlockedCount} von ${WORLD_COLLECTIBLES.length} Objekten freigeschaltet</strong></div></div><div class="world-stats"><div class="world-stat"><strong>${stats.tasksDone}</strong><span>AUFGABEN ERLEDIGT</span></div><div class="world-stat"><strong>${state.xp}</strong><span>GESAMT-XP</span></div><div class="world-stat"><strong>${esc(rankInfo.name)}</strong><span>RANGSTUFE</span></div></div><section class="world-section"><div class="world-section-head"><div><div class="eyebrow">Questboard</div><h3>Dein Aufstieg</h3></div><span>live</span></div><div class="world-quest-grid"><article class="world-quest-card"><strong>+${worldTaskXP({priority:'hoch'})} XP</strong><span>HOHE AUFGABEN</span></article><article class="world-quest-card"><strong>${rankInfo.next?rankInfo.toNext:'0'}</strong><span>XP BIS NÄCHSTER RANG</span></article><article class="world-quest-card"><strong>${unlockedCount}</strong><span>AKTIVE INSELOBJEKTE</span></article></div></section><section class="world-section"><div class="world-section-head"><div><div class="eyebrow">Sammlung</div><h3>Inselobjekte</h3></div><span>${unlockedCount}/${WORLD_COLLECTIBLES.length}</span></div><div class="world-collection">${worldCollectionMarkup(state)}</div></section><section class="world-section"><div class="world-section-head"><div><div class="eyebrow">Fortschrittsbuch</div><h3>Meilensteine</h3></div><span>${milestoneCount}/${WORLD_MILESTONES.length}</span></div><div class="world-milestones">${worldMilestoneMarkup(state)}</div></section><section class="world-section"><div class="world-section-head"><div><div class="eyebrow">Chronik</div><h3>Letzte Entwicklung</h3></div><span>lokal gespeichert</span></div><div class="world-activity">${worldActivityMarkup(state)}</div></section></section>`}
-function worldPage(){const scene=document.querySelector('.world-scene');if(!scene)return;scene.addEventListener('pointermove',event=>{if(event.pointerType==='touch')return;const island=scene.querySelector('.world-island');if(!island)return;const rect=scene.getBoundingClientRect(),x=(event.clientX-rect.left)/rect.width-.5,y=(event.clientY-rect.top)/rect.height-.5;island.style.transform=`translate(-50%,-50%) rotateX(${(4-y*4).toFixed(2)}deg) rotateY(${(x*7).toFixed(2)}deg)`});scene.addEventListener('pointerleave',()=>{const island=scene.querySelector('.world-island');if(island)island.style.transform=''})}
+function worldTemplate(){const state=checkWorldMilestones(syncExistingWorldProgress());saveWorldState(state);const levelInfo=worldLevelInfo(state.xp),rankInfo=worldRankInfo(state.xp),daily=dailyPulseSummary(),stage=worldStage(levelInfo.level),stats=worldStats(),unlockedCount=WORLD_COLLECTIBLES.filter(item=>state.xp>=item.xp).length,milestoneCount=Object.keys(state.milestones).length,xpToNext=Math.max(0,levelInfo.required-levelInfo.current);return`<section class="world-shell world-rank-${rankInfo.id} world-energy-${daily.done}"><div class="world-head"><div class="world-head-row"><div><div class="eyebrow">VIVAFIX World</div><h2>Deine Insel lebt.</h2><p>${esc(worldTitle(levelInfo.level))}. Rang <strong>${esc(rankInfo.name)}</strong> – jede echte Aktion lädt deinen Kristallkern und hebt deine Welt an.</p></div><div class="world-level-badge"><div><strong>${levelInfo.level}</strong><span>LEVEL</span></div></div></div><div class="world-rank-strip"><div class="world-rank-main"><div class="world-rank-badge ${rankInfo.id}">${esc(rankInfo.name)}</div><div class="world-rank-copy"><strong>Rangstufe ${esc(rankInfo.name)}</strong><span>${rankInfo.next?`${rankInfo.toNext} XP bis ${rankInfo.next.name}`:'Maximalrang erreicht – dein Reich leuchtet bereits auf höchster Stufe.'}</span></div></div><div class="world-rank-track"><div class="world-rank-fill" style="width:${rankInfo.progress}%"></div></div></div></div><div class="world-progress-grid"><div class="world-progress-card"><div class="world-progress-copy"><strong>${state.xp} Welt-XP</strong><span>${levelInfo.current} / ${levelInfo.required} bis Level ${levelInfo.level+1}</span></div><div class="world-progress-track"><div class="world-progress-fill" style="width:${levelInfo.progress}%"></div></div></div><div class="world-xp-card"><h4>Live-Fortschritt</h4><div class="world-mini-kpis"><article><strong>${stats.tasksDone}</strong><span>ERLEDIGTE AUFGABEN</span></article><article><strong>${stats.events}</strong><span>TERMINE</span></article><article><strong>${xpToNext}</strong><span>XP BIS NEXT LEVEL</span></article><article><strong>${daily.todayXP}</strong><span>XP HEUTE</span></article></div></div></div><div class="world-scene"><div class="world-rays"></div><div class="world-aura"></div><div class="world-orbit"></div><div class="world-shard s1"></div><div class="world-shard s2"></div><div class="world-shard s3"></div><div class="world-shard s4"></div><div class="world-island world-stage-${stage}"><div class="world-land"></div><div class="world-mountain"></div><div class="world-waterfall"></div><div class="world-tree t1"></div><div class="world-tree t2"></div><div class="world-tree t3"></div><div class="world-tree t4"></div><div class="world-crystal-core"><div class="world-crystal"></div><div class="world-crystal-glow"></div></div>${worldObjectMarkup(state)}</div><div class="world-fog"></div><div class="world-scene-caption"><span>Kristallenergie ${daily.energy}% · Rang ${esc(rankInfo.name)}</span><strong>${unlockedCount} von ${WORLD_COLLECTIBLES.length} Objekten freigeschaltet</strong></div></div><div class="world-stats"><div class="world-stat"><strong>${daily.energy}%</strong><span>TAGESENERGIE</span></div><div class="world-stat"><strong>${state.xp}</strong><span>GESAMT-XP</span></div><div class="world-stat"><strong>${esc(rankInfo.name)}</strong><span>RANGSTUFE</span></div></div>${dailyPulseWorldMarkup()}<section class="world-section"><div class="world-section-head"><div><div class="eyebrow">Questboard</div><h3>Dein Aufstieg</h3></div><span>live</span></div><div class="world-quest-grid"><article class="world-quest-card"><strong>+${worldTaskXP({priority:'hoch'})} XP</strong><span>HOHE AUFGABEN</span></article><article class="world-quest-card"><strong>${rankInfo.next?rankInfo.toNext:'0'}</strong><span>XP BIS NÄCHSTER RANG</span></article><article class="world-quest-card"><strong>${unlockedCount}</strong><span>AKTIVE INSELOBJEKTE</span></article></div></section><section class="world-section"><div class="world-section-head"><div><div class="eyebrow">Sammlung</div><h3>Inselobjekte</h3></div><span>${unlockedCount}/${WORLD_COLLECTIBLES.length}</span></div><div class="world-collection">${worldCollectionMarkup(state)}</div></section><section class="world-section"><div class="world-section-head"><div><div class="eyebrow">Fortschrittsbuch</div><h3>Meilensteine</h3></div><span>${milestoneCount}/${WORLD_MILESTONES.length}</span></div><div class="world-milestones">${worldMilestoneMarkup(state)}</div></section><section class="world-section"><div class="world-section-head"><div><div class="eyebrow">Chronik</div><h3>Letzte Entwicklung</h3></div><span>lokal gespeichert</span></div><div class="world-activity">${worldActivityMarkup(state)}</div></section></section>`}
+function worldPage(){const scene=document.querySelector('.world-scene');if(scene){scene.addEventListener('pointermove',event=>{if(event.pointerType==='touch')return;const island=scene.querySelector('.world-island');if(!island)return;const rect=scene.getBoundingClientRect(),x=(event.clientX-rect.left)/rect.width-.5,y=(event.clientY-rect.top)/rect.height-.5;island.style.transform=`translate(-50%,-50%) rotateX(${(4-y*4).toFixed(2)}deg) rotateY(${(x*7).toFixed(2)}deg)`});scene.addEventListener('pointerleave',()=>{const island=scene.querySelector('.world-island');if(island)island.style.transform=''})}$$('[data-daily-target]').forEach(button=>button.onclick=()=>goToDailyMission(button.dataset.dailyTarget))}
 function setupWorld(){syncExistingWorldProgress()}
+
+
+const DAILY_PULSE_MAX_SHIELDS=2;
+
+function emptyDailyPulseState(){
+  return {
+    version:2,
+    days:{},
+    viewedDate:'',
+    streak:{current:0,best:0,lastActiveDate:'',shields:DAILY_PULSE_MAX_SHIELDS,protectedDays:0}
+  };
+}
+
+function getDailyPulseState(){
+  const state=store.get('dailyPulse',null);
+  if(!state||typeof state!=='object')return emptyDailyPulseState();
+  return {
+    ...emptyDailyPulseState(),
+    ...state,
+    days:state.days&&typeof state.days==='object'?state.days:{},
+    streak:{...emptyDailyPulseState().streak,...(state.streak||{})}
+  };
+}
+
+function saveDailyPulseState(state){
+  const dates=Object.keys(state.days||{}).sort().reverse();
+  dates.slice(45).forEach(date=>delete state.days[date]);
+  store.set('dailyPulse',state);
+}
+
+function dailyDateNumber(value){
+  return Math.floor(new Date(`${value}T12:00:00Z`).getTime()/86400000);
+}
+
+function dailyMissionIcon(type){
+  return ({task:'✓','task-create':'+',plan:'P',note:'N',event:'T',backup:'B'})[type]||'◆';
+}
+
+function dailyMissionDestination(type){
+  if(type==='task'||type==='task-create')return'tasks';
+  if(type==='plan'||type==='event')return'calendar';
+  return'more';
+}
+
+function createDailyMissions(date){
+  const tasks=store.get('tasks',[]).filter(task=>!task.done);
+  const priority={hoch:0,mittel:1,niedrig:2};
+  tasks.sort((a,b)=>{
+    const p=(priority[a.priority]??1)-(priority[b.priority]??1);
+    if(p)return p;
+    return String(a.date||'9999-99-99').localeCompare(String(b.date||'9999-99-99'));
+  });
+
+  const missions=[];
+  const focus=tasks[0];
+  if(focus){
+    missions.push({
+      id:'focus-task',
+      type:'task',
+      targetKey:String(focus.id),
+      title:`Schließe „${focus.title}“ ab`,
+      description:`${focus.priority||'mittel'} priorisiert · ${worldTaskXP(focus)} Aufgaben-XP plus Missionsbonus`,
+      reward:12,
+      done:false
+    });
+  }else{
+    missions.push({
+      id:'create-task',type:'task-create',targetKey:'',
+      title:'Erstelle eine klare Aufgabe',
+      description:'Gib deinem Tag einen konkreten nächsten Schritt.',reward:8,done:false
+    });
+  }
+
+  const plans=store.get('dayPlans',{});
+  if(!plans[date]){
+    missions.push({
+      id:'daily-plan',type:'plan',targetKey:date,
+      title:'Erstelle deinen Tagesplan',
+      description:'Ordne Aufgaben und Termine in einen ruhigen Tagesfluss.',reward:10,done:false
+    });
+  }else{
+    missions.push({
+      id:'daily-note',type:'note',targetKey:'',
+      title:'Bewahre einen wichtigen Gedanken',
+      description:'Speichere eine neue Notiz in VIVAFIX.',reward:8,done:false
+    });
+  }
+
+  const rotation=['backup','event','note'];
+  let type=rotation[dailyDateNumber(date)%rotation.length];
+  if(missions.some(mission=>mission.type===type)){
+    type=rotation[(rotation.indexOf(type)+1)%rotation.length];
+  }
+
+  const extras={
+    backup:{id:'daily-backup',title:'Sichere deinen Fortschritt',description:'Erstelle ein aktuelles VIVAFIX-Backup.',reward:8},
+    event:{id:'daily-event',title:'Setze einen festen Moment',description:'Erstelle einen Termin für deinen nächsten wichtigen Schritt.',reward:8},
+    note:{id:'daily-note-extra',title:'Halte einen Gedanken fest',description:'Erstelle eine neue Notiz.',reward:8}
+  };
+  missions.push({...extras[type],type,targetKey:'',done:false});
+
+  return missions.slice(0,3);
+}
+
+function ensureDailyPulseDay(date=today()){
+  const state=getDailyPulseState();
+  if(!state.days[date]){
+    state.days[date]={
+      date,
+      createdAt:new Date().toISOString(),
+      missions:createDailyMissions(date),
+      completedAt:'',
+      bonusAwarded:false
+    };
+    saveDailyPulseState(state);
+  }
+  return {state,day:state.days[date]};
+}
+
+function markDailyActive(state,date){
+  const streak=state.streak;
+  if(streak.lastActiveDate===date)return false;
+
+  if(!streak.lastActiveDate){
+    streak.current=1;
+  }else{
+    const difference=dailyDateNumber(date)-dailyDateNumber(streak.lastActiveDate);
+    if(difference<=0)return false;
+    if(difference===1){
+      streak.current=Math.max(1,streak.current)+1;
+    }else{
+      const missed=difference-1;
+      if(missed<=streak.shields){
+        streak.shields-=missed;
+        streak.protectedDays=(streak.protectedDays||0)+missed;
+        streak.current=Math.max(1,streak.current)+1;
+      }else{
+        streak.current=1;
+        streak.shields=DAILY_PULSE_MAX_SHIELDS;
+      }
+    }
+  }
+
+  streak.lastActiveDate=date;
+  streak.best=Math.max(streak.best||0,streak.current||0);
+  return true;
+}
+
+function dailyMissionMatches(mission,kind,key){
+  if(mission.type!==kind)return false;
+  if(!mission.targetKey)return true;
+  return String(mission.targetKey)===String(key||'');
+}
+
+function dailyPulseOnAction(kind,key=''){
+  if(['mission','daily-bonus'].includes(kind))return;
+
+  const date=today();
+  const {state,day}=ensureDailyPulseDay(date);
+  markDailyActive(state,date);
+
+  const completed=[];
+  day.missions.forEach(mission=>{
+    if(mission.done||!dailyMissionMatches(mission,kind,key))return;
+    mission.done=true;
+    mission.doneAt=new Date().toISOString();
+    completed.push(mission);
+  });
+
+  saveDailyPulseState(state);
+
+  completed.forEach(mission=>{
+    awardWorldXP('mission',`${date}:${mission.id}`,mission.reward,`Tagesmission: ${mission.title}`);
+  });
+
+  const fresh=getDailyPulseState();
+  const freshDay=fresh.days[date];
+  if(freshDay&&freshDay.missions.every(mission=>mission.done)&&!freshDay.bonusAwarded){
+    freshDay.bonusAwarded=true;
+    freshDay.completedAt=new Date().toISOString();
+    fresh.streak.shields=Math.min(DAILY_PULSE_MAX_SHIELDS,(fresh.streak.shields||0)+1);
+    saveDailyPulseState(fresh);
+    awardWorldXP('daily-bonus',date,25,'Daily Pulse vollständig abgeschlossen');
+    showDailyCompletion();
+  }
+
+  updateDailyPulseVisibleUI();
+}
+
+function dailyPulseSummary(date=today()){
+  const {state,day}=ensureDailyPulseDay(date);
+  const done=day.missions.filter(mission=>mission.done).length;
+  const energy=Math.round(done/day.missions.length*100);
+  const world=getWorldState();
+  const todayXP=(world.activities||[]).filter(activity=>String(activity.at||'').slice(0,10)===date).reduce((sum,activity)=>sum+(Number(activity.amount)||0),0);
+  return {state,day,done,total:day.missions.length,energy,todayXP};
+}
+
+function dailyMissionsMarkup(day,compact=false){
+  if(compact){
+    return day.missions.map(mission=>`<article class="daily-mini-mission ${mission.done?'done':''}"><b>${mission.done?'✓':dailyMissionIcon(mission.type)}</b><span>${esc(mission.title)}</span></article>`).join('');
+  }
+
+  return day.missions.map(mission=>`<article class="daily-mission ${mission.done?'done':''}">
+    <div class="daily-mission-icon">${mission.done?'✓':dailyMissionIcon(mission.type)}</div>
+    <div><h4>${esc(mission.title)}</h4><p>${esc(mission.description)}</p></div>
+    <div class="daily-mission-side"><strong>${mission.done?'ERLEDIGT':`+${mission.reward} XP`}</strong>${mission.done?'':`<button type="button" data-daily-target="${dailyMissionDestination(mission.type)}">Öffnen</button>`}</div>
+  </article>`).join('');
+}
+
+function dailyShieldsMarkup(count){
+  return Array.from({length:DAILY_PULSE_MAX_SHIELDS},(_,index)=>`<i class="daily-shield ${index<count?'active':''}"></i>`).join('');
+}
+
+function dailyPulseHomeMarkup(){
+  const {state,day,done,total,energy}=dailyPulseSummary();
+  return `<section class="daily-pulse-home" data-jump="world">
+    <div class="daily-pulse-home-head">
+      <div><div class="eyebrow">Daily Pulse</div><h3>${done===total?'Dein Tag leuchtet.':'Drei Schritte für heute.'}</h3><p>${done} von ${total} Missionen · ${energy}% Kristallenergie</p></div>
+      <div class="daily-streak-badge"><strong>${state.streak.current||0}</strong><span>AKTIVE TAGE</span></div>
+    </div>
+    <div class="daily-energy-row"><div class="daily-energy-track"><div class="daily-energy-fill" style="width:${energy}%"></div></div><div class="daily-energy-copy"><strong>${energy}%</strong><span>ENERGIE</span></div></div>
+    <div class="daily-mini-missions">${dailyMissionsMarkup(day,true)}</div>
+    <button type="button" class="btn secondary daily-pulse-open" data-jump="world">Daily Pulse öffnen</button>
+  </section>`;
+}
+
+function dailyPulseWorldMarkup(){
+  const {state,day,done,total,energy,todayXP}=dailyPulseSummary();
+  return `<section id="dailyPulseWorld" class="world-section daily-pulse-world">
+    <div class="daily-pulse-world-head">
+      <div><div class="eyebrow">Daily Pulse</div><h3>Deine Tagesmissionen</h3><p>${done===total?'Alle Missionen abgeschlossen. Deine Insel ist heute vollständig geladen.':'Erledige drei sinnvolle Schritte und lade deinen Kristallkern.'}</p></div>
+      <div class="daily-streak-badge"><strong>${state.streak.current||0}</strong><span>TAGE SERIE</span></div>
+    </div>
+    <div class="daily-pulse-kpis">
+      <div class="daily-pulse-kpi"><strong>${energy}%</strong><span>ENERGIE</span></div>
+      <div class="daily-pulse-kpi"><strong>${todayXP}</strong><span>XP HEUTE</span></div>
+      <div class="daily-pulse-kpi"><strong>${state.streak.best||0}</strong><span>BESTSERIE</span></div>
+      <div class="daily-pulse-kpi"><strong class="daily-shields">${dailyShieldsMarkup(state.streak.shields||0)}</strong><span>SCHUTZTAGE</span></div>
+    </div>
+    <div class="daily-energy-track"><div class="daily-energy-fill" style="width:${energy}%"></div></div>
+    <div class="daily-missions">${dailyMissionsMarkup(day,false)}</div>
+  </section>`;
+}
+
+function dailyPulseOverlayMarkup(){
+  const {state,day,done,total,energy}=dailyPulseSummary();
+  return `<div id="dailyPulseOverlay" class="daily-pulse-overlay">
+    <section class="daily-pulse-modal">
+      <div class="daily-modal-content">
+        <div class="eyebrow">VIVAFIX Daily Pulse</div>
+        <h2>${esc(greeting())}</h2>
+        <p>Heute warten drei klare Schritte auf dich. Kein Druck – nur ein ruhiger Weg nach vorn.</p>
+        <div class="daily-modal-crystal"></div>
+        <div class="daily-modal-missions">${day.missions.map(mission=>`<article class="daily-modal-mission"><i>${mission.done?'✓':dailyMissionIcon(mission.type)}</i><strong>${esc(mission.title)}</strong><span>${mission.done?'FERTIG':`+${mission.reward} XP`}</span></article>`).join('')}</div>
+        <div class="daily-energy-row"><div class="daily-energy-track"><div class="daily-energy-fill" style="width:${energy}%"></div></div><div class="daily-energy-copy"><strong>${done}/${total}</strong><span>MISSIONEN</span></div></div>
+        <button id="startDailyPulse" type="button" class="btn full" style="margin-top:15px">Tag starten</button>
+        <div style="margin-top:11px;text-align:center;color:var(--muted);font-size:10px">${state.streak.current||0} aktive Tage · ${state.streak.shields||0} Schutztage verfügbar</div>
+      </div>
+    </section>
+  </div>`;
+}
+
+function showDailyPulseIfNeeded(force=false){
+  const date=today();
+  const state=getDailyPulseState();
+  ensureDailyPulseDay(date);
+  if(!force&&state.viewedDate===date)return;
+
+  const fresh=getDailyPulseState();
+  fresh.viewedDate=date;
+  saveDailyPulseState(fresh);
+  document.querySelector('#dailyPulseOverlay')?.remove();
+  document.body.insertAdjacentHTML('beforeend',dailyPulseOverlayMarkup());
+  const overlay=$('#dailyPulseOverlay');
+  const close=()=>{overlay?.remove();render('home')};
+  $('#startDailyPulse')?.addEventListener('click',()=>{clickSound();close()});
+  overlay?.addEventListener('click',event=>{if(event.target===overlay)close()});
+}
+
+function showDailyCompletion(){
+  document.querySelector('.daily-complete-burst')?.remove();
+  const burst=document.createElement('div');
+  burst.className='daily-complete-burst';
+  burst.innerHTML='<div><strong>Tag abgeschlossen</strong><span>+25 Bonus-XP · Deine Insel ist heute stärker geworden.</span></div>';
+  document.body.appendChild(burst);
+  if(typeof playSwoosh==='function')playSwoosh();
+  setTimeout(()=>burst.remove(),1500);
+}
+
+function updateDailyPulseVisibleUI(){
+  if(document.body.dataset.page==='world'){
+    const holder=$('#dailyPulseWorld');
+    if(holder)holder.outerHTML=dailyPulseWorldMarkup();
+  }
+}
+
+function goToDailyMission(page){
+  goToPage(page,'daily');
+  setTimeout(()=>{
+    if(page==='tasks')$('#taskTitle')?.focus();
+    if(page==='calendar')$('#smartDayPlanner')?.scrollIntoView({behavior:'smooth',block:'start'});
+    if(page==='more')$('#exportBackup')?.scrollIntoView({behavior:'smooth',block:'center'});
+  },380);
+}
+
+function setupDailyPulse(){
+  ensureDailyPulseDay(today());
+}
 
 const templates={
 home:()=>{const tasks=store.get('tasks'),events=store.get('events'),open=tasks.filter(x=>!x.done),tod=events.filter(x=>x.date===today()),weatherLabel=weatherData?Math.round(weatherData.current.temperature_2m)+'° · '+weatherText(weatherData.current.weather_code)[1]:'Sunset-Wetter öffnen';const briefingText=buildBriefing(open,tod);return `
@@ -1482,6 +1791,7 @@ home:()=>{const tasks=store.get('tasks'),events=store.get('events'),open=tasks.f
 </div>
 <div class="stats"><div class="stat"><strong>${open.length}</strong><span>Aufgaben</span></div><div class="stat"><strong>${tod.length}</strong><span>Termine heute</span></div><div class="stat"><strong>${worldLevelInfo(getWorldState().xp).level}</strong><span>World Level</span></div></div>
 </section>
+${dailyPulseHomeMarkup()}
 <section class="briefing"><div class="eyebrow">AI Briefing</div><h3>${esc(greeting())}</h3><p>${esc(briefingText)}</p><div class="briefing-grid"><div class="briefing-chip"><strong>${open.length}</strong><span>OFFEN</span></div><div class="briefing-chip"><strong>${tod.length}</strong><span>TERMINE</span></div><div class="briefing-chip"><strong>${gmailMessages.length}</strong><span>MAILS</span></div><div class="briefing-chip"><strong>${weatherData?Math.round(weatherData.current.temperature_2m)+'°':'—'}</strong><span>WETTER</span></div></div></section>
 <div class="section-head"><h3>Dein Raum</h3></div>
 <section class="bento">
@@ -1656,6 +1966,8 @@ document.addEventListener('click',e=>{
  if(e.target.closest('input,textarea,select,label'))return;
  const island=e.target.closest('#heroIsland');
  if(island){e.preventDefault();goToPage('world','island');return}
+ const dailyTarget=e.target.closest('[data-daily-target]');
+ if(dailyTarget){e.preventDefault();goToDailyMission(dailyTarget.dataset.dailyTarget);return}
  const target=e.target.closest('[data-jump],[data-page]');
  if(!target)return;
  e.preventDefault();
@@ -2286,8 +2598,10 @@ function tasks(){
    e.preventDefault();
    const value=title.value.trim();
    if(!value){title.focus();return}
-   a.push({id:crypto.randomUUID(),title:value,date:date.value,priority:priority.value,done:false});
+   const newTask={id:crypto.randomUUID(),title:value,date:date.value,priority:priority.value,done:false};
+   a.push(newTask);
    store.set('tasks',a);
+   dailyPulseOnAction('task-create',newTask.id);
    clearPersistentFields(['taskTitle','taskDate','taskPriority']);
    form.reset();
    date.value=today();
@@ -3212,11 +3526,16 @@ function more(){
 
 setupPWA();
 setupWorld();
+setupDailyPulse();
 setupLiveThemes();
 setupIOSKeyboardViewport();
 const commandAvatar=$('#openCommandCenter');
 if(commandAvatar)commandAvatar.onclick=()=>goToPage('command','avatar');
 render('home');
+
+setTimeout(()=>{
+  showDailyPulseIfNeeded();
+},720);
 
 setTimeout(()=>{
   ensureAutomaticGPS('launch');
@@ -3234,6 +3553,8 @@ document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState==='visible'){
     updateWeatherLiveClock();
     applyLiveTheme();
+    setupDailyPulse();
+    setTimeout(()=>showDailyPulseIfNeeded(),500);
     setTimeout(()=>ensureAutomaticGPS('resume'),350);
   }
 });
@@ -3498,6 +3819,60 @@ input,textarea{
 @keyframes worldCrystalPulse{50%{transform:translateX(-50%) translateY(-6px) scale(1.03)}}
 @keyframes worldGlowPulse{50%{transform:translateX(-50%) scale(1.08);opacity:.92}}
 @media(max-width:560px){.world-progress-grid,.world-quest-grid,.task-world-strip{grid-template-columns:1fr}.world-mini-kpis{grid-template-columns:1fr 1fr}.task-side{align-items:flex-start}}
+
+
+/* ===== VIVAFIX PHASE 2 — DAILY PULSE ===== */
+.daily-pulse-home{
+  position:relative;overflow:hidden;margin:15px 0;padding:18px;border-radius:28px;
+  border:1px solid rgba(239,207,142,.24);
+  background:radial-gradient(circle at 88% 12%,rgba(239,207,142,.15),transparent 28%),linear-gradient(145deg,rgba(11,38,32,.83),rgba(17,20,36,.72));
+  box-shadow:0 22px 58px rgba(0,0,0,.26)
+}
+.daily-pulse-home::before{content:"";position:absolute;right:-48px;top:-54px;width:180px;height:180px;border-radius:50%;border:1px solid rgba(239,207,142,.18);box-shadow:0 0 0 24px rgba(239,207,142,.025),0 0 45px rgba(239,207,142,.10);animation:dailyPulseOrbit 11s linear infinite}
+.daily-pulse-home-head,.daily-pulse-world-head{position:relative;z-index:2;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.daily-pulse-home h3,.daily-pulse-world h3{margin:7px 0 5px;font:500 28px Georgia}
+.daily-pulse-home p,.daily-pulse-world p{margin:0;color:var(--muted);line-height:1.45}
+.daily-streak-badge{min-width:70px;padding:10px 9px;border-radius:18px;text-align:center;border:1px solid rgba(239,207,142,.28);background:rgba(239,207,142,.07)}
+.daily-streak-badge strong{display:block;color:var(--gold);font-size:23px}.daily-streak-badge span{display:block;margin-top:3px;color:var(--muted);font-size:8px;letter-spacing:.1em}
+.daily-energy-row{position:relative;z-index:2;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;margin-top:15px}
+.daily-energy-track{height:12px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden;box-shadow:inset 0 1px 4px rgba(0,0,0,.35)}
+.daily-energy-fill{height:100%;border-radius:inherit;background:linear-gradient(90deg,#4eb797,#e5bf73,#fff0c3);box-shadow:0 0 20px rgba(239,207,142,.34);transition:width .65s cubic-bezier(.18,.82,.22,1)}
+.daily-energy-copy{text-align:right}.daily-energy-copy strong{display:block;color:var(--gold);font-size:18px}.daily-energy-copy span{display:block;color:var(--muted);font-size:9px}
+.daily-mini-missions{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:13px}
+.daily-mini-mission{padding:11px;border-radius:17px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035)}
+.daily-mini-mission.done{border-color:rgba(87,194,151,.28);background:rgba(68,161,126,.08)}
+.daily-mini-mission b{display:block;color:var(--gold);font-size:15px}.daily-mini-mission span{display:block;margin-top:4px;color:var(--muted);font-size:9px;line-height:1.35}
+.daily-pulse-open{position:relative;z-index:2;width:100%;margin-top:12px}
+.daily-pulse-world{position:relative;overflow:hidden}
+.daily-pulse-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
+.daily-pulse-kpi{padding:11px 7px;border-radius:16px;text-align:center;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03)}
+.daily-pulse-kpi strong{display:block;color:var(--gold);font-size:18px}.daily-pulse-kpi span{display:block;margin-top:4px;color:var(--muted);font-size:8px;letter-spacing:.07em}
+.daily-missions{display:grid;gap:9px;margin-top:12px}
+.daily-mission{display:grid;grid-template-columns:43px 1fr auto;gap:11px;align-items:center;padding:13px;border-radius:19px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.035);transition:transform .2s ease,border-color .2s ease,opacity .2s ease}
+.daily-mission.done{border-color:rgba(94,205,159,.27);background:linear-gradient(145deg,rgba(57,151,115,.11),rgba(255,255,255,.025))}
+.daily-mission-icon{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;color:var(--gold);font:22px Georgia;border:1px solid rgba(239,207,142,.20);background:rgba(239,207,142,.06)}
+.daily-mission.done .daily-mission-icon{color:#8de0bb;border-color:rgba(92,210,159,.24);background:rgba(65,177,131,.10)}
+.daily-mission h4{margin:0 0 4px;font-size:13px}.daily-mission p{margin:0;color:var(--muted);font-size:10px;line-height:1.4}
+.daily-mission-side{text-align:right}.daily-mission-side strong{display:block;color:var(--gold);font-size:11px}.daily-mission-side button{margin-top:7px;border:1px solid rgba(255,255,255,.11);border-radius:11px;padding:7px 9px;background:rgba(255,255,255,.05);color:var(--ink);font-size:9px}
+.daily-mission.done .daily-mission-side strong{color:#8de0bb}
+.daily-shields{display:flex;align-items:center;gap:5px}.daily-shield{width:19px;height:22px;clip-path:polygon(50% 0,100% 17%,88% 73%,50% 100%,12% 73%,0 17%);background:linear-gradient(145deg,#dff6ff,#6facc7);opacity:.25;box-shadow:0 0 12px rgba(162,229,255,.20)}.daily-shield.active{opacity:1}
+.daily-pulse-overlay{position:fixed;inset:0;z-index:900;display:grid;place-items:center;padding:calc(env(safe-area-inset-top) + 22px) 18px calc(env(safe-area-inset-bottom) + 22px);background:rgba(2,9,9,.82);backdrop-filter:blur(22px);animation:dailyOverlayIn .38s ease}
+.daily-pulse-modal{position:relative;overflow:hidden;width:min(430px,100%);padding:24px;border-radius:34px;border:1px solid rgba(239,207,142,.32);background:radial-gradient(circle at 50% 3%,rgba(239,207,142,.18),transparent 32%),linear-gradient(155deg,rgba(8,32,27,.98),rgba(12,15,30,.97));box-shadow:0 35px 100px rgba(0,0,0,.55)}
+.daily-pulse-modal::before{content:"";position:absolute;inset:-35%;background:conic-gradient(from 30deg,transparent,rgba(239,207,142,.08),transparent 28%,rgba(87,195,168,.08),transparent 58%);animation:dailyPulseOrbit 20s linear infinite}
+.daily-modal-content{position:relative;z-index:2}.daily-pulse-modal h2{margin:13px 0 8px;font:500 40px/1.02 Georgia}.daily-pulse-modal>div p,.daily-modal-content>p{color:var(--muted);line-height:1.5}
+.daily-modal-crystal{position:relative;width:100px;height:118px;margin:8px auto 16px}
+.daily-modal-crystal::before{content:"";position:absolute;left:50%;top:0;width:78px;height:105px;transform:translateX(-50%);clip-path:polygon(50% 0,100% 29%,80% 100%,20% 100%,0 29%);background:linear-gradient(180deg,#fff6d7,#86ecd8 41%,#427d9b 76%,rgba(34,66,84,.1));box-shadow:0 0 34px rgba(144,239,224,.38);animation:dailyCrystalFloat 3.4s ease-in-out infinite}
+.daily-modal-crystal::after{content:"";position:absolute;left:50%;bottom:0;width:150px;height:45px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,rgba(137,239,219,.43),transparent 70%);filter:blur(7px)}
+.daily-modal-missions{display:grid;gap:8px;margin:15px 0}.daily-modal-mission{display:grid;grid-template-columns:32px 1fr auto;gap:10px;align-items:center;padding:11px;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035)}.daily-modal-mission i{width:31px;height:31px;border-radius:10px;display:grid;place-items:center;font-style:normal;color:var(--gold);background:rgba(239,207,142,.07)}.daily-modal-mission strong{font-size:11px}.daily-modal-mission span{color:var(--gold);font-size:10px}
+.daily-complete-burst{position:fixed;inset:0;z-index:930;pointer-events:none;display:grid;place-items:center;background:radial-gradient(circle,rgba(255,240,184,.30),rgba(69,177,148,.12) 26%,transparent 58%);animation:dailyBurst 1.45s ease forwards}.daily-complete-burst div{padding:18px 22px;border-radius:25px;text-align:center;border:1px solid rgba(239,207,142,.42);background:rgba(7,24,20,.95);box-shadow:0 24px 70px rgba(0,0,0,.45)}.daily-complete-burst strong{display:block;color:#fff0c4;font:500 22px Georgia}.daily-complete-burst span{display:block;margin-top:5px;color:var(--muted);font-size:11px}
+.world-energy-0 .world-rays{opacity:.22}.world-energy-1 .world-rays{opacity:.42}.world-energy-2 .world-rays{opacity:.72}.world-energy-3 .world-rays{opacity:1;filter:brightness(1.34)}
+.world-energy-0 .world-crystal{filter:saturate(.65) brightness(.76)}.world-energy-1 .world-crystal{filter:brightness(.95)}.world-energy-2 .world-crystal{filter:brightness(1.12) saturate(1.15)}.world-energy-3 .world-crystal{filter:brightness(1.38) saturate(1.32);box-shadow:0 0 48px rgba(166,248,234,.62),0 0 80px rgba(239,207,142,.30),inset 0 0 24px rgba(255,255,255,.45)}
+.world-energy-3 .world-aura{opacity:1;transform:translate(-50%,-50%) scale(1.12)}
+@keyframes dailyPulseOrbit{to{transform:rotate(360deg)}}
+@keyframes dailyOverlayIn{from{opacity:0;filter:blur(8px)}}
+@keyframes dailyCrystalFloat{50%{transform:translateX(-50%) translateY(-7px) scale(1.04)}}
+@keyframes dailyBurst{0%{opacity:0;transform:scale(.82)}30%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.08)}}
+@media(max-width:520px){.daily-mini-missions{grid-template-columns:1fr}.daily-pulse-kpis{grid-template-columns:1fr 1fr}.daily-mission{grid-template-columns:40px 1fr}.daily-mission-side{grid-column:2;text-align:left}.daily-energy-row{grid-template-columns:1fr}.daily-energy-copy{text-align:left}}
 
 </style>
 
