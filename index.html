@@ -12,7 +12,7 @@
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="VIVAFIX">
-<meta name="vivafix-version" content="WORLD-PHASE-1-V1">
+<meta name="vivafix-version" content="WORLD-RANK-WOW-V2">
 <title>VIVAFIX World Edition</title>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
@@ -1072,6 +1072,58 @@ body[data-live-theme="fog"]::after{background:linear-gradient(180deg,rgba(176,19
 .world-reward-toast{position:fixed;left:50%;top:95px;z-index:700;width:min(340px,calc(100% - 34px));transform:translateX(-50%);padding:15px 16px;border-radius:22px;border:1px solid rgba(239,207,142,.55);background:rgba(7,20,17,.96);box-shadow:0 22px 65px rgba(0,0,0,.46),0 0 32px rgba(239,207,142,.16);backdrop-filter:blur(20px);animation:worldRewardIn .48s cubic-bezier(.18,.82,.22,1)}.world-reward-toast strong{display:block;color:#fff0c6;font-size:14px}.world-reward-toast span{display:block;margin-top:4px;color:var(--muted);font-size:11px}@keyframes worldRewardIn{from{opacity:0;transform:translateX(-50%) translateY(-20px) scale(.92);filter:blur(4px)}to{opacity:1;transform:translateX(-50%);filter:none}}.world-reward-toast.out{opacity:0;transform:translateX(-50%) translateY(-14px) scale(.96);transition:.35s ease}
 @media(max-width:390px){.world-head h2{font-size:34px}.world-scene{height:365px}.world-island{transform:translate(-50%,-50%) scale(.90)}.world-level-badge{width:56px;min-width:56px;height:56px}}
 
+
+/* ===== VIVAFIX WORLD — WOW UPGRADE ===== */
+.world-shell{--rankGlow:rgba(239,207,142,.22)}
+.world-shell.world-rank-bronze{--rankGlow:rgba(197,143,106,.26)}
+.world-shell.world-rank-silber{--rankGlow:rgba(194,211,223,.26)}
+.world-shell.world-rank-gold{--rankGlow:rgba(239,207,142,.28)}
+.world-shell.world-rank-platin{--rankGlow:rgba(167,227,255,.30)}
+.world-progress-grid{position:relative;z-index:3;display:grid;grid-template-columns:1.08fr .92fr;gap:12px;align-items:stretch}
+.world-rank-strip,.world-xp-card,.world-quest-card{border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04);backdrop-filter:blur(10px);box-shadow:0 14px 35px rgba(0,0,0,.18)}
+.world-rank-strip{position:relative;z-index:3;margin-top:15px;padding:14px;border-radius:24px;overflow:hidden}
+.world-rank-strip::before{content:"";position:absolute;inset:-30%;background:radial-gradient(circle at 20% 30%,var(--rankGlow),transparent 25%),radial-gradient(circle at 90% 20%,rgba(255,255,255,.06),transparent 18%);pointer-events:none}
+.world-rank-main{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+.world-rank-badge{min-width:92px;padding:10px 12px;border-radius:16px;text-align:center;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#11201d;border:1px solid rgba(255,255,255,.16)}
+.world-rank-badge.bronze{background:linear-gradient(145deg,#e1af88,#9e6446)}
+.world-rank-badge.silber{background:linear-gradient(145deg,#eef3f6,#9eaebb)}
+.world-rank-badge.gold{background:linear-gradient(145deg,#fff1c8,#d6ab54)}
+.world-rank-badge.platin{background:linear-gradient(145deg,#eef9ff,#88cae6)}
+.world-rank-copy strong{display:block;font-size:14px}
+.world-rank-copy span{display:block;margin-top:3px;color:var(--muted);font-size:11px;line-height:1.35}
+.world-rank-track{position:relative;z-index:1;height:10px;border-radius:999px;margin-top:12px;background:rgba(255,255,255,.08);overflow:hidden}
+.world-rank-fill{height:100%;border-radius:inherit;background:linear-gradient(90deg,#66c8a1,#efd08e,#ffffff);box-shadow:0 0 18px var(--rankGlow);transition:width .7s cubic-bezier(.18,.82,.22,1)}
+.world-xp-card{position:relative;z-index:3;padding:14px;border-radius:24px}
+.world-xp-card h4{margin:0 0 10px;font:500 17px Georgia}
+.world-mini-kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.world-mini-kpis article,.world-quest-card{padding:12px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07)}
+.world-mini-kpis strong,.world-quest-card strong{display:block;font-size:18px;color:var(--gold)}
+.world-mini-kpis span,.world-quest-card span{display:block;margin-top:4px;color:var(--muted);font-size:10px;letter-spacing:.06em}
+.world-scene{box-shadow:inset 0 1px rgba(255,255,255,.07),0 20px 48px rgba(0,0,0,.22)}
+.world-rays{position:absolute;left:50%;top:46%;width:460px;height:460px;transform:translate(-50%,-50%);border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(239,207,142,.14) 0 7deg,transparent 7deg 20deg);filter:blur(1.5px);opacity:.62;animation:worldRaySpin 26s linear infinite}
+.world-aura{position:absolute;left:50%;top:49%;width:310px;height:310px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(239,207,142,.26) 0,rgba(106,207,188,.13) 34%,transparent 70%);filter:blur(8px);animation:worldAuraPulse 4.6s ease-in-out infinite}
+.world-shard{position:absolute;width:18px;height:54px;clip-path:polygon(50% 0,100% 34%,76% 100%,24% 100%,0 34%);background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(135,238,231,.72),rgba(80,142,196,.12));box-shadow:0 0 18px rgba(171,239,255,.25);opacity:.78;animation:worldShardFloat 6.2s ease-in-out infinite}
+.world-shard.s1{left:17%;top:22%;transform:rotate(-22deg);animation-delay:.2s}.world-shard.s2{right:18%;top:20%;transform:rotate(18deg);animation-delay:1s}.world-shard.s3{left:22%;bottom:18%;transform:rotate(20deg) scale(.9);animation-delay:1.8s}.world-shard.s4{right:16%;bottom:22%;transform:rotate(-18deg) scale(1.08);animation-delay:2.4s}
+.world-crystal-core{position:absolute;left:50%;top:92px;width:82px;height:112px;transform:translateX(-50%);z-index:6;pointer-events:none}
+.world-crystal{position:absolute;left:50%;top:0;width:74px;height:104px;transform:translateX(-50%);clip-path:polygon(50% 0,100% 28%,82% 100%,18% 100%,0 28%);background:linear-gradient(180deg,#fff6da 0%,#7de8d5 40%,#326e8d 72%,rgba(40,81,102,.12) 100%);box-shadow:0 0 26px rgba(166,248,234,.32),inset 0 0 22px rgba(255,255,255,.35);animation:worldCrystalPulse 3.4s ease-in-out infinite}
+.world-crystal::before{content:"";position:absolute;left:15px;top:12px;width:16px;height:58px;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,.82),rgba(255,255,255,0));transform:rotate(12deg)}
+.world-crystal-glow{position:absolute;left:50%;bottom:-10px;width:126px;height:50px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,rgba(163,248,237,.50),rgba(100,191,174,.24) 35%,transparent 72%);filter:blur(6px);animation:worldGlowPulse 3.4s ease-in-out infinite}
+.world-scene-caption{backdrop-filter:blur(8px)}
+.world-quest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.task-world-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 18px}
+.task-world-pill{padding:12px;border-radius:18px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.04)}
+.task-world-pill strong{display:block;color:var(--gold);font-size:18px}.task-world-pill span{display:block;margin-top:4px;color:var(--muted);font-size:10px;letter-spacing:.06em}
+.task-main p{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.task-side{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.task-xp-badge{display:inline-flex;align-items:center;justify-content:center;min-width:64px;padding:6px 9px;border-radius:999px;background:rgba(239,207,142,.12);border:1px solid rgba(239,207,142,.16);color:var(--gold);font-size:11px;font-weight:700}
+.task-item.done{opacity:.9}.task-item.done .task-xp-badge{background:rgba(111,197,163,.14);border-color:rgba(111,197,163,.18);color:#8cdbbc}
+@keyframes worldRaySpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes worldAuraPulse{50%{transform:translate(-50%,-50%) scale(1.05);opacity:.85}}
+@keyframes worldShardFloat{50%{transform:translateY(-12px) rotate(var(--r,0deg)) scale(1.04)}}
+@keyframes worldCrystalPulse{50%{transform:translateX(-50%) translateY(-6px) scale(1.03)}}
+@keyframes worldGlowPulse{50%{transform:translateX(-50%) scale(1.08);opacity:.92}}
+@media(max-width:560px){.world-progress-grid,.world-quest-grid,.task-world-strip{grid-template-columns:1fr}.world-mini-kpis{grid-template-columns:1fr 1fr}.task-side{align-items:flex-start}}
+
 </style>
 </head>
 <body>
@@ -1394,18 +1446,26 @@ function emptyWorldState(){return{version:1,xp:0,rewarded:{},milestones:{},activ
 function getWorldState(){const state=store.get('world',null);if(!state||typeof state!=='object')return emptyWorldState();return{...emptyWorldState(),...state,rewarded:state.rewarded||{},milestones:state.milestones||{},activities:Array.isArray(state.activities)?state.activities:[]}}
 function saveWorldState(state){state.activities=(state.activities||[]).slice(0,60);store.set('world',state)}
 function worldLevelInfo(totalXP){let level=1,remaining=Math.max(0,Number(totalXP)||0),required=Math.round(90*Math.pow(level,1.25));while(remaining>=required&&level<99){remaining-=required;level++;required=Math.round(90*Math.pow(level,1.25))}return{level,current:remaining,required,progress:Math.max(0,Math.min(100,Math.round(remaining/required*100)))}}
+const WORLD_RANKS=[
+{id:'bronze',name:'Bronze',min:0,mark:'I'},
+{id:'silber',name:'Silber',min:150,mark:'II'},
+{id:'gold',name:'Gold',min:400,mark:'III'},
+{id:'platin',name:'Platin',min:800,mark:'IV'}
+];
+function worldRankInfo(totalXP){const xp=Math.max(0,Number(totalXP)||0);let rank=WORLD_RANKS[0],next=null;for(let i=0;i<WORLD_RANKS.length;i++){if(xp>=WORLD_RANKS[i].min){rank=WORLD_RANKS[i];next=WORLD_RANKS[i+1]||null}}const rankStart=rank.min,nextMin=next?next.min:xp,progress=next?Math.max(0,Math.min(100,Math.round((xp-rankStart)/(next.min-rankStart)*100))):100;return{...rank,next,progress,currentInRank:xp-rankStart,toNext:next?Math.max(0,next.min-xp):0}}
+function worldTaskXP(task){return task.priority==='hoch'?30:task.priority==='niedrig'?15:20}
 function worldStage(level){if(level>=8)return 4;if(level>=5)return 3;if(level>=3)return 2;return 1}
 function worldTitle(level){if(level>=10)return'Architekt der leuchtenden Welt';if(level>=8)return'Hüter des Leuchtfeuers';if(level>=5)return'Erbauer der Insel';if(level>=3)return'Entdecker des grünen Kerns';return'Gründer der ersten Insel'}
 function worldStats(){const tasks=store.get('tasks'),events=store.get('events'),notes=store.get('notes'),plans=store.get('dayPlans',{});return{tasksDone:tasks.filter(task=>task.done).length,events:events.length,notes:notes.length,plans:Object.keys(plans||{}).length}}
 function checkWorldMilestones(state){const stats=worldStats(),level=worldLevelInfo(state.xp).level,checks={'first-task':stats.tasksDone>=1,'five-tasks':stats.tasksDone>=5,'ten-tasks':stats.tasksDone>=10,'first-event':stats.events>=1,'first-note':stats.notes>=1,'first-plan':stats.plans>=1,'level-three':level>=3,'xp-five-hundred':state.xp>=500};WORLD_MILESTONES.forEach(item=>{if(checks[item.id]&&!state.milestones[item.id])state.milestones[item.id]=new Date().toISOString()});return state}
-function syncExistingWorldProgress(){let state=getWorldState();if(state.rewarded.__migration_v1)return state;const tasks=store.get('tasks'),events=store.get('events'),notes=store.get('notes'),plans=store.get('dayPlans',{});tasks.filter(task=>task.done).forEach(task=>{const key=`task:${task.id}`;if(!state.rewarded[key]){const amount=task.priority==='hoch'?30:20;state.rewarded[key]=true;state.xp+=amount}});events.forEach(event=>{const key=`event:${event.id}`;if(!state.rewarded[key]){state.rewarded[key]=true;state.xp+=12}});notes.forEach(note=>{const key=`note:${note.id}`;if(!state.rewarded[key]){state.rewarded[key]=true;state.xp+=8}});Object.keys(plans||{}).forEach(date=>{const key=`plan:${date}`;if(!state.rewarded[key]){state.rewarded[key]=true;state.xp+=15}});state.rewarded.__migration_v1=true;state=checkWorldMilestones(state);saveWorldState(state);return state}
+function syncExistingWorldProgress(){let state=getWorldState();if(state.rewarded.__migration_v1)return state;const tasks=store.get('tasks'),events=store.get('events'),notes=store.get('notes'),plans=store.get('dayPlans',{});tasks.filter(task=>task.done).forEach(task=>{const key=`task:${task.id}`;if(!state.rewarded[key]){const amount=worldTaskXP(task);state.rewarded[key]=true;state.xp+=amount}});events.forEach(event=>{const key=`event:${event.id}`;if(!state.rewarded[key]){state.rewarded[key]=true;state.xp+=12}});notes.forEach(note=>{const key=`note:${note.id}`;if(!state.rewarded[key]){state.rewarded[key]=true;state.xp+=8}});Object.keys(plans||{}).forEach(date=>{const key=`plan:${date}`;if(!state.rewarded[key]){state.rewarded[key]=true;state.xp+=15}});state.rewarded.__migration_v1=true;state=checkWorldMilestones(state);saveWorldState(state);return state}
 function showWorldReward(title,text){document.querySelector('.world-reward-toast')?.remove();const notice=document.createElement('div');notice.className='world-reward-toast';notice.innerHTML=`<strong>${esc(title)}</strong><span>${esc(text)}</span>`;document.body.appendChild(notice);if(typeof aiSwooshSound==='function')aiSwooshSound();setTimeout(()=>{notice.classList.add('out');setTimeout(()=>notice.remove(),380)},2600)}
-function awardWorldXP(kind,uniqueKey,amount,label){let state=getWorldState();const rewardKey=`${kind}:${uniqueKey}`;if(state.rewarded[rewardKey])return false;const previousXP=state.xp,previousLevel=worldLevelInfo(previousXP).level,previousUnlocks=WORLD_COLLECTIBLES.filter(item=>previousXP>=item.xp).map(item=>item.id);state.rewarded[rewardKey]=true;state.xp+=Math.max(0,Number(amount)||0);state.activities.unshift({id:crypto.randomUUID(),kind,label:String(label||'Fortschritt'),amount:Number(amount)||0,at:new Date().toISOString()});state=checkWorldMilestones(state);saveWorldState(state);const currentLevel=worldLevelInfo(state.xp).level,newUnlock=WORLD_COLLECTIBLES.find(item=>state.xp>=item.xp&&!previousUnlocks.includes(item.id));if(newUnlock)showWorldReward('Neues Weltobjekt freigeschaltet',newUnlock.name);else if(currentLevel>previousLevel)showWorldReward(`Level ${currentLevel} erreicht`,worldTitle(currentLevel));else showWorldReward(`+${amount} Welt-XP`,label);if(document.body.dataset.page==='world')render('world');return true}
+function awardWorldXP(kind,uniqueKey,amount,label){let state=getWorldState();const rewardKey=`${kind}:${uniqueKey}`;if(state.rewarded[rewardKey])return false;const previousXP=state.xp,previousLevel=worldLevelInfo(previousXP).level,previousRank=worldRankInfo(previousXP).name,previousUnlocks=WORLD_COLLECTIBLES.filter(item=>previousXP>=item.xp).map(item=>item.id);state.rewarded[rewardKey]=true;state.xp+=Math.max(0,Number(amount)||0);state.activities.unshift({id:crypto.randomUUID(),kind,label:String(label||'Fortschritt'),amount:Number(amount)||0,at:new Date().toISOString()});state=checkWorldMilestones(state);saveWorldState(state);const currentLevel=worldLevelInfo(state.xp).level,currentRank=worldRankInfo(state.xp),newUnlock=WORLD_COLLECTIBLES.find(item=>state.xp>=item.xp&&!previousUnlocks.includes(item.id));if(newUnlock)showWorldReward('Neues Weltobjekt freigeschaltet',newUnlock.name);else if(currentRank.name!==previousRank)showWorldReward(`Rang ${currentRank.name} erreicht`,`Dein Aufstieg in VIVAFIX World wurde sichtbar.`);else if(currentLevel>previousLevel)showWorldReward(`Level ${currentLevel} erreicht`,worldTitle(currentLevel));else showWorldReward(`+${amount} Welt-XP`,label);if(document.body.dataset.page==='world')render('world');return true}
 function worldObjectMarkup(state){return WORLD_COLLECTIBLES.filter(item=>state.xp>=item.xp).map((item,index)=>`<div class="world-object ${item.id}" style="--delay:${(index*.09).toFixed(2)}s" title="${esc(item.name)}"></div>`).join('')}
 function worldCollectionMarkup(state){return WORLD_COLLECTIBLES.map(item=>{const unlocked=state.xp>=item.xp;return`<article class="world-collectible ${unlocked?'unlocked':'locked'}"><div class="collectible-mark">${esc(item.mark)}</div><h4>${esc(item.name)}</h4><p>${esc(item.description)}</p><small>${unlocked?'Freigeschaltet':`${item.xp} XP benötigt`}</small></article>`}).join('')}
 function worldMilestoneMarkup(state){return WORLD_MILESTONES.map(item=>{const date=state.milestones[item.id];return`<article class="world-milestone ${date?'done':''}"><i>${esc(item.mark)}</i><div><h4>${esc(item.name)}</h4><p>${esc(item.description)}</p></div><time>${date?new Date(date).toLocaleDateString('de-DE'):'Offen'}</time></article>`}).join('')}
 function worldActivityMarkup(state){if(!state.activities.length)return'<div class="empty">Deine nächsten echten Fortschritte erscheinen hier.</div>';const marks={task:'✓',event:'T',note:'N',plan:'P',backup:'B'};return state.activities.slice(0,14).map(activity=>`<article class="world-activity-item"><b>${marks[activity.kind]||'+'}</b><div><strong>${esc(activity.label)}</strong><span>${new Date(activity.at).toLocaleString('de-DE')}</span></div><em>+${activity.amount} XP</em></article>`).join('')}
-function worldTemplate(){const state=checkWorldMilestones(syncExistingWorldProgress());saveWorldState(state);const levelInfo=worldLevelInfo(state.xp),stage=worldStage(levelInfo.level),stats=worldStats(),unlockedCount=WORLD_COLLECTIBLES.filter(item=>state.xp>=item.xp).length,milestoneCount=Object.keys(state.milestones).length;return`<section class="world-shell"><div class="world-head"><div class="world-head-row"><div><div class="eyebrow">VIVAFIX World</div><h2>Dein Fortschritt wird sichtbar.</h2><p>${esc(worldTitle(levelInfo.level))}. Jede echte Aktion entwickelt deine Insel weiter.</p></div><div class="world-level-badge"><div><strong>${levelInfo.level}</strong><span>LEVEL</span></div></div></div></div><div class="world-progress-card"><div class="world-progress-copy"><strong>${state.xp} Welt-XP</strong><span>${levelInfo.current} / ${levelInfo.required} bis Level ${levelInfo.level+1}</span></div><div class="world-progress-track"><div class="world-progress-fill" style="width:${levelInfo.progress}%"></div></div></div><div class="world-scene"><div class="world-orbit"></div><div class="world-island world-stage-${stage}"><div class="world-land"></div><div class="world-mountain"></div><div class="world-waterfall"></div><div class="world-tree t1"></div><div class="world-tree t2"></div><div class="world-tree t3"></div><div class="world-tree t4"></div>${worldObjectMarkup(state)}</div><div class="world-fog"></div><div class="world-scene-caption"><span>Entwicklungsstufe ${stage}</span><strong>${unlockedCount} von ${WORLD_COLLECTIBLES.length} Objekten</strong></div></div><div class="world-stats"><div class="world-stat"><strong>${stats.tasksDone}</strong><span>AUFGABEN ERLEDIGT</span></div><div class="world-stat"><strong>${stats.events}</strong><span>TERMINE GESETZT</span></div><div class="world-stat"><strong>${milestoneCount}</strong><span>MEILENSTEINE</span></div></div><section class="world-section"><div class="world-section-head"><div><div class="eyebrow">Sammlung</div><h3>Inselobjekte</h3></div><span>${unlockedCount}/${WORLD_COLLECTIBLES.length}</span></div><div class="world-collection">${worldCollectionMarkup(state)}</div></section><section class="world-section"><div class="world-section-head"><div><div class="eyebrow">Fortschrittsbuch</div><h3>Meilensteine</h3></div><span>${milestoneCount}/${WORLD_MILESTONES.length}</span></div><div class="world-milestones">${worldMilestoneMarkup(state)}</div></section><section class="world-section"><div class="world-section-head"><div><div class="eyebrow">Chronik</div><h3>Letzte Entwicklung</h3></div><span>lokal gespeichert</span></div><div class="world-activity">${worldActivityMarkup(state)}</div></section></section>`}
+function worldTemplate(){const state=checkWorldMilestones(syncExistingWorldProgress());saveWorldState(state);const levelInfo=worldLevelInfo(state.xp),rankInfo=worldRankInfo(state.xp),stage=worldStage(levelInfo.level),stats=worldStats(),unlockedCount=WORLD_COLLECTIBLES.filter(item=>state.xp>=item.xp).length,milestoneCount=Object.keys(state.milestones).length,xpToNext=Math.max(0,levelInfo.required-levelInfo.current);return`<section class="world-shell world-rank-${rankInfo.id}"><div class="world-head"><div class="world-head-row"><div><div class="eyebrow">VIVAFIX World</div><h2>Deine Insel lebt.</h2><p>${esc(worldTitle(levelInfo.level))}. Rang <strong>${esc(rankInfo.name)}</strong> – jede echte Aktion lädt deinen Kristallkern und hebt deine Welt an.</p></div><div class="world-level-badge"><div><strong>${levelInfo.level}</strong><span>LEVEL</span></div></div></div><div class="world-rank-strip"><div class="world-rank-main"><div class="world-rank-badge ${rankInfo.id}">${esc(rankInfo.name)}</div><div class="world-rank-copy"><strong>Rangstufe ${esc(rankInfo.name)}</strong><span>${rankInfo.next?`${rankInfo.toNext} XP bis ${rankInfo.next.name}`:'Maximalrang erreicht – dein Reich leuchtet bereits auf höchster Stufe.'}</span></div></div><div class="world-rank-track"><div class="world-rank-fill" style="width:${rankInfo.progress}%"></div></div></div></div><div class="world-progress-grid"><div class="world-progress-card"><div class="world-progress-copy"><strong>${state.xp} Welt-XP</strong><span>${levelInfo.current} / ${levelInfo.required} bis Level ${levelInfo.level+1}</span></div><div class="world-progress-track"><div class="world-progress-fill" style="width:${levelInfo.progress}%"></div></div></div><div class="world-xp-card"><h4>Live-Fortschritt</h4><div class="world-mini-kpis"><article><strong>${stats.tasksDone}</strong><span>ERLEDIGTE AUFGABEN</span></article><article><strong>${stats.events}</strong><span>TERMINE</span></article><article><strong>${xpToNext}</strong><span>XP BIS NEXT LEVEL</span></article><article><strong>${milestoneCount}</strong><span>MEILENSTEINE</span></article></div></div></div><div class="world-scene"><div class="world-rays"></div><div class="world-aura"></div><div class="world-orbit"></div><div class="world-shard s1"></div><div class="world-shard s2"></div><div class="world-shard s3"></div><div class="world-shard s4"></div><div class="world-island world-stage-${stage}"><div class="world-land"></div><div class="world-mountain"></div><div class="world-waterfall"></div><div class="world-tree t1"></div><div class="world-tree t2"></div><div class="world-tree t3"></div><div class="world-tree t4"></div><div class="world-crystal-core"><div class="world-crystal"></div><div class="world-crystal-glow"></div></div>${worldObjectMarkup(state)}</div><div class="world-fog"></div><div class="world-scene-caption"><span>Entwicklungsstufe ${stage} · Rang ${esc(rankInfo.name)}</span><strong>${unlockedCount} von ${WORLD_COLLECTIBLES.length} Objekten freigeschaltet</strong></div></div><div class="world-stats"><div class="world-stat"><strong>${stats.tasksDone}</strong><span>AUFGABEN ERLEDIGT</span></div><div class="world-stat"><strong>${state.xp}</strong><span>GESAMT-XP</span></div><div class="world-stat"><strong>${esc(rankInfo.name)}</strong><span>RANGSTUFE</span></div></div><section class="world-section"><div class="world-section-head"><div><div class="eyebrow">Questboard</div><h3>Dein Aufstieg</h3></div><span>live</span></div><div class="world-quest-grid"><article class="world-quest-card"><strong>+${worldTaskXP({priority:'hoch'})} XP</strong><span>HOHE AUFGABEN</span></article><article class="world-quest-card"><strong>${rankInfo.next?rankInfo.toNext:'0'}</strong><span>XP BIS NÄCHSTER RANG</span></article><article class="world-quest-card"><strong>${unlockedCount}</strong><span>AKTIVE INSELOBJEKTE</span></article></div></section><section class="world-section"><div class="world-section-head"><div><div class="eyebrow">Sammlung</div><h3>Inselobjekte</h3></div><span>${unlockedCount}/${WORLD_COLLECTIBLES.length}</span></div><div class="world-collection">${worldCollectionMarkup(state)}</div></section><section class="world-section"><div class="world-section-head"><div><div class="eyebrow">Fortschrittsbuch</div><h3>Meilensteine</h3></div><span>${milestoneCount}/${WORLD_MILESTONES.length}</span></div><div class="world-milestones">${worldMilestoneMarkup(state)}</div></section><section class="world-section"><div class="world-section-head"><div><div class="eyebrow">Chronik</div><h3>Letzte Entwicklung</h3></div><span>lokal gespeichert</span></div><div class="world-activity">${worldActivityMarkup(state)}</div></section></section>`}
 function worldPage(){const scene=document.querySelector('.world-scene');if(!scene)return;scene.addEventListener('pointermove',event=>{if(event.pointerType==='touch')return;const island=scene.querySelector('.world-island');if(!island)return;const rect=scene.getBoundingClientRect(),x=(event.clientX-rect.left)/rect.width-.5,y=(event.clientY-rect.top)/rect.height-.5;island.style.transform=`translate(-50%,-50%) rotateX(${(4-y*4).toFixed(2)}deg) rotateY(${(x*7).toFixed(2)}deg)`});scene.addEventListener('pointerleave',()=>{const island=scene.querySelector('.world-island');if(island)island.style.transform=''})}
 function setupWorld(){syncExistingWorldProgress()}
 
@@ -1461,6 +1521,7 @@ tasks:()=>{const a=store.get('tasks'),done=a.filter(x=>x.done).length,p=a.length
 <div class="tasks-accent"></div>
 <div class="tasks-top"><div class="eyebrow">Fokus</div><h2>Was zählt jetzt?</h2><p>Aufgaben bekommen Gewicht, Rhythmus und einen klaren Abschluss.</p></div>
 <div class="task-progress"><div class="progress-ring" style="--p:${p}" data-label="${p}%"></div><div><strong>${done} von ${a.length} erledigt</strong><span>Dein Fortschritt heute</span></div></div>
+<div class="task-world-strip"><div class="task-world-pill"><strong>${getWorldState().xp}</strong><span>WORLD XP</span></div><div class="task-world-pill"><strong>${esc(worldRankInfo(getWorldState().xp).name)}</strong><span>AKTUELLER RANG</span></div><div class="task-world-pill"><strong>+${worldTaskXP({priority:'hoch'})} XP</strong><span>HOHE AUFGABE</span></div></div>
 <form id="taskForm">
 <div class="tasks-grid">
 <div class="field-block full"><label>Aufgabe</label><input id="taskTitle" class="input" placeholder="z. B. Angebot prüfen" required></div>
@@ -1572,7 +1633,7 @@ function goToPage(page,source){
         portal.classList.add('show');
       }
       setTimeout(()=>{
-        try{render('ai')}
+        try{render(page==='world'?'world':'ai')}
         catch(error){
           console.error('VIVAFIX navigation error:',error);
           toast('Seite konnte nicht geöffnet werden');
@@ -2201,7 +2262,7 @@ function tasks(){
    if(txt)txt.textContent=`${done} von ${a.length} erledigt`;
 
    $('#taskList').innerHTML=a.length
-     ?a.map(t=>`<article class="item task-item"><button type="button" class="task-check" data-toggle="${t.id}">${t.done?'✓':''}</button><div class="task-main"><h3>${esc(t.title)}</h3><p>${t.date||'Ohne Datum'} · <span class="priority-pill ${t.priority==='hoch'?'high':t.priority==='niedrig'?'low':''}">${esc(t.priority)}</span></p></div><button type="button" class="delete-x" data-del="${t.id}">×</button></article>`).join('')
+     ?a.map(t=>`<article class="item task-item ${t.done?'done':''}"><button type="button" class="task-check" data-toggle="${t.id}">${t.done?'✓':''}</button><div class="task-main"><h3>${esc(t.title)}</h3><p>${t.date||'Ohne Datum'} · <span class="priority-pill ${t.priority==='hoch'?'high':t.priority==='niedrig'?'low':''}">${esc(t.priority)}</span></p></div><div class="task-side"><span class="task-xp-badge">+${worldTaskXP(t)} XP</span><button type="button" class="delete-x" data-del="${t.id}">×</button></div></article>`).join('')
      :'<div class="empty">Noch keine Aufgaben.</div>';
 
    $$('[data-toggle]').forEach(b=>b.onclick=()=>{
@@ -2210,7 +2271,7 @@ function tasks(){
      const wasDone=t.done;
      t.done=!t.done;
      store.set('tasks',a);
-     if(!wasDone&&t.done){awardWorldXP('task',t.id,t.priority==='hoch'?30:20,`Aufgabe abgeschlossen: ${t.title}`)}
+     if(!wasDone&&t.done){awardWorldXP('task',t.id,worldTaskXP(t),`Aufgabe abgeschlossen: ${t.title}`)}
      draw();
    });
 
@@ -3385,6 +3446,58 @@ input,textarea{
   position:relative!important;
   z-index:50!important;
 }
+
+
+/* ===== VIVAFIX WORLD — WOW UPGRADE ===== */
+.world-shell{--rankGlow:rgba(239,207,142,.22)}
+.world-shell.world-rank-bronze{--rankGlow:rgba(197,143,106,.26)}
+.world-shell.world-rank-silber{--rankGlow:rgba(194,211,223,.26)}
+.world-shell.world-rank-gold{--rankGlow:rgba(239,207,142,.28)}
+.world-shell.world-rank-platin{--rankGlow:rgba(167,227,255,.30)}
+.world-progress-grid{position:relative;z-index:3;display:grid;grid-template-columns:1.08fr .92fr;gap:12px;align-items:stretch}
+.world-rank-strip,.world-xp-card,.world-quest-card{border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04);backdrop-filter:blur(10px);box-shadow:0 14px 35px rgba(0,0,0,.18)}
+.world-rank-strip{position:relative;z-index:3;margin-top:15px;padding:14px;border-radius:24px;overflow:hidden}
+.world-rank-strip::before{content:"";position:absolute;inset:-30%;background:radial-gradient(circle at 20% 30%,var(--rankGlow),transparent 25%),radial-gradient(circle at 90% 20%,rgba(255,255,255,.06),transparent 18%);pointer-events:none}
+.world-rank-main{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+.world-rank-badge{min-width:92px;padding:10px 12px;border-radius:16px;text-align:center;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#11201d;border:1px solid rgba(255,255,255,.16)}
+.world-rank-badge.bronze{background:linear-gradient(145deg,#e1af88,#9e6446)}
+.world-rank-badge.silber{background:linear-gradient(145deg,#eef3f6,#9eaebb)}
+.world-rank-badge.gold{background:linear-gradient(145deg,#fff1c8,#d6ab54)}
+.world-rank-badge.platin{background:linear-gradient(145deg,#eef9ff,#88cae6)}
+.world-rank-copy strong{display:block;font-size:14px}
+.world-rank-copy span{display:block;margin-top:3px;color:var(--muted);font-size:11px;line-height:1.35}
+.world-rank-track{position:relative;z-index:1;height:10px;border-radius:999px;margin-top:12px;background:rgba(255,255,255,.08);overflow:hidden}
+.world-rank-fill{height:100%;border-radius:inherit;background:linear-gradient(90deg,#66c8a1,#efd08e,#ffffff);box-shadow:0 0 18px var(--rankGlow);transition:width .7s cubic-bezier(.18,.82,.22,1)}
+.world-xp-card{position:relative;z-index:3;padding:14px;border-radius:24px}
+.world-xp-card h4{margin:0 0 10px;font:500 17px Georgia}
+.world-mini-kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.world-mini-kpis article,.world-quest-card{padding:12px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07)}
+.world-mini-kpis strong,.world-quest-card strong{display:block;font-size:18px;color:var(--gold)}
+.world-mini-kpis span,.world-quest-card span{display:block;margin-top:4px;color:var(--muted);font-size:10px;letter-spacing:.06em}
+.world-scene{box-shadow:inset 0 1px rgba(255,255,255,.07),0 20px 48px rgba(0,0,0,.22)}
+.world-rays{position:absolute;left:50%;top:46%;width:460px;height:460px;transform:translate(-50%,-50%);border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(239,207,142,.14) 0 7deg,transparent 7deg 20deg);filter:blur(1.5px);opacity:.62;animation:worldRaySpin 26s linear infinite}
+.world-aura{position:absolute;left:50%;top:49%;width:310px;height:310px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(239,207,142,.26) 0,rgba(106,207,188,.13) 34%,transparent 70%);filter:blur(8px);animation:worldAuraPulse 4.6s ease-in-out infinite}
+.world-shard{position:absolute;width:18px;height:54px;clip-path:polygon(50% 0,100% 34%,76% 100%,24% 100%,0 34%);background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(135,238,231,.72),rgba(80,142,196,.12));box-shadow:0 0 18px rgba(171,239,255,.25);opacity:.78;animation:worldShardFloat 6.2s ease-in-out infinite}
+.world-shard.s1{left:17%;top:22%;transform:rotate(-22deg);animation-delay:.2s}.world-shard.s2{right:18%;top:20%;transform:rotate(18deg);animation-delay:1s}.world-shard.s3{left:22%;bottom:18%;transform:rotate(20deg) scale(.9);animation-delay:1.8s}.world-shard.s4{right:16%;bottom:22%;transform:rotate(-18deg) scale(1.08);animation-delay:2.4s}
+.world-crystal-core{position:absolute;left:50%;top:92px;width:82px;height:112px;transform:translateX(-50%);z-index:6;pointer-events:none}
+.world-crystal{position:absolute;left:50%;top:0;width:74px;height:104px;transform:translateX(-50%);clip-path:polygon(50% 0,100% 28%,82% 100%,18% 100%,0 28%);background:linear-gradient(180deg,#fff6da 0%,#7de8d5 40%,#326e8d 72%,rgba(40,81,102,.12) 100%);box-shadow:0 0 26px rgba(166,248,234,.32),inset 0 0 22px rgba(255,255,255,.35);animation:worldCrystalPulse 3.4s ease-in-out infinite}
+.world-crystal::before{content:"";position:absolute;left:15px;top:12px;width:16px;height:58px;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,.82),rgba(255,255,255,0));transform:rotate(12deg)}
+.world-crystal-glow{position:absolute;left:50%;bottom:-10px;width:126px;height:50px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,rgba(163,248,237,.50),rgba(100,191,174,.24) 35%,transparent 72%);filter:blur(6px);animation:worldGlowPulse 3.4s ease-in-out infinite}
+.world-scene-caption{backdrop-filter:blur(8px)}
+.world-quest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.task-world-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 18px}
+.task-world-pill{padding:12px;border-radius:18px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.04)}
+.task-world-pill strong{display:block;color:var(--gold);font-size:18px}.task-world-pill span{display:block;margin-top:4px;color:var(--muted);font-size:10px;letter-spacing:.06em}
+.task-main p{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.task-side{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.task-xp-badge{display:inline-flex;align-items:center;justify-content:center;min-width:64px;padding:6px 9px;border-radius:999px;background:rgba(239,207,142,.12);border:1px solid rgba(239,207,142,.16);color:var(--gold);font-size:11px;font-weight:700}
+.task-item.done{opacity:.9}.task-item.done .task-xp-badge{background:rgba(111,197,163,.14);border-color:rgba(111,197,163,.18);color:#8cdbbc}
+@keyframes worldRaySpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes worldAuraPulse{50%{transform:translate(-50%,-50%) scale(1.05);opacity:.85}}
+@keyframes worldShardFloat{50%{transform:translateY(-12px) rotate(var(--r,0deg)) scale(1.04)}}
+@keyframes worldCrystalPulse{50%{transform:translateX(-50%) translateY(-6px) scale(1.03)}}
+@keyframes worldGlowPulse{50%{transform:translateX(-50%) scale(1.08);opacity:.92}}
+@media(max-width:560px){.world-progress-grid,.world-quest-grid,.task-world-strip{grid-template-columns:1fr}.world-mini-kpis{grid-template-columns:1fr 1fr}.task-side{align-items:flex-start}}
 
 </style>
 
